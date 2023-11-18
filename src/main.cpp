@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include "SceneNode.hpp"
 #include <iostream>
-#include "../include/Resources/TextureHolder.hpp"
+#include "TextureHolder.hpp"
 int main()
 {
     auto window = sf::RenderWindow{ { 1920u, 1080u }, "Crossy Road" };

@@ -10,8 +10,14 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
+include_directories(include/Resources)
+include_directories(include/World)
+
+
 add_executable(CrossyRoad 
-    src/main.cpp)
+    src/main.cpp
+    src/World/SceneNode.cpp
+    )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
 

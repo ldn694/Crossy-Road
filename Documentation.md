@@ -19,12 +19,12 @@ We use this class to hold different types of resources. It is a template class, 
 
 ### TextureHolder.hpp
 
-Please refer to the [TextureHolder.hpp](TextureHolder.hpp) file for detailed information.
+Please refer to the [TextureHolder.hpp](include/Resources/TextureHolder.hpp) file for detailed information.
 
 Here is a simple way to use the TextureHolder class:
 
 ```cpp
-#include "...TextureHolder.hpp" //Fix the path to the header file
+#include "TextureHolder.hpp" //Fix the path to the header file
 sf::Texture texture;
 texture.loadFromFile("texture.png");
 sf::Sprite sprite(texture);

@@ -1,4 +1,4 @@
-#include "../../include/Resources/ResourceHolder.hpp"
+#include "ResourceHolder.hpp"
 
 template <typename Resource, typename Identifier>
 std::map<Identifier, std::unique_ptr<Resource>> ResourceHolder<Resource, Identifier>::mResourceMap;
