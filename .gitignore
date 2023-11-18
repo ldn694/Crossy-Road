@@ -1,4 +1,8 @@
 build/*
+!build/bin
+build/*/*
+!build/bin/Release
+build/*/*/*
 !build/bin/Release/Assets
 out
 .cache
