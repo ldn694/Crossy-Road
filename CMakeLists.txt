@@ -10,13 +10,27 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-include_directories(include/Resources)
-include_directories(include/World)
+include_directories(include)
 
 
 add_executable(CrossyRoad 
     src/main.cpp
-    src/World/SceneNode.cpp
+    src/Application.cpp
+    src/Aircraft.cpp
+    src/Command.cpp
+    src/CommandQueue.cpp
+    src/Entity.cpp
+    src/GameState.cpp 
+    src/MenuState.cpp
+    src/PauseState.cpp
+    src/Player.cpp
+    src/SceneNode.cpp
+    src/SpriteNode.cpp
+    src/State.cpp
+    src/StateStack.cpp
+    src/TitleState.cpp
+    src/Utility.cpp
+    src/World.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

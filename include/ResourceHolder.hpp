@@ -1,9 +1,11 @@
 #pragma once
+
 #include <map>
 #include <string>
 #include <memory>
 #include <stdexcept>
 #include <cassert>
+
 
 template <typename Resource, typename Identifier>
 class ResourceHolder
@@ -23,7 +25,7 @@ class ResourceHolder
 
 
 	private:
-		static std::map<Identifier, std::unique_ptr<Resource>>	mResourceMap;
+		std::map<Identifier, std::unique_ptr<Resource>>	mResourceMap;
 };
 
-#include "../../src/Resources/ResourceHolder.inl"
+#include "ResourceHolder.inl"
