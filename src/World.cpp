@@ -84,6 +84,15 @@ void World::buildScene()
 	mPlayerAircraft = leader.get();
 	mPlayerAircraft->setPosition(mSpawnPosition);
 	mSceneLayers[Air]->attachChild(std::move(leader));
+
+	std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::Raptor, mTextures));
+	leftEscort->setPosition(-80.f, 50.f);
+	mPlayerAircraft->attachChild(std::move(leftEscort));	
+
+	std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::Raptor, mTextures));
+	rightEscort->setPosition(80.f, 50.f);
+	mPlayerAircraft->attachChild(std::move(rightEscort));
+
 }
 
 void World::adaptPlayerPosition()
