@@ -2,6 +2,8 @@
 
 #include "StateIdentifiers.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "Context.hpp"
+#include "ClickableList.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
@@ -22,15 +24,7 @@ class State
 	public:
 		typedef std::unique_ptr<State> Ptr;
 
-		struct Context
-		{
-								Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player);
-
-			sf::RenderWindow*	window;
-			TextureHolder*		textures;
-			FontHolder*			fonts;
-			Player*				player;
-		};
+		
 
 
 	public:

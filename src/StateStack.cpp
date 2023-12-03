@@ -2,9 +2,10 @@
 #include "Foreach.hpp"
 
 #include <cassert>
+#include <iostream>
 
 
-StateStack::StateStack(State::Context context)
+StateStack::StateStack(Context context)
 : mStack()
 , mPendingList()
 , mContext(context)

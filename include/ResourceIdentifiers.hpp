@@ -16,6 +16,8 @@ namespace Textures
 		Raptor,
 		Desert,
 		TitleScreen,
+		Button,
+		PressedButton
 	};
 }
 
