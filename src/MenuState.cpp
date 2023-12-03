@@ -5,12 +5,15 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <iostream>
 
 MenuState::MenuState(StateStack &stack, Context context)
-	: State(stack, context), mOptions(), mOptionIndex(0)
+	: State(stack, context), mOptions(), mOptionIndex(0), mClickableList(context)
 {
 	sf::Texture &texture = context.textures->get(Textures::TitleScreen);
 	sf::Font &font = context.fonts->get(Fonts::Main);
+	context.textures->load(Textures::Button, "Assets/Images/Button.png");
+	context.textures->load(Textures::PressedButton, "Assets/Images/PressedButton.png");
 
 	mBackgroundSprite.setTexture(texture);
 
@@ -29,6 +32,24 @@ MenuState::MenuState(StateStack &stack, Context context)
 	exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 30.f));
 	mOptions.push_back(exitOption);
 
+	mClickableList.registerClickable<Button>(Clickable::Type::Button);
+	ClickableInfo info;
+	info.floatList = { 0, 0, 100, 100, 10 };
+	info.stringList = { "Button 0" };
+	info.status = ClickableStatus(true, true, true);
+	info.fontIDList = { Fonts::Main };
+	info.textureIDList = { Textures::Button, Textures::PressedButton };
+	info.colorList = { sf::Color::White };
+	mClickableList.addClickable(Clickable::Type::Button, 0, info);
+
+	info.floatList = {500, 200, 70, 70, 10};
+	info.status = ClickableStatus(true, true, true);
+	info.textureIDList = { Textures::Button, Textures::PressedButton };
+	info.stringList = { "Button 1" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, 1, info);
+
 	updateOptionText();
 }
 
@@ -41,15 +62,30 @@ void MenuState::draw()
 
 	FOREACH(const sf::Text &text, mOptions)
 	window.draw(text);
+	mClickableList.draw();
 }
 
-bool MenuState::update(sf::Time)
+bool MenuState::update(sf::Time dt)
 {
+	mClickableList.update(dt);
 	return true;
 }
 
 bool MenuState::handleEvent(const sf::Event &event)
 {
+	mClickableList.handleEvent(event);
+	while (mClickableList.pendingAnnouncement()) {
+		Clickable::Announcement announcement = mClickableList.popAnnouncement();
+		if (announcement.action == Clickable::LeftClick) {
+			std::cout << "Left Clicked " << announcement.id << "\n";
+		}
+		else if (announcement.action == Clickable::RightClick) {
+			std::cout << "Right Clicked " << announcement.id << "\n";
+		}
+	}
+	if (event.type == sf::Event::MouseButtonPressed) {
+		
+	}
 	// The demonstration menu logic
 	if (event.type != sf::Event::KeyPressed)
 		return false;

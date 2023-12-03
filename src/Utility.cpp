@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Text.hpp>
 
 #include <cmath>
+#include <cassert>
 
 
 void centerOrigin(sf::Sprite& sprite)
@@ -16,4 +17,10 @@ void centerOrigin(sf::Text& text)
 {
 	sf::FloatRect bounds = text.getLocalBounds();
 	text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+}
+
+void assertThrow(bool expression, std::string message) {
+	if (!expression) {
+		throw std::runtime_error(message);
+	}
 }
