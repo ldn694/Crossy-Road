@@ -2,41 +2,41 @@
 #include "ClickableList.hpp"
 #include <iostream>
 
-ClickableStatus::ClickableStatus(bool isDrawable, bool isClickable, bool isHoverable): status(0) {
-        status |= (isDrawable << 0);
-        status |= (isClickable << 1);
-        status |= (isHoverable << 2);
+Clickable::Status::Status(bool isDrawable, bool isClickable, bool isHoverable): status() {
+    setDrawable(isDrawable);
+    setClickable(isClickable);
+    setHoverable(isHoverable);
 }
 
-ClickableInfo::ClickableInfo(): status(ClickableStatus()), floatList(std::vector<float>()), stringList(std::vector<std::string>()), textureIDList(std::vector<Textures::ID>()), timeList(std::vector<sf::Time>()) {}
+Clickable::Info::Info(): status() {}
 
-bool ClickableStatus::isDrawable() {
+bool Clickable::Status::isDrawable() {
     return status & 1;
 }
 
-bool ClickableStatus::isClickable() {
+bool Clickable::Status::isClickable() {
     return status & 2;
 }
 
-bool ClickableStatus::isHoverable() {
+bool Clickable::Status::isHoverable() {
     return status & 4;
 } 
 
-void ClickableStatus::setDrawable(bool drawable) {
+void Clickable::Status::setDrawable(bool drawable) {
     status = status & ~(drawable << 0) ^ (drawable << 0);
 }
 
-void ClickableStatus::setClickable(bool clickable) {
+void Clickable::Status::setClickable(bool clickable) {
     status = status & ~(clickable << 1) ^ (clickable << 1);
 }
 
-void ClickableStatus::setHoverable(bool hoverable) {
+void Clickable::Status::setHoverable(bool hoverable) {
     status = status & ~(hoverable << 2) ^ (hoverable << 2);
 }
 
 Clickable::Announcement::Announcement(Clickable::Action action, int id): action(action), id(id) {}
 
-Clickable::Clickable(ClickableList* list, Context context, int id, ClickableStatus status): mID(id), mStatus(status), mContext(context), mList(list) {}
+Clickable::Clickable(ClickableList* list, Context context, int id, Status status): mID(id), mStatus(status), mContext(context), mList(list) {}
 
 void Clickable::actualDraw() {
     if (mStatus.isDrawable()) {

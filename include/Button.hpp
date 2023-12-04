@@ -12,7 +12,7 @@ private:
     sf::Sprite mSprite;
     bool isHovering;
 public:
-    Button(ClickableList* mList, int id, Context context, ClickableInfo info);
+    Button(ClickableList* mList, int id, Context context, Clickable::Info info);
     void draw();
     void handleEvent(const sf::Event& event);
     void update(sf::Time dt);

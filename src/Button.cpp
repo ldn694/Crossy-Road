@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cassert>
 
-Button::Button(ClickableList* mList, int id, Context context, ClickableInfo info): Clickable(mList, context, id, info.status) {
+Button::Button(ClickableList* mList, int id, Context context, Clickable::Info info): Clickable(mList, context, id, info.status) {
     isHovering = false;
     assertThrow(info.floatList.size() == 5, "Button: floatList size must be 5");
     assertThrow(info.stringList.size() == 1, "Button: stringList size must be 1");
@@ -47,10 +47,10 @@ void Button::handleEvent(const sf::Event& event) {
     else if (event.type == sf::Event::MouseButtonPressed) {
         if (isInside(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
             if (event.mouseButton.button == sf::Mouse::Left) {
-                requestPushAnnouncement(Clickable::LeftClick);
+                requestPushAnnouncement(Clickable::LeftPressed);
             }
             else if (event.mouseButton.button == sf::Mouse::Right) {
-                requestPushAnnouncement(Clickable::RightClick);
+                requestPushAnnouncement(Clickable::RightPressed);
             }
         }
     }

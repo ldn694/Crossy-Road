@@ -53,12 +53,12 @@ bool ClickableList::pendingAnnouncement() const
     return !mAnnounceMents.empty();
 }
 
-void ClickableList::addClickable(Clickable::Type clickableType, int id, ClickableInfo info)
+void ClickableList::addClickable(Clickable::Type clickableType, int id, Clickable::Info info)
 {
     mClickables.insert(std::make_pair(id, createClickable(clickableType, id, info)));
 }
 
-Clickable::Ptr ClickableList::createClickable(Clickable::Type clickableType, int id, ClickableInfo info)
+Clickable::Ptr ClickableList::createClickable(Clickable::Type clickableType, int id, Clickable::Info info)
 {
     auto found = mFactories.find(clickableType);
     assert(found != mFactories.end());
