@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include "Button.hpp"
+#include "ClickableList.hpp"
 
 
 class MenuState : public State
@@ -27,7 +29,8 @@ class MenuState : public State
 
 	private:
 		sf::Sprite				mBackgroundSprite;
-
+		ClickableList			mClickableList;
 		std::vector<sf::Text>	mOptions;
 		std::size_t				mOptionIndex;
+
 };

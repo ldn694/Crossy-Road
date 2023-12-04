@@ -30,7 +30,7 @@ class StateStack : private sf::NonCopyable
 
 
 	public:		
-		explicit			StateStack(State::Context context);
+		explicit			StateStack(Context context);
 
 		template <typename T>
 		void				registerState(States::ID stateID);
@@ -65,7 +65,7 @@ class StateStack : private sf::NonCopyable
 		std::vector<State::Ptr>								mStack;
 		std::vector<PendingChange>							mPendingList;
 
-		State::Context										mContext;
+		Context												mContext;
 		std::map<States::ID, std::function<State::Ptr()>>	mFactories;
 };
 

@@ -17,4 +17,6 @@ std::string toString(const T& value);
 void centerOrigin(sf::Sprite& sprite);
 void centerOrigin(sf::Text& text);
 
+void assertThrow(bool expression, std::string message);
+
 #include "Utility.inl"
