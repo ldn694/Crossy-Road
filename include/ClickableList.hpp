@@ -23,16 +23,16 @@ public:
     bool				        pendingAnnouncement() const;
 
 
-    void                        addClickable(Clickable::Type clickableType, int id, ClickableInfo info);
+    void                        addClickable(Clickable::Type clickableType, int id, Clickable::Info info);
 
 
 private:
-    Clickable::Ptr		        createClickable(Clickable::Type clickableType, int id, ClickableInfo info);
+    Clickable::Ptr		        createClickable(Clickable::Type clickableType, int id, Clickable::Info info);
 
 
 private:
     Context										                                    mContext;
-    std::map<Clickable::Type, std::function<Clickable::Ptr(int, ClickableInfo)>>	mFactories;
+    std::map<Clickable::Type, std::function<Clickable::Ptr(int, Clickable::Info)>>	mFactories;
     std::map<int, std::unique_ptr<Clickable>>                                       mClickables;
     std::queue<Clickable::Announcement>                                             mAnnounceMents;
 };
@@ -41,7 +41,7 @@ private:
 template <typename T>
 void ClickableList::registerClickable(Clickable::Type clickableType)
 {
-    mFactories[clickableType] = [this](int id, ClickableInfo info)
+    mFactories[clickableType] = [this](int id, Clickable::Info info)
         {
             return Clickable::Ptr(new T(this, id, mContext, info));
         };

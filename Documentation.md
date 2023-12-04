@@ -67,9 +67,9 @@ Instead of direct interaction with `Clickable` objects, we use `ClickableList` c
 
 ## Usage
 
-### ClickableStatus
+### Clickable::Status
 
-`ClickableStatus` struct is used to store the status of a `Clickable` object. It consists of 3 boolean variables: `isClickable`, `isHoverable` and `isPressable`. 
+`Clickable::Status` is a struct that stores the status of the `Clickable` object. It consists of 3 boolean variables: `isDrawable`, `isClickable` and `isHoverable`.
 * `isDrawable` is used to determine whether the object is drawable or not. If not, the object will not be drawn, however, it will can be clickable.
 * `isClickable` is used to determine whether the object is clickable or not. If not, the object will not be clickable, however, it can still be drawn.
 * `isHoverable` is used to determine whether the object is hoverable or not. If not, the object will not be hoverable, however, it can still be clickable and drawn.
@@ -95,24 +95,24 @@ For each object that needs mouse interaction handling, we create a class that in
 
 We use Factory Method design pattern to create new `Clickable` objects. In each derived class of `State` class (e.g. `MenuState`), we first need to register the type of `Clickable` objects (e.g. `Button`) that we will use in that state. Then, we can create new `Clickable` objects using the Factory Method `addClickable()`.
 
-About the `ClickableInfo` struct: It is used to store the information about the `Clickable` object. `ClickableInfo` consists of multiple `std::vector` of different types. Each `std::vector` stores the information about a specific property of the `Clickable` object. For example, `floatList` stores the information about the position and size of the `Clickable` object; `status` stores the information about the status of the `Clickable` object. 
+About the `Clickable::Info` struct: It is used to store the information about the `Clickable` object. `Clickable::Info` consists of multiple `std::vector` of different types. Each `std::vector` stores the information about a specific property of the `Clickable` object. For example, `floatList` stores the information about the position and size of the `Clickable` object; `status` stores the information about the status of the `Clickable` object. 
 
 Below is an example of creating a two new `Button` object - a derived of `Clickable` class:
 
 ```cpp
     mClickableList.registerClickable<Button>(Clickable::Type::Button); //do this only once in the constructor of the derived class of State class
     ...
-	ClickableInfo info;
+	Clickable::Info info;
 	info.floatList = { 0, 0, 100, 100, 10 };
 	info.stringList = { "Button 0" };
-	info.status = ClickableStatus(true, true, true);
+	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
 	info.textureIDList = { Textures::Button, Textures::PressedButton };
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, 0, info);
     ...
     info.floatList = {500, 200, 70, 70, 10};
-	info.status = ClickableStatus(true, true, true);
+	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Button, Textures::PressedButton };
 	info.stringList = { "Button 1" };
 	info.fontIDList = { Fonts::Main };
@@ -130,13 +130,13 @@ Below is an example of handling the click events:
 //In the handleEvent() method of the derived class of State class
 mClickableList.handleEvent(event);
 while (mClickableList.pendingAnnouncement()) {
-    Clickable::Announcement announcement = mClickableList.popAnnouncement();
-    if (announcement.action == Clickable::LeftClick) {
-        std::cout << "Left Clicked " << announcement.id << "\n";
-    }
-    else if (announcement.action == Clickable::RightClick) {
-        std::cout << "Right Clicked " << announcement.id << "\n";
-    }
+	Clickable::Announcement announcement = mClickableList.popAnnouncement();
+	if (announcement.action == Clickable::LeftPressed) {
+		std::cout << "Left Clicked " << announcement.id << "\n";
+	}
+	else if (announcement.action == Clickable::RightPressed) {
+		std::cout << "Right Clicked " << announcement.id << "\n";
+	}
 }
 ```
 

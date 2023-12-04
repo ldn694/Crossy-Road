@@ -33,17 +33,17 @@ MenuState::MenuState(StateStack &stack, Context context)
 	mOptions.push_back(exitOption);
 
 	mClickableList.registerClickable<Button>(Clickable::Type::Button);
-	ClickableInfo info;
+	Clickable::Info info;
 	info.floatList = { 0, 0, 100, 100, 10 };
 	info.stringList = { "Button 0" };
-	info.status = ClickableStatus(true, true, true);
+	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
 	info.textureIDList = { Textures::Button, Textures::PressedButton };
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, 0, info);
 
 	info.floatList = {500, 200, 70, 70, 10};
-	info.status = ClickableStatus(true, true, true);
+	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Button, Textures::PressedButton };
 	info.stringList = { "Button 1" };
 	info.fontIDList = { Fonts::Main };
@@ -76,10 +76,10 @@ bool MenuState::handleEvent(const sf::Event &event)
 	mClickableList.handleEvent(event);
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
-		if (announcement.action == Clickable::LeftClick) {
+		if (announcement.action == Clickable::LeftPressed) {
 			std::cout << "Left Clicked " << announcement.id << "\n";
 		}
-		else if (announcement.action == Clickable::RightClick) {
+		else if (announcement.action == Clickable::RightPressed) {
 			std::cout << "Right Clicked " << announcement.id << "\n";
 		}
 	}
