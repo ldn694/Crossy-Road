@@ -9,28 +9,28 @@
 
 class MenuState : public State
 {
-	public:
-								MenuState(StateStack& stack, Context context);
+public:
+	MenuState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
 
-		virtual void			draw();
-		virtual bool			update(sf::Time dt);
-		virtual bool			handleEvent(const sf::Event& event);
+	virtual void			draw();
+	virtual bool			update(sf::Time dt);
+	virtual bool			handleEvent(const sf::Event& event);
 
-		void					updateOptionText();
-
-
-	private:
-		enum OptionNames
-		{
-			Play,
-			Exit,
-		};
+	void					updateOptionText();
 
 
-	private:
-		sf::Sprite				mBackgroundSprite;
-		ClickableList			mClickableList;
-		std::vector<sf::Text>	mOptions;
-		std::size_t				mOptionIndex;
+private:
+	enum OptionNames
+	{
+		Play,
+		Exit,
+	};
+
+
+private:
+	sf::Sprite				mBackgroundSprite;
+	ClickableList			mClickableList;
+	std::vector<sf::Text>	mOptions;
+	std::size_t				mOptionIndex;
 
 };
