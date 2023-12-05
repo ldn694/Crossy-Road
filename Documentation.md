@@ -159,8 +159,68 @@ To create a new `Button` object, we need to provide the following information:
 
 Detailed information about the `Button` class can be found in the [Button.hpp](include\Button.hpp) file.
 
+# State
 
+## Description
 
+We use the `State` class to represent a state of the game. Detailed information about the `State` class can be found in the [State.hpp](include\State.hpp) file.
+
+## Usage
+
+While handling events, each `State` class can perform the following actions:
+* `void requestStackPush(States::ID stateID, State::Info info)` - Requests the stack to push a new state, which is represented by `stateID`. `info` stores the information about the new state. 
+* `void requestStackPop()` - Requests the stack to pop the current state.
+* `void requestStackClear()` - Requests the stack to clear all states.
+* `void requestStateClear()` - Requests the state to clear all objects.
+* `void requestNotifyState(States::ID stateID, State::Info info)` - Requests the state to notify another state represented by `stateID`. `info` stores the information of the notification.
+* `bool pendingNotification()` - Returns true if there is a pending notification for this `State`.
+* `State::Info popNotification()` - Pops the top notification from this `State`'s notification queue.
+
+Each dervied `State` class should call the following methods in the according methods of `State` class:
+* `void handleEvent(const sf::Event& event)` - Handles the events.
+* `void update(sf::Time dt)` - Updates the objects.
+* `void draw()` - Draws the objects.
+
+## State::Info
+
+`State::Info` is a struct that stores the information about the `State` object. It consists of multiple `std::vector` of different types. Each `std::vector` stores the information about a specific property of the `State` object.
+
+## Example
+
+### Interacting with the State Stack
+
+Below is an example of creating a new `State` object:
+
+```cpp
+//register a new state, this should be done in registerStates() method of Application class
+mStateStack.registerState<MenuState>(States::Menu);
+...
+//You can not directly create a new state, you need to request the stack to push a new state
+//Assuming you are in MenuState class's handleEvent() method, you want to push a new GameState to the stack
+//First, you need to create a State::Info object
+State::Info info;
+info.stringList = {"This is a message from MenuState, sending to GameState's constructor"}; //a strings vector with size 1 representing the message
+//Then, you need to request the stack to push a new GameState to the stack
+requestStackPush(States::GameState, info);
+//And you want to notify the LeaderboardState to be ready to receive a new score
+info = State::Info();
+info.intList = {1}; //an int vector with size 1 representing whether the LeaderboardState should be ready to receive a new score or not
+requestNotifyState(States::LeaderboardState, info);
+//Now, you may want to pop the current state
+requestStackPop();
+```
+
+### Handling notifications
+
+Below is an example of handling notifications:
+
+```cpp
+//Assuming you are in a State class's handleEvent() method
+while (pendingNotification()) {
+	State::Info info = popNotification();
+	std::cout << info.stringList[0] << "\n"; //print the message
+}
+```
 
 
 
