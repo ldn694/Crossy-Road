@@ -53,6 +53,30 @@ bool ClickableList::pendingAnnouncement() const
     return !mAnnounceMents.empty();
 }
 
+void ClickableList::setClickable(int id, bool clickable)
+{
+    auto found = mClickables.find(id);
+    assert(found != mClickables.end());
+
+    found->second->setClickable(clickable);
+}
+
+void ClickableList::setDrawable(int id, bool drawable)
+{
+    auto found = mClickables.find(id);
+    assert(found != mClickables.end());
+
+    found->second->setDrawable(drawable);
+}
+
+void ClickableList::setHoverable(int id, bool hoverable)
+{
+    auto found = mClickables.find(id);
+    assert(found != mClickables.end());
+
+    found->second->setHoverable(hoverable);
+}
+
 void ClickableList::addClickable(Clickable::Type clickableType, int id, Clickable::Info info)
 {
     mClickables.insert(std::make_pair(id, createClickable(clickableType, id, info)));
