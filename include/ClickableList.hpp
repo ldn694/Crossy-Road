@@ -22,6 +22,10 @@ public:
     Clickable::Announcement		popAnnouncement();
     bool				        pendingAnnouncement() const;
 
+    void                        setClickable(int id, bool clickable);
+    void                        setDrawable(int id, bool drawable);
+    void                        setHoverable(int id, bool hoverable);
+
 
     void                        addClickable(Clickable::Type clickableType, int id, Clickable::Info info);
 
@@ -46,4 +50,3 @@ void ClickableList::registerClickable(Clickable::Type clickableType)
             return Clickable::Ptr(new T(this, id, mContext, info));
         };
 }
-

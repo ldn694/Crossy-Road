@@ -1,7 +1,12 @@
-
+#include <iostream>
 template <typename Resource, typename Identifier>
 void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string& filename)
-{
+{	
+	auto found = mResourceMap.find(id);
+	if (found != mResourceMap.end()) {
+		std::cout << "ResourceHolder::load - Resource already loaded" << std::endl;
+		return;
+	}
 	// Create and load resource
 	std::unique_ptr<Resource> resource(new Resource());
 	if (!resource->loadFromFile(filename))

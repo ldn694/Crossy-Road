@@ -23,15 +23,15 @@ bool Clickable::Status::isHoverable() {
 } 
 
 void Clickable::Status::setDrawable(bool drawable) {
-    status = status & ~(drawable << 0) ^ (drawable << 0);
+    status = status & ~(1 << 0) ^ (drawable << 0);
 }
 
 void Clickable::Status::setClickable(bool clickable) {
-    status = status & ~(clickable << 1) ^ (clickable << 1);
+    status = status & ~(1 << 1) ^ (clickable << 1);
 }
 
 void Clickable::Status::setHoverable(bool hoverable) {
-    status = status & ~(hoverable << 2) ^ (hoverable << 2);
+    status = status & ~(1 << 2) ^ (hoverable << 2);
 }
 
 Clickable::Announcement::Announcement(Clickable::Action action, int id): action(action), id(id) {}
@@ -49,6 +49,7 @@ void Clickable::setDrawable(bool drawable) {
 }
 
 void Clickable::setClickable(bool clickable) {
+    std::cout << "Clickable: " << mID << " is set clickable to " << clickable << std::endl;
     mStatus.setClickable(clickable);
 }
 

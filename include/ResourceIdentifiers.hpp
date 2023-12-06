@@ -17,7 +17,10 @@ namespace Textures
 		Desert,
 		TitleScreen,
 		Button,
-		PressedButton
+		PressedButton,
+		Choice,
+		PressedChoice,
+		HoveredChoice,
 	};
 }
 

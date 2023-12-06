@@ -35,6 +35,7 @@ add_executable(CrossyRoad
     src/Clickable.cpp
     src/ClickableList.cpp
     src/Button.cpp
+    src/Choice.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
