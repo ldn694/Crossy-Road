@@ -50,4 +50,3 @@ void ClickableList::registerClickable(Clickable::Type clickableType)
             return Clickable::Ptr(new T(this, id, mContext, info));
         };
 }
-

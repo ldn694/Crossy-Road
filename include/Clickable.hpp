@@ -8,7 +8,8 @@ class ClickableList;
 class Clickable {
 public:
     enum Type {
-        Button
+        Button,
+        Choice
     };
     enum Action {
         LeftPressed,

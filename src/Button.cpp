@@ -11,8 +11,8 @@ Button::Button(ClickableList* mList, int id, Context context, Clickable::Info in
     assertThrow(info.fontIDList.size() == 1, "Button: fontIDList size must be 1");
     assertThrow(info.colorList.size() == 1, "Button: colorList size must be 1");
     mRect = sf::FloatRect(info.floatList[0], info.floatList[1], info.floatList[2], info.floatList[3]);
-    mTextureID[0] = Textures::Button;
-    mTextureID[1] = Textures::PressedButton;
+    mTextureID[0] = info.textureIDList[0];
+    mTextureID[1] = info.textureIDList[1];
     mText.setCharacterSize(info.floatList[4]);
     mText.setFont(context.fonts->get(info.fontIDList[0]));
     mText.setFillColor(info.colorList[0]);

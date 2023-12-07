@@ -1,3 +1,4 @@
+#pragma once
 #include "Clickable.hpp"
 #include <SFML/Graphics.hpp>
 #include "ResourceIdentifiers.hpp"
