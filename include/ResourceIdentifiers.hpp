@@ -21,6 +21,7 @@ namespace Textures
 		Choice,
 		PressedChoice,
 		HoveredChoice,
+		GameStartBackground,
 	};
 }
 
