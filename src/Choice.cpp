@@ -11,9 +11,9 @@ Choice::Choice(ClickableList* mList, int id, Context context, Clickable::Info in
     assertThrow(info.fontIDList.size() == 1, "Choice: fontIDList size must be 1");
     assertThrow(info.colorList.size() == 1, "Choice: colorList size must be 1");
     mRect = sf::FloatRect(info.floatList[0], info.floatList[1], info.floatList[2], info.floatList[3]);
-    mTextureID[0] = Textures::Choice;
-    mTextureID[1] = Textures::HoveredChoice;
-    mTextureID[2] = Textures::PressedChoice;
+    mTextureID[0] = info.textureIDList[0];
+    mTextureID[1] = info.textureIDList[1];
+    mTextureID[2] = info.textureIDList[2];
     mText.setCharacterSize(info.floatList[4]);
     mText.setFont(context.fonts->get(info.fontIDList[0]));
     mText.setFillColor(info.colorList[0]);

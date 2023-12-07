@@ -22,6 +22,10 @@ namespace Textures
 		PressedChoice,
 		HoveredChoice,
 		GameStartBackground,
+		LeftArrowButton,
+		LeftHoveredArrowButton,
+		RightArrowButton,
+		RightHoveredArrowButton,
 	};
 }
 
