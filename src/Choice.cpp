@@ -31,22 +31,24 @@ bool Choice::isInside(sf::Vector2f position) {
 
 void Choice::draw() {
     if (mStatus.isClickable()){
-        //std::cout << "Choice: " << mID << " is clickable" << std::endl;
+        std::cout << "Choice: " << mID << " is clickable" << std::endl;
         mSprite.setTexture(mContext.textures->get(isHovering ? mTextureID[1] : mTextureID[0]));
+        mSprite.setColor(sf::Color(255, 255, 255, 255));
     } else {
         std::cout << "Choice: " << mID << " is not clickable" << std::endl;
         mSprite.setTexture(mContext.textures->get(mTextureID[2]));
+        mSprite.setColor(sf::Color(100, 100, 255, 128));
     }
     mContext.window->draw(mSprite);
     mContext.window->draw(mText);
 }
 
 void Choice::handleEvent(const sf::Event& event) {
-    if (!mStatus.isClickable()) return;
     if (event.type == sf::Event::MouseMoved) {
         isHovering = isInside(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
     }
-    else if (event.type == sf::Event::MouseButtonPressed) {
+    if (!mStatus.isClickable()) return;
+    if (event.type == sf::Event::MouseButtonPressed) {
         if (isInside(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 requestPushAnnouncement(Clickable::LeftPressed);
