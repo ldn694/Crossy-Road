@@ -21,7 +21,7 @@ class Entity : public SceneNode
 
 
 	private:
-		Animation*					curAnimation;
+		Animation*					curAnimation = nullptr;
 		virtual void				updateCurrent(sf::Time dt);
 
 
