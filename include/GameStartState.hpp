@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "Button.hpp"
 #include "Choice.hpp"
+#include "TypeBox.hpp"
 #include "ClickableList.hpp"
 
 
@@ -31,7 +32,8 @@ private:
 		Extreme,
 		Back,
 		LeftArrow,
-		RightArrow
+		RightArrow,
+		TypingBox
 	};
 
 

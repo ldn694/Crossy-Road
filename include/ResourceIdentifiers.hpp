@@ -26,6 +26,9 @@ namespace Textures
 		LeftHoveredArrowButton,
 		RightArrowButton,
 		RightHoveredArrowButton,
+		TypeBox,
+		TypeBoxHovered,
+		TypeBoxInput
 	};
 }
 

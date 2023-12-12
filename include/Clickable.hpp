@@ -9,7 +9,8 @@ class Clickable {
 public:
     enum Type {
         Button,
-        Choice
+        Choice,
+        TypeBox
     };
     enum Action {
         LeftPressed,

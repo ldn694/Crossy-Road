@@ -21,6 +21,9 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	context.textures->load(Textures::LeftHoveredArrowButton, "Assets/Images/LeftHoveredArrowButton.png");
 	context.textures->load(Textures::RightArrowButton, "Assets/Images/RightArrowButton.png");
 	context.textures->load(Textures::RightHoveredArrowButton, "Assets/Images/RightHoveredArrowButton.png");
+	context.textures->load(Textures::TypeBox, "Assets/Images/TypeBox.png");
+	context.textures->load(Textures::TypeBoxHovered, "Assets/Images/TypeBoxHovered.png");
+	context.textures->load(Textures::TypeBoxInput, "Assets/Images/TypeBoxInput.png");
 	sf::Texture& texture = context.textures->get(Textures::GameStartBackground);
 	sf::Font& font = context.fonts->get(Fonts::Main);
 
@@ -136,6 +139,17 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
     }
     mChoicePlayerIndex = ButtonNames::OnePlayer;
     mClickableList.setClickable(mChoicePlayerIndex, false);
+
+	//TypeBox setting
+	mClickableList.registerClickable<TypeBox>(Clickable::Type::TypeBox);
+	info.floatList = { 150, 150, 300, 100, 1.0/6, 50, 30 };
+	info.stringList = { "Player" };
+	info.status = Clickable::Status(true, true, true);
+	info.fontIDList = { Fonts::Main, Fonts::Main };
+	info.textureIDList = { Textures::TypeBox, Textures::TypeBoxHovered, Textures::TypeBoxInput };	
+	info.colorList = { sf::Color::White, sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::TypeBox, ButtonNames::TypingBox, info);
+
 }
 
 void GameStartState::draw()
@@ -179,6 +193,8 @@ bool GameStartState::handleEvent(const sf::Event& event)
                 mChoicePlayerIndex = announcement.id;
             } else if (announcement.id == ButtonNames::LeftArrow || announcement.id == ButtonNames::RightArrow){
 				
+			} else if (announcement.id == ButtonNames::TypingBox){
+				mClickableList.setClickable(announcement.id, false);
 			} else {
 				mClickableList.setClickable(mChoiceDifficultyIndex, true);
 				mClickableList.setClickable(announcement.id, false);
