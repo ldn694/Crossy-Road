@@ -16,6 +16,7 @@ namespace Textures
 		Raptor,
 		Desert,
 		TitleScreen,
+		SettingBackground,
 	};
 }
 

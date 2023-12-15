@@ -25,6 +25,7 @@ add_executable(CrossyRoad
     src/PauseState.cpp
     src/Player.cpp
     src/SceneNode.cpp
+    src/SettingState.cpp
     src/SpriteNode.cpp
     src/State.cpp
     src/StateStack.cpp

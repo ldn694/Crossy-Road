@@ -2,9 +2,11 @@
 #include "Utility.hpp"
 #include "Foreach.hpp"
 #include "ResourceHolder.hpp"
+#include"StateIdentifiers.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <StateIdentifiers.hpp>
 
 MenuState::MenuState(StateStack &stack, Context context)
 	: State(stack, context), mOptions(), mOptionIndex(0)
@@ -28,6 +30,13 @@ MenuState::MenuState(StateStack &stack, Context context)
 	centerOrigin(exitOption);
 	exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 30.f));
 	mOptions.push_back(exitOption);
+
+	sf::Text SettingOption;
+	SettingOption.setFont(font);
+    SettingOption.setString("Setting");
+	centerOrigin(SettingOption);
+    SettingOption.setPosition(exitOption.getPosition() + sf::Vector2f(0.f, 30.f));
+    mOptions.push_back(SettingOption);
 
 	updateOptionText();
 }
@@ -65,6 +74,11 @@ bool MenuState::handleEvent(const sf::Event &event)
 		{
 			// The exit option was chosen, by removing itself, the stack will be empty, and the game will know it is time to close.
 			requestStackPop();
+		}
+		else if(mOptionIndex == Setting)
+		{
+			requestStackPop();
+			requestStackPush(States::Setting);
 		}
 	}
 

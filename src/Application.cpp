@@ -2,10 +2,13 @@
 #include "Utility.hpp"
 #include "State.hpp"
 #include "StateIdentifiers.hpp"
+#include "SettingState.hpp"
 #include "TitleState.hpp"
 #include "GameState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
+
+#include<iostream>
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -16,7 +19,7 @@ Application::Application()
 
 	mFonts.load(Fonts::Main, "Assets/Fonts/Sansation.ttf");
 	mTextures.load(Textures::TitleScreen, "Assets/Images/TitleScreen.png");
-
+    mTextures.load(Textures::SettingBackground, "Assets/Images/SettingBackground.png");
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(10u);
@@ -99,4 +102,5 @@ void Application::registerStates()
 	mStateStack.registerState<MenuState>(States::Menu);
 	mStateStack.registerState<GameState>(States::Game);
 	mStateStack.registerState<PauseState>(States::Pause);
+    mStateStack.registerState<SettingState>(States::Setting);
 }

@@ -22,6 +22,7 @@ class MenuState : public State
 		{
 			Play,
 			Exit,
+			Setting,
 		};
 
 
