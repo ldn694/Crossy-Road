@@ -25,7 +25,7 @@ SettingState::SettingState(StateStack &stack,Context context)
 	SoundOption.setFont(font);
 	SoundOption.setString("Sound");
 	centerOrigin(SoundOption);
-	SoundOption.setPosition(context.window->getView().getSize().x / 2.f, 50.f);
+	SoundOption.setPosition(context.window->getView().getSize() / 2.f);
 	mOptions.push_back(SoundOption);
 
 	sf::Text MusicOption;
