@@ -32,7 +32,7 @@ class Application
 		sf::RenderWindow		mWindow;
 		TextureHolder			mTextures;
 	  	FontHolder				mFonts;
-		Player					mPlayer;
+		// Player					mPlayer;
 
 		StateStack				mStateStack;
 

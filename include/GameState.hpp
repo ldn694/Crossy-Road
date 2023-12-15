@@ -19,6 +19,6 @@ public:
 
 
 private:
+	Player				mPlayer;
 	World				mWorld;
-	Player& mPlayer;
 };
