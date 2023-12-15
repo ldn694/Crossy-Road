@@ -11,16 +11,7 @@
 GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 	: State(stack, stateID, context), mTexts(), mClickableList(context)
 {   
-    context.textures->load(Textures::GameStartBackground, "Assets/Images/GameStartBackground.png");
-    context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
-	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
-	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
-	context.textures->load(Textures::Button, "Assets/Images/Button.png");
-	context.textures->load(Textures::PressedButton, "Assets/Images/PressedButton.png");
-	context.textures->load(Textures::LeftArrowButton, "Assets/Images/LeftArrowButton.png");
-	context.textures->load(Textures::LeftHoveredArrowButton, "Assets/Images/LeftHoveredArrowButton.png");
-	context.textures->load(Textures::RightArrowButton, "Assets/Images/RightArrowButton.png");
-	context.textures->load(Textures::RightHoveredArrowButton, "Assets/Images/RightHoveredArrowButton.png");
+    loadTextures(context);
 	sf::Texture& texture = context.textures->get(Textures::GameStartBackground);
 	sf::Font& font = context.fonts->get(Fonts::Main);
 
@@ -149,7 +140,18 @@ void GameStartState::draw()
 		window.draw(text);
 	mClickableList.draw();
 }
-
+void GameStartState::loadTextures(Context context){
+	context.textures->load(Textures::GameStartBackground, "Assets/Images/GameStartBackground.png");
+    context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
+	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
+	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
+	context.textures->load(Textures::Button, "Assets/Images/Button.png");
+	context.textures->load(Textures::PressedButton, "Assets/Images/PressedButton.png");
+	context.textures->load(Textures::LeftArrowButton, "Assets/Images/LeftArrowButton.png");
+	context.textures->load(Textures::LeftHoveredArrowButton, "Assets/Images/LeftHoveredArrowButton.png");
+	context.textures->load(Textures::RightArrowButton, "Assets/Images/RightArrowButton.png");
+	context.textures->load(Textures::RightHoveredArrowButton, "Assets/Images/RightHoveredArrowButton.png");
+}
 bool GameStartState::update(sf::Time dt)
 {
 	mClickableList.update(dt);

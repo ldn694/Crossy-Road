@@ -17,6 +17,7 @@ public:
 	virtual bool			update(sf::Time dt);
 	virtual bool			handleEvent(const sf::Event& event);
 
+	void					loadTextures(Context context);
 
 
 private:
