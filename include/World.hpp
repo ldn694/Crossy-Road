@@ -7,6 +7,7 @@
 #include "Aircraft.hpp"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
+#include "Player.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -30,6 +31,7 @@ class World : private sf::NonCopyable
 		void								draw();
 		
 		CommandQueue&						getCommandQueue();
+		SceneNode&							getSceneGraph();
 
 
 	private:

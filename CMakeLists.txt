@@ -37,6 +37,7 @@ add_executable(CrossyRoad
     src/Button.cpp
     src/Choice.cpp
     src/GameStartState.cpp
+    src/Animation.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

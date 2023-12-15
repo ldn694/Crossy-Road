@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Category.hpp"
+#include "Command.hpp"
+#include "Foreach.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
@@ -9,6 +11,7 @@
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
 
 struct Command;
@@ -33,6 +36,10 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		void					onCommand(const Command& command, sf::Time dt);
 		virtual unsigned int	getCategory() const;
 
+		template <typename GameObject>
+		std::vector <GameObject*>		findChildrenByCategory(Category::Type category);
+		SceneNode*						getRoot();
+
 
 	private:
 		virtual void			updateCurrent(sf::Time dt);
@@ -47,3 +54,17 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		std::vector<Ptr>		mChildren;
 		SceneNode*				mParent;
 };
+
+template <typename GameObject>
+std::vector <GameObject*> SceneNode::findChildrenByCategory(Category::Type category)
+{
+	std::vector <GameObject*> result;
+	if (category > 0 && getCategory() == category)
+		result.push_back(derivedPtr<GameObject>(this));
+	for (Ptr& child : mChildren)
+	{
+		std::vector <GameObject*> childResult = child.get()->findChildrenByCategory<GameObject>(category);
+		result.insert(result.end(), childResult.begin(), childResult.end());
+	}
+	return result;
+}

@@ -12,7 +12,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-	: mWindow(sf::VideoMode(640, 480), "States", sf::Style::Close), mTextures(), mFonts(), mPlayer(), mStateStack(Context(mWindow, mTextures, mFonts, mPlayer)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+	: mWindow(sf::VideoMode(640, 480), "States", sf::Style::Close), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
 
@@ -39,7 +39,6 @@ void Application::run()
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
-
 			processInput();
 			update(TimePerFrame);
 

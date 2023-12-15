@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "SFML/System/Time.hpp"
 
 
 namespace sf
