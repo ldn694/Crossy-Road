@@ -6,6 +6,7 @@
 
 #include <functional>
 #include <cassert>
+#include <memory>
 
 
 class SceneNode;
@@ -29,4 +30,15 @@ std::function<void(SceneNode&, sf::Time)> derivedAction(Function fn)
 		// Downcast node and invoke function on it
 		fn(static_cast<GameObject&>(node), dt);
 	};
+}
+
+template <typename GameObject>
+GameObject* derivedPtr(SceneNode* node)
+{
+	assert(node != nullptr);
+
+	// Check if cast is safe
+	assert(dynamic_cast<GameObject*>(node) != nullptr);
+
+	return static_cast<GameObject*>(node);
 }

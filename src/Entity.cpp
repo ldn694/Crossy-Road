@@ -1,6 +1,7 @@
 #include "Entity.hpp"
 #include "Utility.hpp"
 #include "Animation.hpp"
+#include <iostream>
 
 void Entity::setVelocity(sf::Vector2f velocity)
 {

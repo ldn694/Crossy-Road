@@ -5,8 +5,8 @@
 GameState::GameState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 : State(stack, stateID, context)
 , mWorld(*context.window)
-, mPlayer(*context.player)
 {
+	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	std::cout << "GameState::GameState()\n";
 	std::cout << stateInfo.stringList[0] << "\n";
 }
@@ -16,13 +16,10 @@ void GameState::draw()
 	mWorld.draw();
 }
 
-bool GameState::update(sf::Time dt)
-{
+bool GameState::update(sf::Time dt) {
 	mWorld.update(dt);
-
 	CommandQueue& commands = mWorld.getCommandQueue();
 	mPlayer.handleRealtimeInput(commands);
-
 	return true;
 }
 

@@ -10,17 +10,20 @@ Textures::ID toTextureID(Aircraft::Type type)
 {
 	switch (type)
 	{
-		case Aircraft::Eagle:
-			return Textures::Eagle;
+	case Aircraft::Eagle:
+		return Textures::Eagle;
 
-		case Aircraft::Raptor:
-			return Textures::Raptor;
+	case Aircraft::AllyRaptor:
+		return Textures::Raptor;
+
+	case Aircraft::EnemyRaptor:
+		return Textures::Raptor;
 	}
 }
 
 Aircraft::Aircraft(Type type, const TextureHolder& textures)
-: mType(type)
-, mSprite(textures.get(toTextureID(type)))
+	: mType(type)
+	, mSprite(textures.get(toTextureID(type)))
 {
 	centerOrigin(mSprite);
 }
@@ -34,10 +37,13 @@ unsigned int Aircraft::getCategory() const
 {
 	switch (mType)
 	{
-		case Eagle:
-			return Category::PlayerAircraft;
+	case Eagle:
+		return Category::PlayerAircraft;
 
-		default:
-			return Category::EnemyAircraft;
+	case AllyRaptor:
+		return Category::AlliedAircraft;
+
+	default:
+		return Category::EnemyAircraft;
 	}
 }

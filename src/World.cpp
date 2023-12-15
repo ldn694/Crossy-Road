@@ -6,6 +6,11 @@
 #include <cmath>
 
 
+SceneNode& World::getSceneGraph()
+{
+	return mSceneGraph;
+}
+
 World::World(sf::RenderWindow& window)
 : mWindow(window)
 , mWorldView(window.getDefaultView())
@@ -14,6 +19,7 @@ World::World(sf::RenderWindow& window)
 , mSceneLayers()
 , mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f)
 , mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
+//, mScrollSpeed(-50.f)
 , mScrollSpeed(0.f)
 , mPlayerAircraft(nullptr)
 {
@@ -89,13 +95,17 @@ void World::buildScene()
 	mPlayerAircraft->setPosition(mSpawnPosition);
 	mSceneLayers[Air]->attachChild(std::move(leader));
 
-	std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::Raptor, mTextures));
-	leftEscort->setPosition(-80.f, 50.f);
-	mPlayerAircraft->attachChild(std::move(leftEscort));	
+	std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::AllyRaptor, mTextures));
+	// leftEscort->setPosition(-80.f, 50.f);
+	// mPlayerAircraft->attachChild(std::move(leftEscort));	
+	leftEscort->setPosition(mSpawnPosition.x - 80.f, mSpawnPosition.y + 50.f);
+	mSceneLayers[Air]->attachChild(std::move(leftEscort));
 
-	std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::Raptor, mTextures));
-	rightEscort->setPosition(80.f, 50.f);
-	mPlayerAircraft->attachChild(std::move(rightEscort));
+	std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::EnemyRaptor, mTextures));
+	// rightEscort->setPosition(80.f, 50.f);
+	// mPlayerAircraft->attachChild(std::move(rightEscort));
+	rightEscort->setPosition(mSpawnPosition.x + 80.f, mSpawnPosition.y + 50.f);
+	mSceneLayers[Air]->attachChild(std::move(rightEscort));
 
 	std::unique_ptr<Road> railways(new Railways(mTextures));
 	railways->setPosition(mSpawnPosition + sf::Vector2f(0.f, -50.f));

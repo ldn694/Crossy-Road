@@ -2,10 +2,12 @@
 #include "CommandQueue.hpp"
 #include "Aircraft.hpp"
 #include "Foreach.hpp"
+#include "Utility.hpp"
 
 #include <map>
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 
 struct AircraftMover
@@ -23,20 +25,48 @@ struct AircraftMover
 	sf::Vector2f velocity;
 };
 
-Player::Player()
+struct AirCraftTeleport
+{
+	AirCraftTeleport(sf::Time duration, sf::Vector2f offset = sf::Vector2f(0.f, 0.f))
+		: duration(duration)
+	{
+	}
+
+	void operator() (Aircraft& aircraft, sf::Time) const
+	{
+		auto playerAircrafts = aircraft.getRoot()->findChildrenByCategory<Aircraft>(Category::PlayerAircraft);
+		assertThrow(playerAircrafts.size() == 1, "playerAircrafts.size() != 1");
+		auto player = playerAircrafts[0];
+		aircraft.addDynamicAnimation(player, duration, offset);
+	}
+	sf::Time duration;
+	sf::Vector2f offset;
+};
+
+Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 {
 	// Set initial key bindings
 	mKeyBinding[sf::Keyboard::Left] = MoveLeft;
 	mKeyBinding[sf::Keyboard::Right] = MoveRight;
 	mKeyBinding[sf::Keyboard::Up] = MoveUp;
 	mKeyBinding[sf::Keyboard::Down] = MoveDown;
+	mKeyBinding[sf::Keyboard::U] = TeleAlly;
+	mKeyBinding[sf::Keyboard::I] = TeleEnemy;
+
+	mActionBinding[MoveLeft].category = Category::PlayerAircraft;
+	mActionBinding[MoveRight].category = Category::PlayerAircraft;
+	mActionBinding[MoveUp].category = Category::PlayerAircraft;
+	mActionBinding[MoveDown].category = Category::PlayerAircraft;
+	mActionBinding[TeleAlly].category = Category::AlliedAircraft;
+	mActionBinding[TeleEnemy].category = Category::EnemyAircraft;
+
 
 	// Set initial action bindings
 	initializeActions();	
 
 	// Assign all categories to player's aircraft
-	FOREACH(auto& pair, mActionBinding)
-		pair.second.category = Category::PlayerAircraft;
+	// FOREACH(auto& pair, mActionBinding)
+	// 	pair.second.category = Category::PlayerAircraft;
 }
 
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
@@ -89,12 +119,14 @@ sf::Keyboard::Key Player::getAssignedKey(Action action) const
 
 void Player::initializeActions()
 {
-	const float playerSpeed = 200.f;
+	const float playerSpeed = 1000.f;
 
 	mActionBinding[MoveLeft].action	 = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
 	mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
 	mActionBinding[MoveUp].action    = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
 	mActionBinding[MoveDown].action  = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
+	mActionBinding[TeleAlly].action  = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f)));
+	mActionBinding[TeleEnemy].action = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f)));
 }
 
 bool Player::isRealtimeAction(Action action)
