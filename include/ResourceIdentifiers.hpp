@@ -26,6 +26,10 @@ namespace Textures
 		LeftHoveredArrowButton,
 		RightArrowButton,
 		RightHoveredArrowButton,
+		Railways,
+		SRoad,
+		River,
+		Land,
 	};
 }
 

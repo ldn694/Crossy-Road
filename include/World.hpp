@@ -5,6 +5,10 @@
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
 #include "Aircraft.hpp"
+#include "Railways.hpp"
+#include "River.hpp"
+#include "SRoad.hpp"
+#include "Land.hpp"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
 
