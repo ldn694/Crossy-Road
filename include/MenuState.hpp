@@ -17,13 +17,21 @@ class MenuState : public State
 		virtual bool			handleEvent(const sf::Event& event);
 
 		void					updateOptionText();
+		enum ClickableID {
+			Button1,
+			Button2,
+			Play,
+			Load,
+			Set,
+			Score,
+			Exit,
+		};
 
 
 	private:
 		enum OptionNames
 		{
-			Play,
-			Exit,
+			
 		};
 
 
@@ -32,5 +40,7 @@ class MenuState : public State
 		ClickableList			mClickableList;
 		std::vector<sf::Text>	mOptions;
 		std::size_t				mOptionIndex;
+
+		int						page;
 
 };
