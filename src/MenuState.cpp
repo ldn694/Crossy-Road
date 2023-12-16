@@ -10,7 +10,6 @@
 MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context)
 {
-
 	sf::Texture &texture = context.textures->get(Textures::M2);
 	sf::Font &font = context.fonts->get(Fonts::T2);
 
@@ -25,7 +24,7 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	context.textures->load(Textures::Exit, "Assets/Images/Exit.PNG");
 	context.textures->load(Textures::Exit_, "Assets/Images/Exit_.PNG");
 
-		context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
+	context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
 	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
 	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
 
@@ -36,11 +35,31 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	/*
 	sf::Text playOption;
 	playOption.setFont(font);
-	playOption.setString("New Game");
+	playOption.setString("Play");
 	centerOrigin(playOption);
-	playOption.setPosition(context.window->getView().getSize() / 2.f - sf::Vector2f(0.f, 60.f));
-	
+	playOption.setPosition(context.window->getView().getSize() / 2.f);
 	mOptions.push_back(playOption);
+
+	sf::Text loadOption;
+	loadOption.setFont(font);
+	loadOption.setString("Load Game");
+	centerOrigin(loadOption);
+	loadOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 80.f));
+	mOptions.push_back(loadOption);
+
+	sf::Text scoreBoard;
+	scoreBoard.setFont(font);
+	scoreBoard.setString("Scoreboard");
+	centerOrigin(scoreBoard);
+	scoreBoard.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 160.f));
+	mOptions.push_back(scoreBoard);
+
+	sf::Text setting;
+	setting.setFont(font);
+	setting.setString("Setting");
+	centerOrigin(setting);
+	setting.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 240.f));
+	mOptions.push_back(setting);
 
 	sf::Text loadOption;
 	loadOption.setFont(font);
@@ -131,7 +150,14 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Exit, info);
 
-	updateOptionText();
+	info.floatList = {590, 340, 120, 70, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::Exit_, Textures::Exit };
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Exit, info);
+
 }
 
 void MenuState::draw()
@@ -163,6 +189,15 @@ bool MenuState::handleEvent(const sf::Event& event)
 				case MenuState::ClickableID::Play: {
 					requestStackPop();
 					requestStackPush(States::Game);
+					break;
+				}
+				case MenuState::ClickableID::Set: {
+					requestStackPush(States::Setting);
+					break;
+				}
+				case MenuState::ClickableID::Exit: {
+					requestStackPop();
+					break;
 				}
 			}
 		}
@@ -181,56 +216,6 @@ bool MenuState::handleEvent(const sf::Event& event)
 	if (event.type != sf::Event::KeyPressed)
 		return false;
 
-		
-		
-	if (event.key.code == sf::Keyboard::Return)
-	{
-		if (mOptionIndex == Play)
-		{
-			requestStackPop();
-			requestStackPush(States::Game);
-		}
-		else if (mOptionIndex == Exit)
-		{
-			// The exit option was chosen, by removing itself, the stack will be empty, and the game will know it is time to close.
-			requestStackPop();
-		}
-	}
-
-	else if (event.key.code == sf::Keyboard::Up)
-	{
-		// Decrement and wrap-around
-		if (mOptionIndex > 0)
-			mOptionIndex--;
-		else
-			mOptionIndex = mOptions.size() - 1;
-
-		updateOptionText();
-	}
-
-	else if (event.key.code == sf::Keyboard::Down)
-	{
-		// Increment and wrap-around
-		if (mOptionIndex < mOptions.size() - 1)
-			mOptionIndex++;
-		else
-			mOptionIndex = 0;
-
-		updateOptionText();
-	}
 
 	return true;
-}
-
-void MenuState::updateOptionText()
-{
-	if (mOptions.empty())
-		return;
-
-	// White all texts
-	FOREACH(sf::Text & text, mOptions)
-		text.setColor(sf::Color::White);
-
-	// Red the selected text
-	mOptions[mOptionIndex].setColor(sf::Color::Red);
 }

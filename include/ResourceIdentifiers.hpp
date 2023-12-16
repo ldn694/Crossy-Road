@@ -43,6 +43,8 @@ namespace Textures
 		SRoad,
 		River,
 		Land,
+		SettingBackground,
+
 	};
 }
 

@@ -3,7 +3,7 @@
 #include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
-
+#include <iostream>
 
 TitleState::TitleState(StateStack& stack, States::ID stateID, Context context, State::Info info)
 : State(stack, stateID, context)
@@ -48,8 +48,10 @@ bool TitleState::handleEvent(const sf::Event& event)
 {
 	// If any key is pressed, trigger the next screen
 	if (event.type == sf::Event::KeyPressed)
-	{
+	{	
+		std::cout << "WTF~~\n";
 		requestStackPop();
+		std::cout << "WTF!!\n";
 		requestStackPush(States::Menu);
 	}
 
