@@ -23,7 +23,8 @@ Textures::ID toTextureID(Aircraft::Type type)
 
 Aircraft::Aircraft(Type type, const TextureHolder& textures)
 	: mType(type)
-	, mSprite(textures.get(toTextureID(type)))
+	, mSprite(textures.get(toTextureID(type))),
+	Entity(sf::Vector2f(mSprite.getGlobalBounds().width, mSprite.getGlobalBounds().height))
 {
 	centerOrigin(mSprite);
 }
@@ -38,7 +39,7 @@ unsigned int Aircraft::getCategory() const
 	switch (mType)
 	{
 	case Eagle:
-		return Category::PlayerAircraft;
+		return Category::Player;
 
 	case AllyRaptor:
 		return Category::AlliedAircraft;
