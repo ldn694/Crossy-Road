@@ -9,14 +9,14 @@
 
 class MenuState : public State
 {
-	public:
-								MenuState(StateStack& stack, Context context);
+public:
+	MenuState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
 
-		virtual void			draw();
-		virtual bool			update(sf::Time dt);
-		virtual bool			handleEvent(const sf::Event& event);
+	virtual void			draw();
+	virtual bool			update(sf::Time dt);
+	virtual bool			handleEvent(const sf::Event& event);
 
-		void					updateOptionText();
+	void					updateOptionText();
 		enum ClickableID {
 			Button1,
 			Button2,
@@ -35,11 +35,11 @@ class MenuState : public State
 		};
 
 
-	private:
-		sf::Sprite				mBackgroundSprite;
-		ClickableList			mClickableList;
-		std::vector<sf::Text>	mOptions;
-		std::size_t				mOptionIndex;
+private:
+	sf::Sprite				mBackgroundSprite;
+	ClickableList			mClickableList;
+	std::vector<sf::Text>	mOptions;
+	std::size_t				mOptionIndex;
 
 		int						page;
 
