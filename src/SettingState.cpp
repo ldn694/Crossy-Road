@@ -82,7 +82,6 @@ bool SettingState::handleEvent(const sf::Event &event)
 		{
 			// The exit option was chosen, by removing itself, the stack will be empty, and the game will know it is time to close.
 			requestStackPop();
-			requestStackPush(States::Menu);
 		}
 	}
 
@@ -108,7 +107,7 @@ bool SettingState::handleEvent(const sf::Event &event)
 		updateOptionText();
 	}
 
-	return true;
+	return false;
 }
 
 void SettingState::updateOptionText()

@@ -2,6 +2,7 @@
 #include "Foreach.hpp"
 
 #include <cassert>
+#include <iostream>
 
 
 StateStack::StateStack(State::Context context)
@@ -73,6 +74,7 @@ State::Ptr StateStack::createState(States::ID stateID)
 
 void StateStack::applyPendingChanges()
 {
+
 	FOREACH(PendingChange change, mPendingList)
 	{
 		switch (change.action)
@@ -90,7 +92,7 @@ void StateStack::applyPendingChanges()
 				break;
 		}
 	}
-
+	
 	mPendingList.clear();
 }
 

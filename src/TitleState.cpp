@@ -3,7 +3,7 @@
 #include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
-
+#include <iostream>
 
 TitleState::TitleState(StateStack& stack, Context context)
 : State(stack, context)

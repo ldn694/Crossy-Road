@@ -7,6 +7,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <StateIdentifiers.hpp>
+#include <iostream>
 
 MenuState::MenuState(StateStack &stack, Context context)
 	: State(stack, context), mOptions(), mOptionIndex(0)
@@ -77,7 +78,6 @@ bool MenuState::handleEvent(const sf::Event &event)
 		}
 		else if(mOptionIndex == Setting)
 		{
-			requestStackPop();
 			requestStackPush(States::Setting);
 		}
 	}
