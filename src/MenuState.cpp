@@ -25,7 +25,10 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	context.textures->load(Textures::Exit, "Assets/Images/Exit.PNG");
 	context.textures->load(Textures::Exit_, "Assets/Images/Exit_.PNG");
 
-	
+		context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
+	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
+	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
+
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(0.55, 0.55);
 	
@@ -77,10 +80,10 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Button1, info);
 
-	info.floatList = { 500, 200, 70, 70, 10 };
+	info.floatList = { 500, 200, 120, 120, 10 };
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Button, Textures::PressedButton };
-	info.stringList = { "Button 1" };
+	info.stringList = { "GAME START" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Button2, info);

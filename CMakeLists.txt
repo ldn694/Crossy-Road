@@ -35,6 +35,14 @@ add_executable(CrossyRoad
     src/Clickable.cpp
     src/ClickableList.cpp
     src/Button.cpp
+    src/Choice.cpp
+    src/GameStartState.cpp
+    src/Animation.cpp
+    src/Road.cpp
+    src/Railways.cpp
+    src/River.cpp
+    src/SRoad.cpp
+    src/Land.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

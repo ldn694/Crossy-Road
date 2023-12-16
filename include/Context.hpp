@@ -7,10 +7,10 @@
 
 struct Context
 {
-                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player);
+                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts);
 
     sf::RenderWindow*	window;
     TextureHolder*		textures;
     FontHolder*			fonts;
-    Player*				player;
+    //Player*				player;
 };

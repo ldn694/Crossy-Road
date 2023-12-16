@@ -18,12 +18,14 @@ class Player
 			MoveRight,
 			MoveUp,
 			MoveDown,
+			TeleAlly, 
+			TeleEnemy,
 			ActionCount
 		};
 
 
 	public:
-								Player();
+								Player(SceneNode* sceneGraph = nullptr);
 
 		void					handleEvent(const sf::Event& event, CommandQueue& commands);
 		void					handleRealtimeInput(CommandQueue& commands);
@@ -38,6 +40,7 @@ class Player
 
 
 	private:
+		SceneNode*								mSceneGraph;
 		std::map<sf::Keyboard::Key, Action>		mKeyBinding;
 		std::map<Action, Command>				mActionBinding;
 };

@@ -30,7 +30,19 @@ namespace Textures
 		Score_,
 		Exit,
 		Exit_,
-		Dog
+		Dog,
+		Choice,
+		PressedChoice,
+		HoveredChoice,
+		GameStartBackground,
+		LeftArrowButton,
+		LeftHoveredArrowButton,
+		RightArrowButton,
+		RightHoveredArrowButton,
+		Railways,
+		SRoad,
+		River,
+		Land,
 	};
 }
 

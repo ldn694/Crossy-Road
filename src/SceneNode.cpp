@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <iostream>
 
 
 SceneNode::SceneNode()
@@ -85,8 +86,10 @@ sf::Transform SceneNode::getWorldTransform() const
 void SceneNode::onCommand(const Command& command, sf::Time dt)
 {
 	// Command current node, if category matches
-	if (command.category & getCategory())
+	if (command.category & getCategory()) {
 		command.action(*this, dt);
+	}
+	//std::cout << this->getCategory() << "\n";
 
 	// Command children
 	FOREACH(Ptr& child, mChildren)
@@ -96,4 +99,12 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 unsigned int SceneNode::getCategory() const
 {
 	return Category::Scene;
+}
+
+SceneNode* SceneNode::getRoot()
+{
+	if (mParent == nullptr)
+		return this;
+	else
+		return mParent->getRoot();
 }

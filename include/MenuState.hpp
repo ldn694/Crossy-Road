@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "Button.hpp"
+#include "Choice.hpp"
 #include "ClickableList.hpp"
 
 
@@ -40,6 +41,7 @@ private:
 	ClickableList			mClickableList;
 	std::vector<sf::Text>	mOptions;
 	std::size_t				mOptionIndex;
+	std::size_t				mChoiceIndex;
 
 		int						page;
 

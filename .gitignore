@@ -5,3 +5,5 @@ out
 .idea
 .vs
 .vscode
+.exe
+.dll
