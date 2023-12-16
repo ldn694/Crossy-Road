@@ -3,6 +3,17 @@
 #include "Animation.hpp"
 #include <iostream>
 
+Entity::Entity(sf::Vector2f hitboxSize)
+	: mVelocity(0.f, 0.f)
+	, mHitboxSize(hitboxSize)
+{
+}
+
+void Entity::setHitboxSize(sf::Vector2f hitboxSize)
+{
+	mHitboxSize = hitboxSize;
+}
+
 void Entity::setVelocity(sf::Vector2f velocity)
 {
 	mVelocity = velocity;

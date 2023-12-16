@@ -7,7 +7,10 @@ struct Animation;
 
 class Entity : public SceneNode
 {
+	protected:
+		void 						setHitboxSize(sf::Vector2f hitboxSize);
 	public:
+		explicit					Entity(sf::Vector2f hitboxSize = sf::Vector2f(0, 0));
 		void						setVelocity(sf::Vector2f velocity);
 		void						setVelocity(float vx, float vy);
 		void						accelerate(sf::Vector2f velocity);
