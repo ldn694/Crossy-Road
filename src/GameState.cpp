@@ -8,7 +8,6 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 {
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	std::cout << "GameState::GameState()\n";
-	std::cout << stateInfo.stringList[0] << "\n";
 }
 
 void GameState::draw()

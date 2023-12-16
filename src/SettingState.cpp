@@ -19,6 +19,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	sf::Font &font = context.fonts->get(Fonts::Main);
 
 	mBackgroundSprite.setTexture(texture);
+	mBackgroundSprite.setScale(1050.0f / mBackgroundSprite.getGlobalBounds().width, 600.0f / mBackgroundSprite.getGlobalBounds().height);
 
 	// A simple setting demonstration
 	sf::Text SoundOption;

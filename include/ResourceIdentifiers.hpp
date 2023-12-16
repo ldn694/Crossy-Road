@@ -55,7 +55,7 @@ namespace Fonts
 		Main,
 		Consolas,
 		T1,
-		T2,
+		T2
 	};
 }
 
