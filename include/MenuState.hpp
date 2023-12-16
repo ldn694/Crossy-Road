@@ -18,14 +18,22 @@ public:
 	virtual bool			handleEvent(const sf::Event& event);
 
 	void					updateOptionText();
+		enum ClickableID {
+			Button1,
+			Button2,
+			Play,
+			Load,
+			Set,
+			Score,
+			Exit,
+		};
 
 
-private:
-	enum OptionNames
-	{
-		Play,
-		Exit,
-	};
+	private:
+		enum OptionNames
+		{
+			
+		};
 
 
 private:
@@ -34,5 +42,7 @@ private:
 	std::vector<sf::Text>	mOptions;
 	std::size_t				mOptionIndex;
 	std::size_t				mChoiceIndex;
+
+		int						page;
 
 };
