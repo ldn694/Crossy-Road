@@ -23,8 +23,7 @@ Textures::ID toTextureID(Aircraft::Type type)
 
 Aircraft::Aircraft(Type type, const TextureHolder& textures)
 	: mType(type)
-	, mSprite(textures.get(toTextureID(type))),
-	Entity(sf::Vector2f(mSprite.getGlobalBounds().width, mSprite.getGlobalBounds().height))
+	, mSprite(textures.get(toTextureID(type)))
 {
 	centerOrigin(mSprite);
 }

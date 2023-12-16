@@ -16,8 +16,21 @@ namespace Textures
 		Raptor,
 		Desert,
 		TitleScreen,
+		M1,
+		M2,
 		Button,
 		PressedButton,
+		Play,
+		Play_,
+		Load,
+		Load_,
+		Set,
+		Set_,
+		Score,
+		Score_,
+		Exit,
+		Exit_,
+		Dog,
 		Choice,
 		PressedChoice,
 		HoveredChoice,
@@ -30,6 +43,8 @@ namespace Textures
 		SRoad,
 		River,
 		Land,
+		SettingBackground,
+
 	};
 }
 
@@ -38,6 +53,9 @@ namespace Fonts
 	enum ID
 	{
 		Main,
+		Consolas,
+		T1,
+		T2
 	};
 }
 

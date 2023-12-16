@@ -93,6 +93,7 @@ State::Ptr StateStack::createState(States::ID stateID, State::Info info)
 
 void StateStack::applyPendingChanges()
 {
+
 	FOREACH(PendingChange change, mPendingList)
 	{
 		switch (change.action)
@@ -114,7 +115,7 @@ void StateStack::applyPendingChanges()
 				break;
 		}
 	}
-
+	
 	mPendingList.clear();
 }
 

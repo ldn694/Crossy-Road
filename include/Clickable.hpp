@@ -9,6 +9,7 @@ class Clickable {
 public:
     enum Type {
         Button,
+        Slide,
         Choice
     };
     enum Action {

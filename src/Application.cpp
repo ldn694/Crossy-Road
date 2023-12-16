@@ -2,6 +2,7 @@
 #include "Utility.hpp"
 #include "State.hpp"
 #include "StateIdentifiers.hpp"
+#include "SettingState.hpp"
 #include "TitleState.hpp"
 #include "GameState.hpp"
 #include "GameStartState.hpp"
@@ -9,15 +10,22 @@
 #include "PauseState.hpp"
 #include <iostream>
 
+#include<iostream>
+
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-	: mWindow(sf::VideoMode(640, 480), "States", sf::Style::Close), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
 
 	mFonts.load(Fonts::Main, "Assets/Fonts/Sansation.ttf");
 	mTextures.load(Textures::TitleScreen, "Assets/Images/TitleScreen.png");
+    mTextures.load(Textures::SettingBackground, "Assets/Images/SettingBackground.png");
+	mFonts.load(Fonts::T1, "Assets/Fonts/Colo-Pro.otf");
+	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
+	mTextures.load(Textures::M1, "Assets/Images/M1.PNG");
+	mTextures.load(Textures::M2, "Assets/Images/M2.PNG");
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
@@ -101,4 +109,5 @@ void Application::registerStates()
 	mStateStack.registerState<GameState>(States::Game);
 	mStateStack.registerState<GameStartState>(States::GameStart);
 	mStateStack.registerState<PauseState>(States::Pause);
+    mStateStack.registerState<SettingState>(States::Setting);
 }

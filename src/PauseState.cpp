@@ -5,6 +5,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <iostream>
 
 
 PauseState::PauseState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)

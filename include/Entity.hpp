@@ -8,7 +8,6 @@ struct Animation;
 class Entity : public SceneNode
 {
 	public:
-									Entity(sf::Vector2f hitboxSize);
 		void						setVelocity(sf::Vector2f velocity);
 		void						setVelocity(float vx, float vy);
 		void						accelerate(sf::Vector2f velocity);
