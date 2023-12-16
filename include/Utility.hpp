@@ -2,6 +2,7 @@
 
 #include <string>
 #include "SFML/System/Time.hpp"
+#include <SFML/Graphics/Rect.hpp>
 
 
 namespace sf
@@ -17,6 +18,8 @@ std::string toString(const T& value);
 
 void centerOrigin(sf::Sprite& sprite);
 void centerOrigin(sf::Text& text);
+
+float intersection(sf::FloatRect rect1, sf::FloatRect rect2);
 
 void assertThrow(bool expression, std::string message);
 

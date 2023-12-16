@@ -59,7 +59,7 @@ template <typename GameObject>
 std::vector <GameObject*> SceneNode::findChildrenByCategory(Category::Type category)
 {
 	std::vector <GameObject*> result;
-	if (category > 0 && getCategory() == category)
+	if (category > 0 && getCategory() & category)
 		result.push_back(derivedPtr<GameObject>(this));
 	for (Ptr& child : mChildren)
 	{

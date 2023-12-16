@@ -15,7 +15,7 @@ public:
     };
     Road(Textures::ID ID, const TextureHolder& textures, Road::Type type);
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const = 0;
-    
+    sf::FloatRect getHitbox() const;
 
 protected:
     float WITDH_SIZE = 640;
