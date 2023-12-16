@@ -34,7 +34,7 @@ struct AirCraftTeleport
 
 	void operator() (Aircraft& aircraft, sf::Time) const
 	{
-		auto playerAircrafts = aircraft.getRoot()->findChildrenByCategory<Aircraft>(Category::PlayerAircraft);
+		auto playerAircrafts = aircraft.getRoot()->findChildrenByCategory<Aircraft>(Category::Player);
 		assertThrow(playerAircrafts.size() == 1, "playerAircrafts.size() != 1");
 		auto player = playerAircrafts[0];
 		aircraft.addDynamicAnimation(player, duration, offset);
@@ -53,10 +53,10 @@ Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 	mKeyBinding[sf::Keyboard::U] = TeleAlly;
 	mKeyBinding[sf::Keyboard::I] = TeleEnemy;
 
-	mActionBinding[MoveLeft].category = Category::PlayerAircraft;
-	mActionBinding[MoveRight].category = Category::PlayerAircraft;
-	mActionBinding[MoveUp].category = Category::PlayerAircraft;
-	mActionBinding[MoveDown].category = Category::PlayerAircraft;
+	mActionBinding[MoveLeft].category = Category::Player;
+	mActionBinding[MoveRight].category = Category::Player;
+	mActionBinding[MoveUp].category = Category::Player;
+	mActionBinding[MoveDown].category = Category::Player;
 	mActionBinding[TeleAlly].category = Category::AlliedAircraft;
 	mActionBinding[TeleEnemy].category = Category::EnemyAircraft;
 

@@ -27,4 +27,5 @@ class Entity : public SceneNode
 
 	private:
 		sf::Vector2f		mVelocity;
+		sf::Vector2f		mHitboxSize;
 };

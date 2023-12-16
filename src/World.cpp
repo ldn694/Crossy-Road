@@ -89,6 +89,22 @@ void World::buildScene()
 	backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
 	mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
 
+	std::unique_ptr<Road> railways(new Railways(mTextures));
+	railways->setPosition(mSpawnPosition + sf::Vector2f(0.f, -50.f));
+	mSceneLayers[Air]->attachChild(std::move(railways));
+
+	std::unique_ptr<Road> river(new River(mTextures));
+	river->setPosition(mSpawnPosition + sf::Vector2f(0.f, -100.f));
+	mSceneLayers[Air]->attachChild(std::move(river));
+
+	std::unique_ptr<Road> land(new Land(mTextures));
+	land->setPosition(mSpawnPosition + sf::Vector2f(0.f, +50.f));
+	mSceneLayers[Air]->attachChild(std::move(land));
+
+	std::unique_ptr<Road> sroad(new SRoad(mTextures));
+	sroad->setPosition(mSpawnPosition + sf::Vector2f(0.f, +100.f));
+	mSceneLayers[Air]->attachChild(std::move(sroad));
+
 	// Add player's aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(Aircraft::Eagle, mTextures));
 	mPlayerAircraft = leader.get();
@@ -106,22 +122,6 @@ void World::buildScene()
 	// mPlayerAircraft->attachChild(std::move(rightEscort));
 	rightEscort->setPosition(mSpawnPosition.x + 80.f, mSpawnPosition.y + 50.f);
 	mSceneLayers[Air]->attachChild(std::move(rightEscort));
-
-	std::unique_ptr<Road> railways(new Railways(mTextures));
-	railways->setPosition(mSpawnPosition + sf::Vector2f(0.f, -50.f));
-	mSceneLayers[Air]->attachChild(std::move(railways));
-
-	std::unique_ptr<Road> river(new River(mTextures));
-	river->setPosition(mSpawnPosition + sf::Vector2f(0.f, -100.f));
-	mSceneLayers[Air]->attachChild(std::move(river));
-
-	std::unique_ptr<Road> land(new Land(mTextures));
-	land->setPosition(mSpawnPosition + sf::Vector2f(0.f, +50.f));
-	mSceneLayers[Air]->attachChild(std::move(land));
-
-	std::unique_ptr<Road> sroad(new SRoad(mTextures));
-	sroad->setPosition(mSpawnPosition + sf::Vector2f(0.f, +100.f));
-	mSceneLayers[Air]->attachChild(std::move(sroad));
 
 
 }

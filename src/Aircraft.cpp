@@ -38,7 +38,7 @@ unsigned int Aircraft::getCategory() const
 	switch (mType)
 	{
 	case Eagle:
-		return Category::PlayerAircraft;
+		return Category::Player;
 
 	case AllyRaptor:
 		return Category::AlliedAircraft;

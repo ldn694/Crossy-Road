@@ -8,8 +8,11 @@ namespace Category
 	{
 		None				= 0,
 		Scene				= 1 << 0,
-		PlayerAircraft		= 1 << 1,
-		AlliedAircraft		= 1 << 2,
-		EnemyAircraft		= 1 << 3,
+		Player				= 1 << 1,
+		Safespot			= 1 << 2,
+		Obstacle			= 1 << 3,
+		Hostile				= 1 << 4,
+		AlliedAircraft		= 1 << 5,
+		EnemyAircraft		= 1 << 6,
 	};
 }
