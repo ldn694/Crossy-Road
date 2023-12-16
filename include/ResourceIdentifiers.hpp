@@ -17,6 +17,20 @@ namespace Textures
 		Desert,
 		TitleScreen,
 		SettingBackground,
+		Button,
+		PressedButton,
+		Choice,
+		PressedChoice,
+		HoveredChoice,
+		GameStartBackground,
+		LeftArrowButton,
+		LeftHoveredArrowButton,
+		RightArrowButton,
+		RightHoveredArrowButton,
+		Railways,
+		SRoad,
+		River,
+		Land,
 	};
 }
 

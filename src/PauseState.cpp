@@ -8,23 +8,23 @@
 #include <iostream>
 
 
-PauseState::PauseState(StateStack& stack, Context context)
-: State(stack, context)
-, mBackgroundSprite()
-, mPausedText()
-, mInstructionText()
+PauseState::PauseState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
+	: State(stack, stateID, context)
+	, mBackgroundSprite()
+	, mPausedText()
+	, mInstructionText()
 {
 	sf::Font& font = context.fonts->get(Fonts::Main);
 	sf::Vector2f viewSize = context.window->getView().getSize();
 
 	mPausedText.setFont(font);
-	mPausedText.setString("Game Paused");	
+	mPausedText.setString("Game Paused");
 	mPausedText.setCharacterSize(70);
 	centerOrigin(mPausedText);
 	mPausedText.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
 	mInstructionText.setFont(font);
-	mInstructionText.setString("(Press Backspace to return to the main menu)");	
+	mInstructionText.setString("(Press Backspace to return to the main menu)");
 	centerOrigin(mInstructionText);
 	mInstructionText.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y);
 }
@@ -57,6 +57,9 @@ bool PauseState::handleEvent(const sf::Event& event)
 	{
 		// Escape pressed, remove itself to return to the game
 		requestStackPop();
+		State::Info info;
+		info.stringList = { "Hello from PauseState to GameState" };
+		requestNotifyState(States::Game, info);
 	}
 
 	if (event.key.code == sf::Keyboard::BackSpace)
@@ -64,6 +67,9 @@ bool PauseState::handleEvent(const sf::Event& event)
 		// Escape pressed, remove itself to return to the game
 		requestStateClear();
 		requestStackPush(States::Menu);
+		State::Info info;
+		info.stringList = { "Hello from PauseState to MenuState" };
+		requestNotifyState(States::Menu, info);
 	}
 
 	return false;

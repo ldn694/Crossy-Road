@@ -9,11 +9,16 @@
 #include <StateIdentifiers.hpp>
 #include <iostream>
 
-MenuState::MenuState(StateStack &stack, Context context)
-	: State(stack, context), mOptions(), mOptionIndex(0)
+MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
+	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context)
 {
-	sf::Texture &texture = context.textures->get(Textures::TitleScreen);
-	sf::Font &font = context.fonts->get(Fonts::Main);
+	sf::Texture& texture = context.textures->get(Textures::TitleScreen);
+	sf::Font& font = context.fonts->get(Fonts::Main);
+	context.textures->load(Textures::Button, "Assets/Images/Button.png");
+	context.textures->load(Textures::PressedButton, "Assets/Images/PressedButton.png");
+	context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
+	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
+	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
 
 	mBackgroundSprite.setTexture(texture);
 
@@ -32,6 +37,41 @@ MenuState::MenuState(StateStack &stack, Context context)
 	exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 30.f));
 	mOptions.push_back(exitOption);
 
+	mClickableList.registerClickable<Button>(Clickable::Type::Button);
+	Clickable::Info info;
+	info.floatList = { 0, 0, 100, 100, 10 };
+	info.stringList = { "Button 0" };
+	info.status = Clickable::Status(true, true, true);
+	info.fontIDList = { Fonts::Main };
+	info.textureIDList = { Textures::Button, Textures::PressedButton };
+	info.colorList = { sf::Color::White };
+	mClickableList.addClickable(Clickable::Type::Button, 0, info);
+
+	info.floatList = { 500, 200, 120, 120, 10 };
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::Button, Textures::PressedButton };
+	info.stringList = { "GAME START" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::White };
+	mClickableList.addClickable(Clickable::Type::Button, 1, info);
+
+	mClickableList.registerClickable<Button>(Clickable::Type::Button);
+	info.floatList = { 0, 0, 100, 100, 10 };
+	info.stringList = { "Button 0" };
+	info.status = Clickable::Status(true, true, true);
+	info.fontIDList = { Fonts::Main };
+	info.textureIDList = { Textures::Button, Textures::PressedButton };
+	info.colorList = { sf::Color::White };
+	mClickableList.addClickable(Clickable::Type::Button, 0, info);
+
+	info.floatList = { 500, 200, 120, 120, 10 };
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::Button, Textures::PressedButton };
+	info.stringList = { "GAME START" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::White };
+	mClickableList.addClickable(Clickable::Type::Button, 1, info);
+
 	sf::Text SettingOption;
 	SettingOption.setFont(font);
     SettingOption.setString("Setting");
@@ -44,22 +84,52 @@ MenuState::MenuState(StateStack &stack, Context context)
 
 void MenuState::draw()
 {
-	sf::RenderWindow &window = *getContext().window;
+	sf::RenderWindow& window = *getContext().window;
 
 	window.setView(window.getDefaultView());
 	window.draw(mBackgroundSprite);
 
-	FOREACH(const sf::Text &text, mOptions)
-	window.draw(text);
+	FOREACH(const sf::Text & text, mOptions)
+		window.draw(text);
+	mClickableList.draw();
 }
 
-bool MenuState::update(sf::Time)
+bool MenuState::update(sf::Time dt)
 {
+	mClickableList.update(dt);
 	return true;
 }
 
-bool MenuState::handleEvent(const sf::Event &event)
+bool MenuState::handleEvent(const sf::Event& event)
 {
+	mClickableList.handleEvent(event);
+	while (mClickableList.pendingAnnouncement()) {
+		Clickable::Announcement announcement = mClickableList.popAnnouncement();
+		if (announcement.action == Clickable::LeftPressed) {
+			std::cout << "Left Clicked " << announcement.id << "\n";
+			if (announcement.id == 0){
+				requestStackPop();
+				State::Info info;
+				info.stringList = {"Start from clicking on " + std::to_string(announcement.id) + " button.\n"};
+				requestStackPush(States::Game, info);
+			} else{
+				requestStackPop();
+				State::Info info;
+				info.stringList = {"Start from clicking on " + std::to_string(announcement.id) + " button.\n"};
+				requestStackPush(States::GameStart, info);
+			}
+		}
+		else if (announcement.action == Clickable::RightPressed) {
+			std::cout << "Right Clicked " << announcement.id << "\n";
+		}
+	}
+	while (pendingNotification()) {
+		State::Info info = popNotification();
+		std::cout << info.stringList[0] << "\n";
+	}
+	if (event.type == sf::Event::MouseButtonPressed) {
+
+	}
 	// The demonstration menu logic
 	if (event.type != sf::Event::KeyPressed)
 		return false;
@@ -114,7 +184,7 @@ void MenuState::updateOptionText()
 
 	// White all texts
 	FOREACH(sf::Text & text, mOptions)
-	text.setColor(sf::Color::White);
+		text.setColor(sf::Color::White);
 
 	// Red the selected text
 	mOptions[mOptionIndex].setColor(sf::Color::Red);

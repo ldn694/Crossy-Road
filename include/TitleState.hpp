@@ -9,7 +9,7 @@
 class TitleState : public State
 {
 	public:
-							TitleState(StateStack& stack, Context context);
+							TitleState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
 
 		virtual void		draw();
 		virtual bool		update(sf::Time dt);

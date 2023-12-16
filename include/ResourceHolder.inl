@@ -1,7 +1,12 @@
-
+#include <iostream>
 template <typename Resource, typename Identifier>
 void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string& filename)
-{
+{	
+	auto found = mResourceMap.find(id);
+	if (found != mResourceMap.end()) {
+		std::cout << "ResourceHolder::load - Resource already loaded" << std::endl;
+		return;
+	}
 	// Create and load resource
 	std::unique_ptr<Resource> resource(new Resource());
 	if (!resource->loadFromFile(filename))
@@ -47,5 +52,5 @@ void ResourceHolder<Resource, Identifier>::insertResource(Identifier id, std::un
 {
 	// Insert and check success
 	auto inserted = mResourceMap.insert(std::make_pair(id, std::move(resource)));
-	assert(inserted.second);
+	//assert(inserted.second);
 }

@@ -1,28 +1,20 @@
 #include "State.hpp"
 #include "StateStack.hpp"
 
+State::Info::Info() {}
 
-State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player)
-: window(&window)
-, textures(&textures)
-, fonts(&fonts)
-, player(&player)
-{
-}
-
-State::State(StateStack& stack, Context context)
-: mStack(&stack)
-, mContext(context)
-{
-}
+State::State(StateStack& stack, States::ID stateID, Context context)
+	: mStack(&stack)
+	, mContext(context)
+	, mStateID(stateID) {}
 
 State::~State()
 {
 }
 
-void State::requestStackPush(States::ID stateID)
+void State::requestStackPush(States::ID stateID, State::Info info)
 {
-	mStack->pushState(stateID);
+	mStack->pushState(stateID, info);
 }
 
 void State::requestStackPop()
@@ -35,7 +27,22 @@ void State::requestStateClear()
 	mStack->clearStates();
 }
 
-State::Context State::getContext() const
+void State::requestNotifyState(States::ID stateID, State::Info info)
+{
+	mStack->notifyState(stateID, info);
+}
+
+bool State::pendingNotification()
+{
+	return mStack->pendingNotification(mStateID);
+}
+
+State::Info State::popNotification()
+{
+	return mStack->popNotification(mStateID);
+}
+
+Context State::getContext() const
 {
 	return mContext;
 }

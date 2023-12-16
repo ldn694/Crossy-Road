@@ -5,8 +5,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <iostream>
 
-TitleState::TitleState(StateStack& stack, Context context)
-: State(stack, context)
+TitleState::TitleState(StateStack& stack, States::ID stateID, Context context, State::Info info)
+: State(stack, stateID, context)
 , mText()
 , mShowText(true)
 , mTextEffectTime(sf::Time::Zero)

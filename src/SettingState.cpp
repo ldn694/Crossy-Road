@@ -11,8 +11,8 @@
 #include<iostream>
 #include<string>
 
-SettingState::SettingState(StateStack &stack,Context context)
-	: State(stack, context), mOptions(), mOptionIndex(0)
+SettingState::SettingState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
+	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context)
 {
 
 	sf::Texture &texture = context.textures->get(Textures::SettingBackground);

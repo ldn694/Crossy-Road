@@ -8,8 +8,7 @@
 
 class SettingState : public State{
     public:
-                                SettingState(StateStack &stack,Context context);
-
+                                SettingState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
 		virtual void			draw();
 		virtual bool			update(sf::Time dt);
 		virtual bool			handleEvent(const sf::Event& event);
@@ -26,5 +25,6 @@ class SettingState : public State{
         sf::Sprite				mBackgroundSprite;
 		std::vector<sf::Text>	mOptions;
 		std::size_t				mOptionIndex;
+        ClickableList           mClickableList;
 
 };
