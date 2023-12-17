@@ -3,7 +3,10 @@
 #include <map>
 #include "SceneNode.hpp"
 
+
 struct Animation;
+
+class FakeEntity;
 
 class Entity : public SceneNode
 {
@@ -26,15 +29,18 @@ class Entity : public SceneNode
 		void						addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset = sf::Vector2f(0, 0));
 		CollisionType				handleCollision();
 		void 						removeAnimation();
+		virtual sf::FloatRect		getHitbox() const = 0;
 									~Entity();
 
 
 	private:
 		Animation*					curAnimation = nullptr;
-		sf::Vector2f				mOriginPosition;
+		FakeEntity*					mOriginNode = nullptr;
 		virtual void				updateCurrent(sf::Time dt);
-		virtual sf::FloatRect		getHitbox() const = 0;
+		void 						setOriginNode();
+		void						resetOriginNode();
 
+	
 
 	private:
 		sf::Vector2f		mVelocity;

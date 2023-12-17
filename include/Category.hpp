@@ -12,7 +12,8 @@ namespace Category
 		Safespot			= 1 << 2,
 		Obstacle			= 1 << 3,
 		Hostile				= 1 << 4,
-		AlliedAircraft		= 1 << 5,
-		EnemyAircraft		= 1 << 6,
+		FakeEntity			= 1 << 5,
+		AlliedAircraft		= 1 << 6,
+		EnemyAircraft		= 1 << 7,
 	};
 }

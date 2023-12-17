@@ -2,11 +2,13 @@
 #include "Utility.hpp"
 #include "Animation.hpp"
 #include "GameStatus.hpp"
+#include "FakeEntity.hpp"
 #include <iostream>
+#include <vector>
 
 Entity::Entity() : mVelocity(0.f, 0.f)
 {
-	mOriginPosition = getWorldPosition();
+	mOriginNode = nullptr;
 }
 
 void Entity::setVelocity(sf::Vector2f velocity)
@@ -64,6 +66,12 @@ Entity::CollisionType Entity::handleCollision()
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
 			return CollisionType::DeathCollision;
 		}
+		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
+		for (auto obstacle : obstacles) {
+			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
+				return CollisionType::BlockedCollision;
+			}
+		}
 		return CollisionType::NoCollision;
 	}
 	if (mCategory & Category::Obstacle) {
@@ -72,6 +80,12 @@ Entity::CollisionType Entity::handleCollision()
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
 			return CollisionType::BlockedCollision;
 		}
+		auto hostiles = root->findChildrenByCategory<Entity>(Category::Hostile);
+		for (auto hostile : hostiles) {
+			if (intersection(getHitbox(), hostile->getHitbox()) > 0 && hostile != this) {
+				return CollisionType::BlockedCollision;
+			}
+		}
 		return CollisionType::NoCollision;
 	}
 }
@@ -79,24 +93,33 @@ Entity::CollisionType Entity::handleCollision()
 void Entity::updateCurrent(sf::Time dt)
 {
 	if (pendingAnimation()) {
-		sf::Vector2f animationOffset = curAnimation->getAnimationOffset(this, dt);
-		move(mVelocity * dt.asSeconds() + animationOffset);
+		auto animationStep = curAnimation->getAnimationStep(this, dt);
+		move(mVelocity * dt.asSeconds() + animationStep);
 		auto collisionType = handleCollision();
 		if (collisionType == CollisionType::DeathCollision) {
 			throw GameStatus::GAME_LOST;
 		}
 		else if (collisionType == CollisionType::BlockedCollision) {
-			move(-mVelocity * dt.asSeconds() - animationOffset);
+			move(-mVelocity * dt.asSeconds() - animationStep);
 			sf::Time duration = curAnimation->duration - curAnimation->elapsedTime;
 			removeAnimation();
-			addStaticAnimation(mOriginPosition, duration);
+			SceneNode* parent = getParent();
+			auto fakeEntities = parent->findDirectChildrenByCategory<Entity>(Category::FakeEntity);
+			Entity* thisFakeEntity = nullptr;
+			for (auto fakeEntity : fakeEntities) {
+				if (static_cast<FakeEntity*>(fakeEntity)->getOwner() == this) {
+					thisFakeEntity = fakeEntity;
+					break;
+				}
+			}
+			addDynamicAnimation(thisFakeEntity, duration);
 		}
 		if (curAnimation->elapsedTime >= curAnimation->duration) {
+			resetOriginNode();
 			removeAnimation();
 		}
 	}
 	else {
-		mOriginPosition = getWorldPosition();
 		move(mVelocity * dt.asSeconds());
 		auto collisionType = handleCollision();
 		if (collisionType == CollisionType::DeathCollision) {
@@ -119,14 +142,29 @@ void Entity::removeAnimation()
 	curAnimation = nullptr;
 }
 
+void Entity::resetOriginNode() {
+	if (mOriginNode != nullptr) {
+		SceneNode* parent = mOriginNode->getParent();
+		parent->requestDetach(mOriginNode);
+		mOriginNode = nullptr;
+	}
+}
+
+void Entity::setOriginNode() {
+	resetOriginNode();
+	std::unique_ptr<FakeEntity> originNode(new FakeEntity(this));
+	mOriginNode = originNode.get();
+	SceneNode* parent = getParent();
+	parent->requestAttach(std::move(originNode));
+	mOriginNode->setPosition(getPosition());
+}
+
 void Entity::addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration) {
 	if (pendingAnimation()) {
 		return;
 	}
-	std::cout << "Added new static animation\n";
-	std::cout << "Goal position: " << goalGlobalPosition.x << " " << goalGlobalPosition.y << "\n";
 	curAnimation = new StaticAnimation(goalGlobalPosition, duration);
-	mOriginPosition = getWorldPosition();
+	setOriginNode();
 }
 
 void Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset) {
@@ -134,7 +172,12 @@ void Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vect
 		return;
 	}
 	curAnimation = new DynamicAnimation(goalEntity, duration, offset);
-	mOriginPosition = getWorldPosition();
+	if (!(goalEntity->getCategory() & Category::FakeEntity)) {
+		setOriginNode();
+	}
+	else {
+		
+	}
 }
 
 Entity::~Entity() {

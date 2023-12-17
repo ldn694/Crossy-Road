@@ -76,7 +76,8 @@ void World::buildScene()
 		SceneNode::Ptr layer(new SceneNode());
 		mSceneLayers[i] = layer.get();
 
-		mSceneGraph.attachChild(std::move(layer));
+		//mSceneGraph.attachChild(std::move(layer));
+		mSceneGraph.requestAttach(std::move(layer));
 	}
 
 	// Prepare the tiled background
@@ -87,41 +88,49 @@ void World::buildScene()
 	// Add the background sprite to the scene
 	std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
 	backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
-	mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
+	//mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
+	mSceneLayers[Background]->requestAttach(std::move(backgroundSprite));
 
 	std::unique_ptr<Road> railways(new Railways(mTextures));
 	railways->setPosition(mSpawnPosition + sf::Vector2f(0.f, -50.f));
-	mSceneLayers[Air]->attachChild(std::move(railways));
+	//mSceneLayers[Air]->attachChild(std::move(railways));
+	mSceneLayers[Air]->requestAttach(std::move(railways));
 
 	std::unique_ptr<Road> river(new River(mTextures));
 	river->setPosition(mSpawnPosition + sf::Vector2f(0.f, -100.f));
-	mSceneLayers[Air]->attachChild(std::move(river));
+	//mSceneLayers[Air]->attachChild(std::move(river));
+	mSceneLayers[Air]->requestAttach(std::move(river));
 
 	std::unique_ptr<Road> land(new Land(mTextures));
 	land->setPosition(mSpawnPosition + sf::Vector2f(0.f, +50.f));
-	mSceneLayers[Air]->attachChild(std::move(land));
+	//mSceneLayers[Air]->attachChild(std::move(land));
+	mSceneLayers[Air]->requestAttach(std::move(land));
 
 	std::unique_ptr<Road> sroad(new SRoad(mTextures));
 	sroad->setPosition(mSpawnPosition + sf::Vector2f(0.f, +100.f));
-	mSceneLayers[Air]->attachChild(std::move(sroad));
+	//mSceneLayers[Air]->attachChild(std::move(sroad));
+	mSceneLayers[Air]->requestAttach(std::move(sroad));
 
 	// Add player's aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(Aircraft::Eagle, mTextures));
 	mPlayerAircraft = leader.get();
 	mPlayerAircraft->setPosition(mSpawnPosition);
-	mSceneLayers[Air]->attachChild(std::move(leader));
+	//mSceneLayers[Air]->attachChild(std::move(leader));
+	mSceneLayers[Air]->requestAttach(std::move(leader));
 
 	std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::AllyRaptor, mTextures));
 	// leftEscort->setPosition(-80.f, 50.f);
 	// mPlayerAircraft->attachChild(std::move(leftEscort));	
 	leftEscort->setPosition(mSpawnPosition.x - 80.f, mSpawnPosition.y + 50.f);
-	mSceneLayers[Air]->attachChild(std::move(leftEscort));
+	//mSceneLayers[Air]->attachChild(std::move(leftEscort));
+	mSceneLayers[Air]->requestAttach(std::move(leftEscort));
 
 	std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::EnemyRaptor, mTextures));
 	// rightEscort->setPosition(80.f, 50.f);
 	// mPlayerAircraft->attachChild(std::move(rightEscort));
 	rightEscort->setPosition(mSpawnPosition.x + 80.f, mSpawnPosition.y + 50.f);
-	mSceneLayers[Air]->attachChild(std::move(rightEscort));
+	//mSceneLayers[Air]->attachChild(std::move(rightEscort));
+	mSceneLayers[Air]->requestAttach(std::move(rightEscort));
 
 
 }

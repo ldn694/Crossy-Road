@@ -12,6 +12,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <queue>
 
 
 struct Command;
@@ -24,9 +25,11 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 
 	public:
 								SceneNode();
-
-		void					attachChild(Ptr child);
-		Ptr						detachChild(const SceneNode& node);
+		void				    detachChildren();
+		void					attachChildren();
+		void					requestDetach(SceneNode* node);
+		void					requestAttach(Ptr child);
+		
 		
 		void					update(sf::Time dt);
 
@@ -38,10 +41,16 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 
 		template <typename GameObject>
 		std::vector <GameObject*>		findChildrenByCategory(Category::Type category);
+		template <typename GameObject>
+		std::vector <GameObject*>		findDirectChildrenByCategory(Category::Type category);
 		SceneNode*						getRoot();
+		SceneNode*						getParent();
 
 
 	private:
+		Ptr						detachChild(const SceneNode& node);
+		void					attachChild(Ptr child);
+
 		virtual void			updateCurrent(sf::Time dt);
 		void					updateChildren(sf::Time dt);
 
@@ -51,8 +60,10 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 
 
 	private:
-		std::vector<Ptr>		mChildren;
-		SceneNode*				mParent;
+		std::vector<Ptr>			mChildren;
+		SceneNode*					mParent;
+		std::queue <SceneNode*>		mDetachQueue;
+		std::queue <SceneNode::Ptr> mAttachQueue;
 };
 
 template <typename GameObject>
@@ -65,6 +76,18 @@ std::vector <GameObject*> SceneNode::findChildrenByCategory(Category::Type categ
 	{
 		std::vector <GameObject*> childResult = child.get()->findChildrenByCategory<GameObject>(category);
 		result.insert(result.end(), childResult.begin(), childResult.end());
+	}
+	return result;
+}
+
+template <typename GameObject>
+std::vector <GameObject*> SceneNode::findDirectChildrenByCategory(Category::Type category)
+{
+	std::vector <GameObject*> result;
+	for (Ptr& child : mChildren)
+	{
+		if (category > 0 && child->getCategory() & category)
+			result.push_back(derivedPtr<GameObject>(child.get()));
 	}
 	return result;
 }
