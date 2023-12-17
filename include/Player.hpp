@@ -20,6 +20,8 @@ class Player
 			MoveDown,
 			TeleAlly, 
 			TeleEnemy,
+			TeleToAlly,
+			TeleToEnemy,
 			ActionCount
 		};
 

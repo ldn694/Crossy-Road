@@ -1,17 +1,14 @@
 #include "Entity.hpp"
 #include "Utility.hpp"
 #include "Animation.hpp"
+#include "GameStatus.hpp"
+#include "FakeEntity.hpp"
 #include <iostream>
+#include <vector>
 
-Entity::Entity(sf::Vector2f hitboxSize)
-	: mVelocity(0.f, 0.f)
-	, mHitboxSize(hitboxSize)
+Entity::Entity() : mVelocity(0.f, 0.f)
 {
-}
-
-void Entity::setHitboxSize(sf::Vector2f hitboxSize)
-{
-	mHitboxSize = hitboxSize;
+	mOriginNode = nullptr;
 }
 
 void Entity::setVelocity(sf::Vector2f velocity)
@@ -41,17 +38,96 @@ void Entity::accelerate(float vx, float vy)
 	mVelocity.y += vy;
 }
 
+Entity::CollisionType Entity::handleCollision()
+{
+	auto mCategory = getCategory();
+	if (!(mCategory & (Category::Hostile | Category::Obstacle | Category::Player))) {
+		return CollisionType::NoCollision;
+	}
+	if (mCategory & Category::Player) {
+		auto root = getRoot();
+		auto hostiles = root->findChildrenByCategory<Entity>(Category::Hostile);
+		for (auto hostile : hostiles) {
+			if (intersection(getHitbox(), hostile->getHitbox()) > 0 && hostile != this) {
+				return CollisionType::DeathCollision;
+			}
+		}
+		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
+		for (auto obstacle : obstacles) {
+			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
+				return CollisionType::BlockedCollision;
+			}
+		}
+		return CollisionType::NoCollision;
+	}
+	if (mCategory & Category::Hostile) {
+		auto root = getRoot();
+		auto player = root->findChildrenByCategory<Entity>(Category::Player)[0];
+		if (intersection(getHitbox(), player->getHitbox()) > 0) {
+			return CollisionType::DeathCollision;
+		}
+		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
+		for (auto obstacle : obstacles) {
+			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
+				return CollisionType::BlockedCollision;
+			}
+		}
+		return CollisionType::NoCollision;
+	}
+	if (mCategory & Category::Obstacle) {
+		auto root = getRoot();
+		auto player = root->findChildrenByCategory<Entity>(Category::Player)[0];
+		if (intersection(getHitbox(), player->getHitbox()) > 0) {
+			return CollisionType::BlockedCollision;
+		}
+		auto hostiles = root->findChildrenByCategory<Entity>(Category::Hostile);
+		for (auto hostile : hostiles) {
+			if (intersection(getHitbox(), hostile->getHitbox()) > 0 && hostile != this) {
+				return CollisionType::BlockedCollision;
+			}
+		}
+		return CollisionType::NoCollision;
+	}
+}
+
 void Entity::updateCurrent(sf::Time dt)
 {
 	if (pendingAnimation()) {
-		sf::Vector2f animationOffset = curAnimation->getAnimationOffset(this, dt);
-		move(mVelocity * dt.asSeconds() + animationOffset);
+		auto animationStep = curAnimation->getAnimationStep(this, dt);
+		move(mVelocity * dt.asSeconds() + animationStep);
+		auto collisionType = handleCollision();
+		if (collisionType == CollisionType::DeathCollision) {
+			throw GameStatus::GAME_LOST;
+		}
+		else if (collisionType == CollisionType::BlockedCollision) {
+			move(-mVelocity * dt.asSeconds() - animationStep);
+			sf::Time duration = curAnimation->duration - curAnimation->elapsedTime;
+			removeAnimation();
+			SceneNode* parent = getParent();
+			auto fakeEntities = parent->findDirectChildrenByCategory<Entity>(Category::FakeEntity);
+			Entity* thisFakeEntity = nullptr;
+			for (auto fakeEntity : fakeEntities) {
+				if (static_cast<FakeEntity*>(fakeEntity)->getOwner() == this) {
+					thisFakeEntity = fakeEntity;
+					break;
+				}
+			}
+			addDynamicAnimation(thisFakeEntity, duration);
+		}
 		if (curAnimation->elapsedTime >= curAnimation->duration) {
+			resetOriginNode();
 			removeAnimation();
 		}
 	}
 	else {
 		move(mVelocity * dt.asSeconds());
+		auto collisionType = handleCollision();
+		if (collisionType == CollisionType::DeathCollision) {
+			throw GameStatus::GAME_LOST;
+		}
+		else if (collisionType == CollisionType::BlockedCollision) {
+			move(-mVelocity * dt.asSeconds());
+		}
 	}
 }
 
@@ -66,11 +142,29 @@ void Entity::removeAnimation()
 	curAnimation = nullptr;
 }
 
+void Entity::resetOriginNode() {
+	if (mOriginNode != nullptr) {
+		SceneNode* parent = mOriginNode->getParent();
+		parent->requestDetach(mOriginNode);
+		mOriginNode = nullptr;
+	}
+}
+
+void Entity::setOriginNode() {
+	resetOriginNode();
+	std::unique_ptr<FakeEntity> originNode(new FakeEntity(this));
+	mOriginNode = originNode.get();
+	SceneNode* parent = getParent();
+	parent->requestAttach(std::move(originNode));
+	mOriginNode->setPosition(getPosition());
+}
+
 void Entity::addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration) {
 	if (pendingAnimation()) {
 		return;
 	}
 	curAnimation = new StaticAnimation(goalGlobalPosition, duration);
+	setOriginNode();
 }
 
 void Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset) {
@@ -78,6 +172,12 @@ void Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vect
 		return;
 	}
 	curAnimation = new DynamicAnimation(goalEntity, duration, offset);
+	if (!(goalEntity->getCategory() & Category::FakeEntity)) {
+		setOriginNode();
+	}
+	else {
+		
+	}
 }
 
 Entity::~Entity() {

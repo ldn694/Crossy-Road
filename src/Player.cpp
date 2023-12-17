@@ -25,9 +25,9 @@ struct AircraftMover
 	sf::Vector2f velocity;
 };
 
-struct AirCraftTeleport
+struct TeleportToAircraft
 {
-	AirCraftTeleport(sf::Time duration, sf::Vector2f offset = sf::Vector2f(0.f, 0.f))
+	TeleportToAircraft(sf::Time duration, sf::Vector2f offset = sf::Vector2f(0.f, 0.f))
 		: duration(duration)
 	{
 	}
@@ -43,6 +43,31 @@ struct AirCraftTeleport
 	sf::Vector2f offset;
 };
 
+struct AirCraftTeleport {
+	AirCraftTeleport(sf::Time duration, sf::Vector2f offset = sf::Vector2f(0.f, 0.f), bool toAlly = false)
+		: duration(duration), offset(offset), toAlly(toAlly)
+	{
+	}
+
+	void operator() (Aircraft& aircraft, sf::Time) const
+	{
+		if (toAlly) {
+			auto allyAircrafts = aircraft.getRoot()->findChildrenByCategory<Aircraft>(Category::AlliedAircraft);
+			assertThrow(allyAircrafts.size() == 1, "allyAircrafts.size() != 1");
+			auto ally = allyAircrafts[0];
+			aircraft.addDynamicAnimation(ally, duration, offset);
+		} else {
+			auto enemyAircrafts = aircraft.getRoot()->findChildrenByCategory<Aircraft>(Category::EnemyAircraft);
+			assertThrow(enemyAircrafts.size() == 1, "enemyAircrafts.size() != 1");
+			auto enemy = enemyAircrafts[0];
+			aircraft.addDynamicAnimation(enemy, duration, offset);
+		}
+	}
+	bool toAlly;
+	sf::Time duration;
+	sf::Vector2f offset;
+};
+
 Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 {
 	// Set initial key bindings
@@ -52,6 +77,8 @@ Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 	mKeyBinding[sf::Keyboard::Down] = MoveDown;
 	mKeyBinding[sf::Keyboard::U] = TeleAlly;
 	mKeyBinding[sf::Keyboard::I] = TeleEnemy;
+	mKeyBinding[sf::Keyboard::O] = TeleToAlly;
+	mKeyBinding[sf::Keyboard::P] = TeleToEnemy;
 
 	mActionBinding[MoveLeft].category = Category::Player;
 	mActionBinding[MoveRight].category = Category::Player;
@@ -59,6 +86,8 @@ Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 	mActionBinding[MoveDown].category = Category::Player;
 	mActionBinding[TeleAlly].category = Category::AlliedAircraft;
 	mActionBinding[TeleEnemy].category = Category::EnemyAircraft;
+	mActionBinding[TeleToAlly].category = Category::Player;
+	mActionBinding[TeleToEnemy].category = Category::Player;
 
 
 	// Set initial action bindings
@@ -119,14 +148,16 @@ sf::Keyboard::Key Player::getAssignedKey(Action action) const
 
 void Player::initializeActions()
 {
-	const float playerSpeed = 1000.f;
+	const float playerSpeed = 200.f;
 
 	mActionBinding[MoveLeft].action	 = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
 	mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
 	mActionBinding[MoveUp].action    = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
 	mActionBinding[MoveDown].action  = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
-	mActionBinding[TeleAlly].action  = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f)));
-	mActionBinding[TeleEnemy].action = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f)));
+	mActionBinding[TeleAlly].action  = derivedAction<Aircraft>(TeleportToAircraft(sf::seconds(1.f)));
+	mActionBinding[TeleEnemy].action = derivedAction<Aircraft>(TeleportToAircraft(sf::seconds(1.f)));
+	mActionBinding[TeleToAlly].action  = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f), sf::Vector2f(0.f, 0.f), true));
+	mActionBinding[TeleToEnemy].action = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f), sf::Vector2f(0.f, 0.f), false));
 }
 
 bool Player::isRealtimeAction(Action action)
