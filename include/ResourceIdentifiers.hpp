@@ -44,7 +44,31 @@ namespace Textures
 		River,
 		Land,
 		SettingBackground,
-
+		//Cat
+		CatUp,
+		CatDown,
+		CatLeft,
+		CatRight,
+		//Chicken
+		ChickenUp,
+		ChickenDown,
+		ChickenLeft,
+		ChickenRight,
+		//Fox
+		FoxUp,
+		FoxDown,
+		FoxLeft,
+		FoxRight,
+		//Pig
+		PigUp,
+		PigDown,
+		PigLeft,
+		PigRight,
+		//Zebra
+		ZebraUp,
+		ZebraDown,
+		ZebraLeft,
+		ZebraRight
 	};
 }
 

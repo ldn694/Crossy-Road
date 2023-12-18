@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include "CommandQueue.hpp"
 #include "Aircraft.hpp"
+#include "Animal.hpp"
 #include "Foreach.hpp"
 #include "Utility.hpp"
 
@@ -9,6 +10,19 @@
 #include <algorithm>
 #include <iostream>
 
+struct AnimalMove {
+	AnimalMove(Animal::Direction direction)
+		: direction(direction)
+	{
+	}
+
+	void operator() (Animal& animal, sf::Time) const
+	{
+		animal.move(direction);
+	}
+
+	Animal::Direction direction;
+};
 
 struct AircraftMover
 {
@@ -90,6 +104,7 @@ Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 	mActionBinding[TeleToEnemy].category = Category::Player;
 
 
+
 	// Set initial action bindings
 	initializeActions();	
 
@@ -150,10 +165,14 @@ void Player::initializeActions()
 {
 	const float playerSpeed = 200.f;
 
-	mActionBinding[MoveLeft].action	 = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
-	mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
-	mActionBinding[MoveUp].action    = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
-	mActionBinding[MoveDown].action  = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
+	// mActionBinding[MoveLeft].action	 = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
+	// mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
+	// mActionBinding[MoveUp].action    = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
+	// mActionBinding[MoveDown].action  = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
+	mActionBinding[MoveLeft].action	 = derivedAction<Animal>(AnimalMove(Animal::Direction::Left));
+	mActionBinding[MoveRight].action = derivedAction<Animal>(AnimalMove(Animal::Direction::Right));
+	mActionBinding[MoveUp].action    = derivedAction<Animal>(AnimalMove(Animal::Direction::Up));
+	mActionBinding[MoveDown].action  = derivedAction<Animal>(AnimalMove(Animal::Direction::Down));
 	mActionBinding[TeleAlly].action  = derivedAction<Aircraft>(TeleportToAircraft(sf::seconds(1.f)));
 	mActionBinding[TeleEnemy].action = derivedAction<Aircraft>(TeleportToAircraft(sf::seconds(1.f)));
 	mActionBinding[TeleToAlly].action  = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f), sf::Vector2f(0.f, 0.f), true));

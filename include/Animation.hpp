@@ -15,8 +15,8 @@ public:
 };
 
 struct StaticAnimation: Animation {
-	sf::Vector2f goalGlobalPosition;
-	StaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration);
+	sf::Vector2f offset;
+	StaticAnimation(sf::Vector2f offset, sf::Time duration);
 	sf::Vector2f getAnimationStep(Entity* startEntity, sf::Time dt);
 };
 

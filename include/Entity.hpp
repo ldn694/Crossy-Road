@@ -25,8 +25,8 @@ class Entity : public SceneNode
 		void						accelerate(float vx, float vy);
 		sf::Vector2f				getVelocity() const;
 		bool			    		pendingAnimation();
-		void						addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration);
-		void						addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset = sf::Vector2f(0, 0));
+		bool						addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration);
+		bool						addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset = sf::Vector2f(0, 0));
 		CollisionType				handleCollision();
 		void 						removeAnimation();
 		virtual sf::FloatRect		getHitbox() const = 0;

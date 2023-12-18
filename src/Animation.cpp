@@ -9,13 +9,12 @@ void Animation::updateTime(sf::Time dt) {
 	elapsedTime += dt;
 }
 
-StaticAnimation::StaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration) : Animation(duration), goalGlobalPosition(goalGlobalPosition) {}
+StaticAnimation::StaticAnimation(sf::Vector2f offset, sf::Time duration) : Animation(duration), offset(offset) {}
 
 sf::Vector2f StaticAnimation::getAnimationStep(Entity* startEntity, sf::Time dt) {
-	sf::Vector2f startGlobalPosition = startEntity->getWorldPosition();
-	sf::Vector2f staticOffset = goalGlobalPosition - startGlobalPosition;
 	dt = std::min(dt, duration - elapsedTime);
-	sf::Vector2f resOffset = staticOffset / (duration - elapsedTime).asSeconds() * dt.asSeconds();
+	sf::Vector2f resOffset = offset / (duration - elapsedTime).asSeconds() * dt.asSeconds();
+	offset -= resOffset;
 	updateTime(dt);
 	return resOffset;
 }

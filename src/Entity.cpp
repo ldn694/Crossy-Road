@@ -159,17 +159,17 @@ void Entity::setOriginNode() {
 	mOriginNode->setPosition(getPosition());
 }
 
-void Entity::addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration) {
+bool Entity::addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration) {
 	if (pendingAnimation()) {
-		return;
+		return false;
 	}
 	curAnimation = new StaticAnimation(goalGlobalPosition, duration);
 	setOriginNode();
 }
 
-void Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset) {
+bool Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset) {
 	if (pendingAnimation()) {
-		return;
+		return false;
 	}
 	curAnimation = new DynamicAnimation(goalEntity, duration, offset);
 	if (!(goalEntity->getCategory() & Category::FakeEntity)) {

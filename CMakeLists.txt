@@ -45,6 +45,7 @@ add_executable(CrossyRoad
     src/SRoad.cpp
     src/Land.cpp
     src/FakeEntity.cpp
+    src/Animal.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
