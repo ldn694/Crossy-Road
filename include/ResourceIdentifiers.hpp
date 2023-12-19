@@ -56,6 +56,16 @@ namespace Textures
 		SelectLeftHovered,
 		SelectRight,
 		SelectRightHovered,
+		TypeBox,
+		TypeBoxHovered,
+		TypeBoxInput,
+		//Character
+		Cat,
+		Chicken,
+		Fox,
+		Pig,
+		Lion,
+		//
 		Railways,
 		SRoad,
 		River,
@@ -97,7 +107,8 @@ namespace Fonts
 		Main,
 		Consolas,
 		T1,
-		T2
+		T2,
+		Bungee,
 	};
 }
 
