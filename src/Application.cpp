@@ -22,7 +22,7 @@ Application::Application()
 	mFonts.load(Fonts::T1, "Assets/Fonts/Colo-Pro.otf");
 	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
 	mTextures.load(Textures::M1, "Assets/Images/M1.PNG");
-	mTextures.load(Textures::M2, "Assets/Images/M2.PNG");
+	mTextures.load(Textures::M2, "Assets/Images/ForMenu/M2.PNG");
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
