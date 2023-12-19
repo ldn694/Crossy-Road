@@ -41,4 +41,5 @@ private:
 	ClickableList			mClickableList;
 	std::vector<sf::Text>	mTexts;
 	std::size_t				mChoicePlayerIndex, mChoiceDifficultyIndex;
+	sf::RectangleShape		mBackground;
 };

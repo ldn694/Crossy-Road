@@ -12,10 +12,12 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	: State(stack, stateID, context), mTexts(), mClickableList(context)
 {   
     loadTextures(context);
-	sf::Texture& texture = context.textures->get(Textures::GameStartBackground);
-	sf::Font& font = context.fonts->get(Fonts::Main);
 
-	mBackgroundSprite.setTexture(texture);
+	sf::Font& font = context.fonts->get(Fonts::Main);
+	mBackground.setPosition(0, 0);
+	mBackground.setSize(sf::Vector2f(context.window->getView().getSize().x, context.window->getView().getSize().y));
+	mBackground.setFillColor(sf::Color(196,199,215));
+	
 
 	//Title
 	sf::Text TitleText;
@@ -33,19 +35,19 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	Clickable::Info info;
 
     //Back button
-	info.floatList = { 0, 0, 100, 100, 10 };
-	info.stringList = { "Back" };
+	info.floatList = { 10, 10, 100, 100, 10 };
+	info.stringList = { "" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
-	info.textureIDList = { Textures::Button, Textures::PressedButton };
+	info.textureIDList = { Textures::Quit, Textures::QuitHovered };
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Back, info);
 
     //Play button
-	info.floatList = { 510, 380, 100, 100, 10 };
+	info.floatList = { 1080 - 150, 600 - 100, 75, 75, 10 };
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::Button, Textures::PressedButton };
-	info.stringList = { "Play" };
+	info.textureIDList = { Textures::Next, Textures::NextHovered };
+	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Play, info);
@@ -53,7 +55,7 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	//Right arrow button
 	info.floatList = { 300, 300, 50, 50, 10 };
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::RightArrowButton, Textures::RightHoveredArrowButton };
+	info.textureIDList = { Textures::SelectRight, Textures::SelectRightHovered };
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -62,7 +64,7 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	//Left arrow button
 	info.floatList = { 200, 300, 50, 50, 10 };
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::LeftArrowButton, Textures::LeftHoveredArrowButton };
+	info.textureIDList = { Textures::SelectLeft, Textures::SelectLeftHovered };
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -71,32 +73,26 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
     //Choice setting
 	mClickableList.registerClickable<Choice>(Clickable::Type::Choice);
     //Difficulty choice
-    for (int i=0; i < 4; i++){
-        std::string s;
+    for (int i=0; i < 3; i++){
         std::size_t idOfButton;
         switch (i){
             case 0:
-                s = "Easy";
                 idOfButton = ButtonNames::Easy;
+				info.textureIDList = { Textures::EasyChoice, Textures::EasyHoveredChoice, Textures::EasyPressedChoice };
                 break;
             case 1:
-                s = "Medium";
                 idOfButton = ButtonNames::Medium;
+				info.textureIDList = { Textures::MediumChoice, Textures::MediumHoveredChoice, Textures::MediumPressedChoice };
                 break;
             case 2:
-                s = "Hard";
                 idOfButton = ButtonNames::Hard;
-                break;
-            case 3:
-                s = "Extreme";
-                idOfButton = ButtonNames::Extreme;
+				info.textureIDList = { Textures::HardChoice, Textures::HardHoveredChoice, Textures::HardPressedChoice };
                 break;
         }
-        info.floatList = { 500, 60.f + 80.f * i, 80, 80, 10 };
-        info.stringList = { s };
+        info.floatList = { 1080 - 380, 140.f + 110.f * i, 225, 90, 10 };
+        info.stringList = { "" };
         info.status = Clickable::Status(true, true, true);
         info.fontIDList = { Fonts::Main };
-        info.textureIDList = { Textures::Choice, Textures::HoveredChoice, Textures::PressedChoice };
         info.colorList = { sf::Color::White };
         mClickableList.addClickable(Clickable::Type::Choice, idOfButton, info);
     }
@@ -105,23 +101,22 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 
     //Choice of character
     for (int i=0; i < 2; i++){
-        std::string s;
         std::size_t idOfButton;
         switch (i){
             case 0:
-                s = "1P";
                 idOfButton = ButtonNames::OnePlayer;
+				info.textureIDList = { Textures::OnePlayerChoice, Textures::OnePlayerHoveredChoice, Textures::OnePlayerPressedChoice };
                 break;
             case 1:
-                s = "2P";
                 idOfButton = ButtonNames::TwoPlayer;
+				info.textureIDList = { Textures::TwoPlayer, Textures::TwoPlayerHoveredChoice, Textures::TwoPlayerPressedChoice };
                 break;
         }
-        info.floatList = { 540 + 50.f * i, 5, 50, 50, 20 };
-        info.stringList = { s };
+        info.floatList = { 1080 - 380 + 114.f * i, 5, 113, 113, 20 };
+        info.stringList = { "" };
         info.status = Clickable::Status(true, true, true);
         info.fontIDList = { Fonts::Main };
-        info.textureIDList = { Textures::Choice, Textures::HoveredChoice, Textures::PressedChoice };
+        
         info.colorList = { sf::Color::White };
         mClickableList.addClickable(Clickable::Type::Choice, idOfButton, info);
     }
@@ -134,23 +129,37 @@ void GameStartState::draw()
 	sf::RenderWindow& window = *getContext().window;
 
 	window.setView(window.getDefaultView());
-	window.draw(mBackgroundSprite);
-
-	FOREACH(const sf::Text & text, mTexts)
-		window.draw(text);
+	window.draw(mBackground);
+	/*FOREACH(const sf::Text & text, mTexts)
+		window.draw(text);*/
 	mClickableList.draw();
 }
 void GameStartState::loadTextures(Context context){
-	context.textures->load(Textures::GameStartBackground, "Assets/Images/GameStartBackground.png");
-    context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
-	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
-	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
-	context.textures->load(Textures::Button, "Assets/Images/Button.png");
-	context.textures->load(Textures::PressedButton, "Assets/Images/PressedButton.png");
-	context.textures->load(Textures::LeftArrowButton, "Assets/Images/LeftArrowButton.png");
-	context.textures->load(Textures::LeftHoveredArrowButton, "Assets/Images/LeftHoveredArrowButton.png");
-	context.textures->load(Textures::RightArrowButton, "Assets/Images/RightArrowButton.png");
-	context.textures->load(Textures::RightHoveredArrowButton, "Assets/Images/RightHoveredArrowButton.png");
+	context.textures->load(Textures::GameStartBackground, "Assets/Images/ForSetupGameStart/background/GameStartBackground.png");
+    context.textures->load(Textures::EasyChoice, "Assets/Images/ForSetupGameStart/mode/easy.png");
+	context.textures->load(Textures::EasyPressedChoice, "Assets/Images/ForSetupGameStart/mode/easy_selected.png");
+	context.textures->load(Textures::EasyHoveredChoice, "Assets/Images/ForSetupGameStart/mode/easy_hover.png");
+	context.textures->load(Textures::MediumChoice, "Assets/Images/ForSetupGameStart/mode/medium.png");
+	context.textures->load(Textures::MediumPressedChoice, "Assets/Images/ForSetupGameStart/mode/medium_selected.png");
+	context.textures->load(Textures::MediumHoveredChoice, "Assets/Images/ForSetupGameStart/mode/medium_hover.png");
+	context.textures->load(Textures::HardChoice, "Assets/Images/ForSetupGameStart/mode/hard.png");
+	context.textures->load(Textures::HardPressedChoice, "Assets/Images/ForSetupGameStart/mode/hard_selected.png");
+	context.textures->load(Textures::HardHoveredChoice, "Assets/Images/ForSetupGameStart/mode/hard_hover.png");
+	context.textures->load(Textures::OnePlayerChoice, "Assets/Images/ForSetupGameStart/player/1P.png");
+	context.textures->load(Textures::OnePlayerPressedChoice, "Assets/Images/ForSetupGameStart/player/1P_click.png");
+	context.textures->load(Textures::OnePlayerHoveredChoice, "Assets/Images/ForSetupGameStart/player/1P_hover.png");
+	context.textures->load(Textures::TwoPlayer, "Assets/Images/ForSetupGameStart/player/2P.png");
+	context.textures->load(Textures::TwoPlayerPressedChoice, "Assets/Images/ForSetupGameStart/player/2P_click.png");
+	context.textures->load(Textures::TwoPlayerHoveredChoice, "Assets/Images/ForSetupGameStart/player/2P_hover.png");
+	context.textures->load(Textures::Quit, "Assets/Images/ForSetupGameStart/quit/quit.png");
+	context.textures->load(Textures::QuitHovered, "Assets/Images/ForSetupGameStart/quit/quit_hover.png");
+	context.textures->load(Textures::Next, "Assets/Images/ForSetupGameStart/next/next.png");
+	context.textures->load(Textures::NextHovered, "Assets/Images/ForSetupGameStart/next/next_hover.png");
+	context.textures->load(Textures::SelectLeft, "Assets/Images/ForSetupGameStart/select/select_left.png");
+	context.textures->load(Textures::SelectLeftHovered, "Assets/Images/ForSetupGameStart/select/select_left_hover.png");
+	context.textures->load(Textures::SelectRight, "Assets/Images/ForSetupGameStart/select/select_right.png");
+	context.textures->load(Textures::SelectRightHovered, "Assets/Images/ForSetupGameStart/select/select_right_hover.png");
+
 }
 bool GameStartState::update(sf::Time dt)
 {
@@ -168,12 +177,10 @@ bool GameStartState::handleEvent(const sf::Event& event)
             if (announcement.id == ButtonNames::Play){
                 requestStackPop();
                 State::Info info;
-                info.stringList = {"Start from clicking on " + std::to_string(announcement.id) + " button.\n"};
                 requestStackPush(States::Game, info);
             } else if (announcement.id == ButtonNames::Back){
                 requestStackPop();
                 State::Info info;
-                info.stringList = {"Back to main from click " + std::to_string(announcement.id) + " button.\n"};
                 requestStackPush(States::Menu, info);
             } else if (announcement.id == ButtonNames::OnePlayer || announcement.id == ButtonNames::TwoPlayer){
                 mClickableList.setClickable(mChoicePlayerIndex, true);
@@ -201,41 +208,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 	// The demonstration menu logic
 	if (event.type != sf::Event::KeyPressed)
 		return false;
-	/*if (event.key.code == sf::Keyboard::Return)
-	{
-		if (mOptionIndex == Play)
-		{
-			requestStackPop();
-			requestStackPush(States::Game);
-		}
-		else if (mOptionIndex == Exit)
-		{
-			// The exit option was chosen, by removing itself, the stack will be empty, and the game will know it is time to close.
-			requestStackPop();
-		}
-	}
 
-	else if (event.key.code == sf::Keyboard::Up)
-	{
-		// Decrement and wrap-around
-		if (mOptionIndex > 0)
-			mOptionIndex--;
-		else
-			mOptionIndex = mOptions.size() - 1;
-
-		updateOptionText();
-	}
-
-	else if (event.key.code == sf::Keyboard::Down)
-	{
-		// Increment and wrap-around
-		if (mOptionIndex < mOptions.size() - 1)
-			mOptionIndex++;
-		else
-			mOptionIndex = 0;
-
-		updateOptionText();
-	}*/
 
 	return true;
 }

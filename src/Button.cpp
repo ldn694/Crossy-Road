@@ -31,9 +31,11 @@ bool Button::isInside(sf::Vector2f position) {
 void Button::draw() {
     if (mStatus.isHoverable()) {
         mSprite.setTexture(mContext.textures->get(isHovering ? mTextureID[1] : mTextureID[0]));
+
     }
     else {
         mSprite.setTexture(mContext.textures->get(mTextureID[0]));
+        
     }
     mContext.window->draw(mSprite);
     mContext.window->draw(mText);
