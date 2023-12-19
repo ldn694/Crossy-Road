@@ -3,7 +3,7 @@
 #include "ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-River::River(const TextureHolder& textures) : Road(Textures::River, textures, Road::Type::River){
+River::River(const TextureHolder& textures) : Road(Textures::River, textures, Road::Type::River, Zone::Safety::Unsafe){
 }
 void River::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {

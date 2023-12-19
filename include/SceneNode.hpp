@@ -45,6 +45,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		std::vector <GameObject*>		findDirectChildrenByCategory(Category::Type category);
 		SceneNode*						getRoot();
 		SceneNode*						getParent();
+		int						countChildren() const;
 
 
 	private:

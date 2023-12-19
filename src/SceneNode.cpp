@@ -146,3 +146,11 @@ SceneNode* SceneNode::getRoot()
 	else
 		return mParent->getRoot();
 }
+
+int SceneNode::countChildren() const
+{
+	int res = mChildren.size();
+	FOREACH(const Ptr& child, mChildren)
+		res += child->countChildren();
+	return res;
+}

@@ -44,6 +44,7 @@ namespace Textures
 		River,
 		Land,
 		SettingBackground,
+		Rock1,
 		//Cat
 		CatUp,
 		CatDown,
