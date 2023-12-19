@@ -12,16 +12,16 @@ SceneNode& World::getSceneGraph()
 }
 
 World::World(sf::RenderWindow& window)
-: mWindow(window)
-, mWorldView(window.getDefaultView())
-, mTextures() 
-, mSceneGraph()
-, mSceneLayers()
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f)
-, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
-//, mScrollSpeed(-50.f)
-, mScrollSpeed(0.f)
-, mPlayerAnimal(nullptr)
+	: mWindow(window)
+	, mWorldView(window.getDefaultView())
+	, mTextures()
+	, mSceneGraph()
+	, mSceneLayers()
+	, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, mWorldView.getSize().y)
+	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
+	//, mScrollSpeed(-50.f)
+	, mScrollSpeed(0.f)
+	, mPlayerAnimal(nullptr)
 {
 	loadTextures();
 	buildScene();
@@ -33,7 +33,7 @@ World::World(sf::RenderWindow& window)
 void World::update(sf::Time dt)
 {
 	// Scroll the world, reset player velocity
-	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());	
+	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
 	mPlayerAnimal->setVelocity(0.f, 0.f);
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
@@ -42,6 +42,7 @@ void World::update(sf::Time dt)
 	adaptPlayerVelocity();
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt);
+	//std::cout << mSceneGraph.countChildren() << "\n";
 	adaptPlayerPosition();
 }
 
@@ -88,58 +89,36 @@ void World::buildScene()
 	sf::IntRect textureRect(mWorldBounds);
 	texture.setRepeated(true);
 
-	// Add the background sprite to the scene
-	std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
-	backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
-	//mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
-	mSceneLayers[Background]->requestAttach(std::move(backgroundSprite));
+	// // Add the background sprite to the scene
+	// std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
+	// backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
+	// //mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
+	// mSceneLayers[Background]->requestAttach(std::move(backgroundSprite));
 
-	std::unique_ptr<Road> railways(new Railways(mTextures));
-	railways->setPosition(mSpawnPosition + sf::Vector2f(0.f, -50.f));
-	//mSceneLayers[Air]->attachChild(std::move(railways));
-	mSceneLayers[Air]->requestAttach(std::move(railways));
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(1)));
+	roadList->setPosition(mSpawnPosition.x, mWorldView.getSize().y - 25.f);
+	std::cout << "RoadList position: " << roadList->getWorldPosition().x << ", " << roadList->getWorldPosition().y << std::endl;
+	mSceneLayers[Road]->requestAttach(std::move(roadList));
 
-	std::unique_ptr<Road> river(new River(mTextures));
-	river->setPosition(mSpawnPosition + sf::Vector2f(0.f, -100.f));
-	//mSceneLayers[Air]->attachChild(std::move(river));
-	mSceneLayers[Air]->requestAttach(std::move(river));
-
-	std::unique_ptr<Road> land(new Land(mTextures));
-	land->setPosition(mSpawnPosition + sf::Vector2f(0.f, +50.f));
-	//mSceneLayers[Air]->attachChild(std::move(land));
-	mSceneLayers[Air]->requestAttach(std::move(land));
-
-	std::unique_ptr<Road> sroad(new SRoad(mTextures));
-	sroad->setPosition(mSpawnPosition + sf::Vector2f(0.f, +100.f));
-	//mSceneLayers[Air]->attachChild(std::move(sroad));
-	mSceneLayers[Air]->requestAttach(std::move(sroad));
-
-	// // Add player's aircraft
-	// std::unique_ptr<Aircraft> leader(new Aircraft(Aircraft::Eagle, mTextures));
-	// mPlayerAircraft = leader.get();
-	// mPlayerAircraft->setPosition(mSpawnPosition);
-	// //mSceneLayers[Air]->attachChild(std::move(leader));
-	// mSceneLayers[Air]->requestAttach(std::move(leader));
-	
 	std::unique_ptr<Animal> animal(new Animal(Animal::Cat, mTextures));
 	mPlayerAnimal = animal.get();
 	mPlayerAnimal->setPosition(mSpawnPosition);
 	mSceneLayers[Air]->requestAttach(std::move(animal));
 
 
-	std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::AllyRaptor, mTextures));
-	// leftEscort->setPosition(-80.f, 50.f);
-	// mPlayerAircraft->attachChild(std::move(leftEscort));	
-	leftEscort->setPosition(mSpawnPosition.x - 80.f, mSpawnPosition.y + 200.f);
-	//mSceneLayers[Air]->attachChild(std::move(leftEscort));
-	mSceneLayers[Air]->requestAttach(std::move(leftEscort));
+	// std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::AllyRaptor, mTextures));
+	// // leftEscort->setPosition(-80.f, 50.f);
+	// // mPlayerAircraft->attachChild(std::move(leftEscort));	
+	// leftEscort->setPosition(mSpawnPosition.x - 80.f, mSpawnPosition.y + 200.f);
+	// //mSceneLayers[Air]->attachChild(std::move(leftEscort));
+	// mSceneLayers[Air]->requestAttach(std::move(leftEscort));
 
-	std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::EnemyRaptor, mTextures));
-	// rightEscort->setPosition(80.f, 50.f);
-	// mPlayerAircraft->attachChild(std::move(rightEscort));
-	rightEscort->setPosition(mSpawnPosition.x + 80.f, mSpawnPosition.y + 200.f);
-	//mSceneLayers[Air]->attachChild(std::move(rightEscort));
-	mSceneLayers[Air]->requestAttach(std::move(rightEscort));
+	// std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::EnemyRaptor, mTextures));
+	// // rightEscort->setPosition(80.f, 50.f);
+	// // mPlayerAircraft->attachChild(std::move(rightEscort));
+	// rightEscort->setPosition(mSpawnPosition.x + 80.f, mSpawnPosition.y + 200.f);
+	// //mSceneLayers[Air]->attachChild(std::move(rightEscort));
+	// mSceneLayers[Air]->requestAttach(std::move(rightEscort));
 
 
 }

@@ -9,11 +9,12 @@ namespace Category
 		None				= 0,
 		Scene				= 1 << 0,
 		Player				= 1 << 1,
-		Safespot			= 1 << 2,
+		FakeEntity			= 1 << 2,
 		Obstacle			= 1 << 3,
 		Hostile				= 1 << 4,
-		FakeEntity			= 1 << 5,
-		AlliedAircraft		= 1 << 6,
-		EnemyAircraft		= 1 << 7,
+		SafeZone			= 1 << 5,
+		DeadZone			= 1 << 6,
+		AlliedAircraft		= 1 << 7,
+		EnemyAircraft		= 1 << 8,
 	};
 }

@@ -18,8 +18,12 @@ std::string toString(const T& value);
 
 void centerOrigin(sf::Sprite& sprite);
 void centerOrigin(sf::Text& text);
+void setSize(sf::Sprite& sprite, float width, float height);
+void setSize(sf::Sprite& sprite, sf::Vector2f size);
+
 
 float intersection(sf::FloatRect rect1, sf::FloatRect rect2);
+float squaredDistance(sf::Vector2f v1, sf::Vector2f v2);
 
 void assertThrow(bool expression, std::string message);
 
