@@ -31,11 +31,11 @@ sf::FloatRect Road::getHitbox() const
 
 Entity* Road::nearestZone(sf::Vector2f position, Zone::Safety safety)
 {
-    float minDistance = std::numeric_limits<float>::max();
+    float minDistance = 10000.0f;
     Zone* nearest = nullptr;
     for (auto& zone : mZones) {
         float distance = squaredDistance(zone->getWorldPosition(), position);
-        if (distance < minDistance && zone->getSafety() == safety) {
+        if ((nearest == nullptr || distance < minDistance) && zone->getSafety() == safety) {
             minDistance = distance;
             nearest = zone;
         }
