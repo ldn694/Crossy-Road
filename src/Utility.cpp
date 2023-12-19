@@ -22,6 +22,8 @@ void centerOrigin(sf::Text& text)
 
 void setSize(sf::Sprite& sprite, float width, float height)
 {
+	sf::Vector2u textureSize = sprite.getTexture()->getSize();
+	sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
 	sf::FloatRect bounds = sprite.getLocalBounds();
 	sprite.setScale(width / bounds.width, height / bounds.height);
 }
