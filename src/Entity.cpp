@@ -62,7 +62,9 @@ Entity::CollisionType Entity::handleCollision()
 	}
 	if (mCategory & Category::Hostile) {
 		auto root = getRoot();
-		auto player = root->findChildrenByCategory<Entity>(Category::Player)[0];
+		auto players = root->findChildrenByCategory<Entity>(Category::Player);
+		if (players.empty()) return CollisionType::NoCollision;
+		auto player = players[0];
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
 			return CollisionType::DeathCollision;
 		}
@@ -76,7 +78,9 @@ Entity::CollisionType Entity::handleCollision()
 	}
 	if (mCategory & Category::Obstacle) {
 		auto root = getRoot();
-		auto player = root->findChildrenByCategory<Entity>(Category::Player)[0];
+		auto players = root->findChildrenByCategory<Entity>(Category::Player);
+		if (players.empty()) return CollisionType::NoCollision;
+		auto player = players[0];
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
 			return CollisionType::BlockedCollision;
 		}
@@ -178,7 +182,7 @@ bool Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vect
 		setOriginNode();
 	}
 	else {
-		
+
 	}
 	return true;
 }

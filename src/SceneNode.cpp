@@ -45,8 +45,9 @@ void SceneNode::updateCurrent(sf::Time)
 
 void SceneNode::updateChildren(sf::Time dt)
 {
-	FOREACH(Ptr& child, mChildren)
+	FOREACH(Ptr& child, mChildren) {
 		child->update(dt);
+	}
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
