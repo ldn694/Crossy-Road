@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 
 Textures::ID toTextureID(Aircraft::Type type)
@@ -31,6 +32,19 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures)
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);
+	//draw hitbox
+	sf::FloatRect rect = getHitbox();
+	sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
+	shape.setFillColor(sf::Color::Transparent);
+	shape.setOutlineColor(sf::Color::Red);
+	shape.setOutlineThickness(1);
+	shape.setPosition(rect.left, rect.top);
+	target.draw(shape);
+}
+
+sf::FloatRect Aircraft::getHitbox() const
+{
+	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
 unsigned int Aircraft::getCategory() const
@@ -38,12 +52,12 @@ unsigned int Aircraft::getCategory() const
 	switch (mType)
 	{
 	case Eagle:
-		return Category::PlayerAircraft;
+		return Category::Player;
 
 	case AllyRaptor:
-		return Category::AlliedAircraft;
+		return Category::AlliedAircraft | Category::Obstacle;
 
 	default:
-		return Category::EnemyAircraft;
+		return Category::EnemyAircraft | Category::Hostile;
 	}
 }

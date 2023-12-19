@@ -43,6 +43,33 @@ namespace Textures
 		SRoad,
 		River,
 		Land,
+		SettingBackground,
+		Rock1,
+		//Cat
+		CatUp,
+		CatDown,
+		CatLeft,
+		CatRight,
+		//Chicken
+		ChickenUp,
+		ChickenDown,
+		ChickenLeft,
+		ChickenRight,
+		//Fox
+		FoxUp,
+		FoxDown,
+		FoxLeft,
+		FoxRight,
+		//Pig
+		PigUp,
+		PigDown,
+		PigLeft,
+		PigRight,
+		//Zebra
+		ZebraUp,
+		ZebraDown,
+		ZebraLeft,
+		ZebraRight
 	};
 }
 

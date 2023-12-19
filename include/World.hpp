@@ -5,6 +5,7 @@
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
 #include "Aircraft.hpp"
+#include "Animal.hpp"
 #include "Railways.hpp"
 #include "River.hpp"
 #include "SRoad.hpp"
@@ -12,6 +13,7 @@
 #include "CommandQueue.hpp"
 #include "Command.hpp"
 #include "Player.hpp"
+#include "RoadList.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -49,6 +51,7 @@ class World : private sf::NonCopyable
 		enum Layer
 		{
 			Background,
+			Road,
 			Air,
 			LayerCount
 		};
@@ -66,5 +69,6 @@ class World : private sf::NonCopyable
 		sf::FloatRect						mWorldBounds;
 		sf::Vector2f						mSpawnPosition;
 		float								mScrollSpeed;
-		Aircraft*							mPlayerAircraft;
+		//Aircraft*							mPlayerAircraft;
+		Animal*								mPlayerAnimal;
 };

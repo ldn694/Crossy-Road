@@ -32,6 +32,8 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 
 void SceneNode::update(sf::Time dt)
 {
+	detachChildren();
+	attachChildren();
 	updateCurrent(dt);
 	updateChildren(dt);
 }
@@ -92,8 +94,44 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 	//std::cout << this->getCategory() << "\n";
 
 	// Command children
-	FOREACH(Ptr& child, mChildren)
-		child->onCommand(command, dt);
+	FOREACH(Ptr& child, mChildren) {
+		if (child.get()) {
+			child->onCommand(command, dt);
+		}
+	}
+}
+
+void SceneNode::requestDetach(SceneNode* node)
+{
+	mDetachQueue.push(node);
+}
+
+void SceneNode::detachChildren()
+{
+	while (!mDetachQueue.empty()) {
+		SceneNode* child = mDetachQueue.front();
+		mDetachQueue.pop();
+		detachChild(*child);
+	}
+}
+
+void SceneNode::requestAttach(Ptr child)
+{
+	mAttachQueue.push(std::move(child));
+}
+
+void SceneNode::attachChildren()
+{
+	while (!mAttachQueue.empty()) {
+		Ptr child = std::move(mAttachQueue.front());
+		mAttachQueue.pop();
+		attachChild(std::move(child));
+	}
+}
+
+SceneNode* SceneNode::getParent()
+{
+	return mParent;
 }
 
 unsigned int SceneNode::getCategory() const
@@ -107,4 +145,12 @@ SceneNode* SceneNode::getRoot()
 		return this;
 	else
 		return mParent->getRoot();
+}
+
+int SceneNode::countChildren() const
+{
+	int res = mChildren.size();
+	FOREACH(const Ptr& child, mChildren)
+		res += child->countChildren();
+	return res;
 }

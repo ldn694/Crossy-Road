@@ -7,6 +7,5 @@ private:
 public:
     Railways(const TextureHolder& textures);
     void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-    
 };
 

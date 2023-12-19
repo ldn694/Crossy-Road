@@ -10,7 +10,6 @@
 MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context)
 {
-
 	sf::Texture &texture = context.textures->get(Textures::M2);
 	sf::Font &font = context.fonts->get(Fonts::T2);
 
@@ -76,7 +75,14 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Exit, info);
 
-	updateOptionText();
+	info.floatList = {590, 340, 120, 70, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::Exit, Textures::Exit_};
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Exit, info);
+
 }
 
 void MenuState::draw()
@@ -108,6 +114,15 @@ bool MenuState::handleEvent(const sf::Event& event)
 				case MenuState::ClickableID::Play: {
 					requestStackPop();
 					requestStackPush(States::Game);
+					break;
+				}
+				case MenuState::ClickableID::Set: {
+					requestStackPush(States::Setting);
+					break;
+				}
+				case MenuState::ClickableID::Exit: {
+					requestStackPop();
+					break;
 				}
 			}
 		}
@@ -126,56 +141,6 @@ bool MenuState::handleEvent(const sf::Event& event)
 	if (event.type != sf::Event::KeyPressed)
 		return false;
 
-		
-		
-	if (event.key.code == sf::Keyboard::Return)
-	{
-		if (mOptionIndex == Play)
-		{
-			requestStackPop();
-			requestStackPush(States::Game);
-		}
-		else if (mOptionIndex == Exit)
-		{
-			// The exit option was chosen, by removing itself, the stack will be empty, and the game will know it is time to close.
-			requestStackPop();
-		}
-	}
-
-	else if (event.key.code == sf::Keyboard::Up)
-	{
-		// Decrement and wrap-around
-		if (mOptionIndex > 0)
-			mOptionIndex--;
-		else
-			mOptionIndex = mOptions.size() - 1;
-
-		updateOptionText();
-	}
-
-	else if (event.key.code == sf::Keyboard::Down)
-	{
-		// Increment and wrap-around
-		if (mOptionIndex < mOptions.size() - 1)
-			mOptionIndex++;
-		else
-			mOptionIndex = 0;
-
-		updateOptionText();
-	}
 
 	return true;
-}
-
-void MenuState::updateOptionText()
-{
-	if (mOptions.empty())
-		return;
-
-	// White all texts
-	FOREACH(sf::Text & text, mOptions)
-		text.setColor(sf::Color::White);
-
-	// Red the selected text
-	mOptions[mOptionIndex].setColor(sf::Color::Red);
 }
