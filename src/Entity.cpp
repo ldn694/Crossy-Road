@@ -165,6 +165,7 @@ bool Entity::addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time durati
 	}
 	curAnimation = new StaticAnimation(goalGlobalPosition, duration);
 	setOriginNode();
+	return true;
 }
 
 bool Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset) {
@@ -178,6 +179,7 @@ bool Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vect
 	else {
 		
 	}
+	return true;
 }
 
 Entity::~Entity() {
