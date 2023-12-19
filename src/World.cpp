@@ -70,6 +70,7 @@ void World::loadTextures()
 	mTextures.load(Textures::River, "Assets/Images/River.png");
 	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
 	mTextures.load(Textures::Land, "Assets/Images/Land.png");
+	mTextures.load(Textures::Rock1, "Assets/Images/Rock1.png");
 }
 
 void World::buildScene()

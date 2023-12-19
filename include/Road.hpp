@@ -29,12 +29,15 @@ public:
     Entity*         nearestZone(sf::Vector2f position, Zone::Safety safety);
     template <typename T>
     T*              addZone(std::unique_ptr<T> zone);
+    template <typename T>
+    T*              addEntity(std::unique_ptr<T> zone);
 
 protected:
     sf::Sprite                 mSprite;
     Road::Type                 mType;
     Zone::Safety               mSafety;
     std::vector<Zone*>         mZones;
+    std::vector<Entity*>       mEntities;
 };
 
 template <typename T>
@@ -42,4 +45,11 @@ T* Road::addZone(std::unique_ptr<T> zone)
 {
     mZones.push_back(zone.get());
     requestAttach(std::move(zone));
+}
+
+template <typename T>
+T* Road::addEntity(std::unique_ptr<T> entity)
+{
+    mEntities.push_back(entity.get());
+    requestAttach(std::move(entity));
 }
