@@ -13,16 +13,18 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	sf::Texture &texture = context.textures->get(Textures::M2);
 	sf::Font &font = context.fonts->get(Fonts::T2);
 
-	context.textures->load(Textures::Play, "Assets/Images/Play.PNG");
-	context.textures->load(Textures::Play_, "Assets/Images/Play_.PNG");
-	context.textures->load(Textures::Load, "Assets/Images/Load.PNG");
-	context.textures->load(Textures::Load_, "Assets/Images/Load_.PNG");
-	context.textures->load(Textures::Score, "Assets/Images/Score.PNG");
-	context.textures->load(Textures::Score_, "Assets/Images/Score_.PNG");
-	context.textures->load(Textures::Set, "Assets/Images/Setting.PNG");
-	context.textures->load(Textures::Set_, "Assets/Images/Setting_.PNG");
-	context.textures->load(Textures::Exit, "Assets/Images/Exit.PNG");
-	context.textures->load(Textures::Exit_, "Assets/Images/Exit_.PNG");
+	std::string path = "Assets/Images/ForMenu/";
+
+	context.textures->load(Textures::Play, path + "newgame.png");
+	context.textures->load(Textures::Play_, path + "newgame_hover.png");
+	context.textures->load(Textures::Load, path + "continue.png");
+	context.textures->load(Textures::Load_, path + "continue_hover.png");
+	context.textures->load(Textures::Score, path + "scoreboard.png");
+	context.textures->load(Textures::Score_, path + "scoreboard_hover.png");
+	context.textures->load(Textures::Set, path + "setting.png");
+	context.textures->load(Textures::Set_, path + "setting_hover.png");
+	context.textures->load(Textures::Exit, path + "exit.png");
+	context.textures->load(Textures::Exit_, path + "exit_hover.png");
 
 	context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
 	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
@@ -31,110 +33,33 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(0.55, 0.55);
 	
-	// A simple menu demonstration
-	/*
-	sf::Text playOption;
-	playOption.setFont(font);
-	playOption.setString("Play");
-	centerOrigin(playOption);
-	playOption.setPosition(context.window->getView().getSize() / 2.f);
-	mOptions.push_back(playOption);
-
-	sf::Text loadOption;
-	loadOption.setFont(font);
-	loadOption.setString("Load Game");
-	centerOrigin(loadOption);
-	loadOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 80.f));
-	mOptions.push_back(loadOption);
-
-	sf::Text scoreBoard;
-	scoreBoard.setFont(font);
-	scoreBoard.setString("Scoreboard");
-	centerOrigin(scoreBoard);
-	scoreBoard.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 160.f));
-	mOptions.push_back(scoreBoard);
-
-	sf::Text setting;
-	setting.setFont(font);
-	setting.setString("Setting");
-	centerOrigin(setting);
-	setting.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 240.f));
-	mOptions.push_back(setting);
-
-	sf::Text loadOption;
-	loadOption.setFont(font);
-	loadOption.setString("Load Game");
-	centerOrigin(loadOption);
-	loadOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 80.f));
-	mOptions.push_back(loadOption);
-
-	sf::Text scoreBoard;
-	scoreBoard.setFont(font);
-	scoreBoard.setString("Scoreboard");
-	centerOrigin(scoreBoard);
-	scoreBoard.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 160.f));
-	mOptions.push_back(scoreBoard);
-
-	sf::Text setting;
-	setting.setFont(font);
-	setting.setString("Setting");
-	centerOrigin(setting);
-	setting.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 240.f));
-	mOptions.push_back(setting);
-
-	sf::Text exitOption;
-	exitOption.setFont(font);
-	exitOption.setString("Exit");
-	centerOrigin(exitOption);
-	exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 320.f));
-	mOptions.push_back(exitOption);
-
 	mClickableList.registerClickable<Button>(Clickable::Type::Button);
 	Clickable::Info info;
-	info.floatList = { 0, 0, 100, 100, 10 };
-	info.stringList = { "Button 0" };
-	info.status = Clickable::Status(true, true, true);
-	info.fontIDList = { Fonts::Main };
-	info.textureIDList = { Textures::Button, Textures::PressedButton };
-	info.colorList = { sf::Color::White };
-	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Button1, info);
-
-	info.floatList = { 500, 200, 120, 120, 10 };
-	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::Button, Textures::PressedButton };
-	info.stringList = { "GAME START" };
-	info.fontIDList = { Fonts::Main };
-	info.colorList = { sf::Color::Black };
-	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Button2, info);
-	*/
-
-	mClickableList.registerClickable<Button>(Clickable::Type::Button);
-	Clickable::Info info;
-	info.floatList = { 255, 240, 220, 70, 15 };				//toa do (x,y, +x, +y, scale/10)
-	info.status = Clickable::Status(true, true, true);      //cac trang thai duoc cho phep cua button					
-	info.textureIDList = { Textures::Play_, Textures::Play};	//cac nut
+	info.floatList = { 165, 230, 300, 100, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.status = Clickable::Status(true, true, true);          //cac trang thai duoc cho phep cua button					
+	info.textureIDList = { Textures::Play, Textures::Play_};	//cac nut
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Play, info);
 
-	info.floatList = {260, 340, 220, 70, 15};
+	info.floatList = {580, 230, 320, 100, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::Load_, Textures::Load };
+	info.textureIDList = { Textures::Load, Textures::Load_};
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Load, info);
 
-	info.floatList = {260, 440, 240, 70, 15};
+	info.floatList = {160, 320, 320, 100, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::Score_, Textures::Score };
+	info.textureIDList = { Textures::Score, Textures::Score_};
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Score, info);
 
-	info.floatList = {580, 240, 220, 70, 15};
+	info.floatList = {575, 320, 320, 100, 15};
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Set, Textures::Set_};
 	info.stringList = { "" };
@@ -142,9 +67,9 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Set, info);
 
-	info.floatList = {590, 340, 120, 70, 15};
+	info.floatList = {420, 480, 220, 95, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::Exit_, Textures::Exit };
+	info.textureIDList = { Textures::Exit, Textures::Exit_};
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -152,7 +77,7 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 
 	info.floatList = {590, 340, 120, 70, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::Exit_, Textures::Exit };
+	info.textureIDList = { Textures::Exit, Textures::Exit_};
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };

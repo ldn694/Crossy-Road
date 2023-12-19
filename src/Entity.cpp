@@ -88,6 +88,7 @@ Entity::CollisionType Entity::handleCollision()
 		}
 		return CollisionType::NoCollision;
 	}
+	return CollisionType::NoCollision;
 }
 
 void Entity::updateCurrent(sf::Time dt)
