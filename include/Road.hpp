@@ -43,13 +43,17 @@ protected:
 template <typename T>
 T* Road::addZone(std::unique_ptr<T> zone)
 {
+    T* temp = zone.get();
     mZones.push_back(zone.get());
     requestAttach(std::move(zone));
+    return temp;
 }
 
 template <typename T>
 T* Road::addEntity(std::unique_ptr<T> entity)
 {
+    T* temp = entity.get();
     mEntities.push_back(entity.get());
     requestAttach(std::move(entity));
+    return temp;
 }
