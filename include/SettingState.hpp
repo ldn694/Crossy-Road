@@ -4,7 +4,9 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
-
+#include "Button.hpp"
+#include "Choice.hpp"
+#include "ClickableList.hpp"
 
 class SettingState : public State{
     public:
@@ -14,17 +16,20 @@ class SettingState : public State{
 		virtual bool			handleEvent(const sf::Event& event);
 
 		void					updateOptionText();
+        enum ClickableID {
+			Sound,
+			Music,
+			Back
+		};
     private:
     enum OptionNames
     {
-        Sound,
-        Music,
-        Back,
+
     };
     private:
         sf::Sprite				mBackgroundSprite;
 		std::vector<sf::Text>	mOptions;
 		std::size_t				mOptionIndex;
         ClickableList           mClickableList;
-
+        std::size_t             mChoiceIndex;
 };

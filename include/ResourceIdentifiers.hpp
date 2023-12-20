@@ -44,7 +44,12 @@ namespace Textures
 		River,
 		Land,
 		SettingBackground,
-
+		Sound,
+		Sound_,
+		Music,
+		Music_,
+		Back,
+        Back_
 	};
 }
 

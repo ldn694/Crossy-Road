@@ -17,34 +17,41 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	sf::Texture &texture = context.textures->get(Textures::SettingBackground);
 	sf::Font &font = context.fonts->get(Fonts::Main);
-
+    context.textures->load(Textures::Sound, "Assets/Images/Play.PNG");
+	context.textures->load(Textures::Sound_, "Assets/Images/Play_.PNG");
+	context.textures->load(Textures::Music, "Assets/Images/Load.PNG");
+	context.textures->load(Textures::Music_, "Assets/Images/Load_.PNG");
+	context.textures->load(Textures::Back, "Assets/Images/Score.PNG");
+	context.textures->load(Textures::Back_, "Assets/Images/Score_.PNG");
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(1050.0f / mBackgroundSprite.getGlobalBounds().width, 600.0f / mBackgroundSprite.getGlobalBounds().height);
-
-	// A simple setting demonstration
-	sf::Text SoundOption;
-	SoundOption.setFont(font);
-	SoundOption.setString("Sound");
-	centerOrigin(SoundOption);
-	SoundOption.setPosition(context.window->getView().getSize() / 2.f);
-	mOptions.push_back(SoundOption);
-
-	sf::Text MusicOption;
-	MusicOption.setFont(font);
-	MusicOption.setString("Music");
-	centerOrigin(MusicOption);
-	MusicOption.setPosition(SoundOption.getPosition() + sf::Vector2f(0.f, 30.f));
-	mOptions.push_back(MusicOption);
     
+	
+	mClickableList.registerClickable<Button>(Clickable::Type::Button);
+	Clickable::Info info;
+	info.floatList = { 295, 240, 220, 70, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.status = Clickable::Status(true, true, true);      //cac trang thai duoc cho phep cua button					
+	info.textureIDList = { Textures::Sound_, Textures::Sound};	//cac nut
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Sound, info);
 
-	sf::Text BackOption;
-	BackOption.setFont(font);
-	BackOption.setString("Back");
-	centerOrigin(BackOption);
-	BackOption.setPosition(MusicOption.getPosition() + sf::Vector2f(0.f, 30.f));
-	mOptions.push_back(BackOption);
+	info.floatList = {300, 340, 220, 70, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::Music_, Textures::Music };
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Music, info);
 
-	updateOptionText();
+	info.floatList = {400, 440, 240, 70, 15};//300
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::Back_, Textures::Back };
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Back, info);
 }
 
 void SettingState::draw()
@@ -56,70 +63,45 @@ void SettingState::draw()
 
 	FOREACH(const sf::Text &text, mOptions)
 	window.draw(text);
+	mClickableList.draw();
 }
 
 bool SettingState::update(sf::Time dt) 
 {
+	mClickableList.update(dt);
 	return true;
 }
 
 bool SettingState::handleEvent(const sf::Event &event)
 {
-	// The demonstration setting logic
-	if (event.type != sf::Event::KeyPressed)
-		return false;
-
-	if (event.key.code == sf::Keyboard::Return)
-	{
-		if (mOptionIndex == Sound)
-		{
-			
+	mClickableList.handleEvent(event);
+	while (mClickableList.pendingAnnouncement()) {
+		Clickable::Announcement announcement = mClickableList.popAnnouncement();
+		if (announcement.action == Clickable::LeftPressed) {
+			std::cout << "Left Clicked " << announcement.id << "\n";
+			switch (announcement.id) {
+				case SettingState::ClickableID::Sound: {
+					
+					break;
+				}
+				case SettingState::ClickableID::Music: {
+					
+					break;
+				}
+				case SettingState::ClickableID::Back: {
+					requestStackPop();
+					break;
+				}
+			}
 		}
-		else if(mOptionIndex == Music)
-		{
-
-		}
-	    else if (mOptionIndex == Back)
-		{
-			// The exit option was chosen, by removing itself, the stack will be empty, and the game will know it is time to close.
-			requestStackPop();
+		else if (announcement.action == Clickable::RightPressed) {
+			std::cout << "Right Clicked " << announcement.id << "\n";
 		}
 	}
-
-	else if (event.key.code == sf::Keyboard::Up)
-	{
-		// Decrement and wrap-around
-		if (mOptionIndex > 0)
-			mOptionIndex--;
-		else
-			mOptionIndex = mOptions.size() - 1;
-
-		updateOptionText();
+	while (pendingNotification()) {
+		State::Info info = popNotification();
+		std::cout << info.stringList[0] << "\n";
 	}
-
-	else if (event.key.code == sf::Keyboard::Down)
-	{
-		// Increment and wrap-around
-		if (mOptionIndex < mOptions.size() - 1)
-			mOptionIndex++;
-		else
-			mOptionIndex = 0;
-
-		updateOptionText();
-	}
-
 	return false;
 }
 
-void SettingState::updateOptionText()
-{
-	if (mOptions.empty())
-		return;
-
-	// White all texts
-	FOREACH(sf::Text & text, mOptions)
-	text.setColor(sf::Color::White);
-
-	// Red the selected text
-	mOptions[mOptionIndex].setColor(sf::Color::Red);
-}
