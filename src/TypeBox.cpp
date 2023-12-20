@@ -16,6 +16,10 @@ TypeBox::TypeBox(ClickableList* mList, int id, Context context, Clickable::Info 
     ratio = info.floatList[4];
     mBox = sf::FloatRect(info.floatList[0] + info.floatList[2]*ratio, info.floatList[1] + info.floatList[3]* ratio, info.floatList[2] * (1.0 - 2.0*ratio) , info.floatList[3] * (1.0 - 2.0*ratio));
 
+    mCursor.setSize(sf::Vector2f(2, info.floatList[6]));
+    mCursor.setFillColor(sf::Color::White);
+    mCursor.setOrigin(mCursor.getSize().x / 2.f, mCursor.getSize().y / 2.f);
+
     mTextureID[0] = info.textureIDList[0];
     mTextureID[1] = info.textureIDList[1];
     mTextureID[2] = info.textureIDList[2];
@@ -66,10 +70,13 @@ void TypeBox::draw() {
         mInputText.setString(mString);
         centerOrigin(mInputText);
         mInputText.setPosition(mRect.left + mRect.width / 2.f, mRect.top + mRect.height / 2.f);
-
+        //set cursor beside the text
+        mCursor.setPosition(mInputText.getPosition().x + mInputText.getLocalBounds().width / 2.f + 5, mInputText.getPosition().y);
+        
         mContext.window->draw(mSprite);
         mContext.window->draw(mSpriteInput);
         mContext.window->draw(mInputText);
+        mContext.window->draw(mCursor);
     }
 }
 
@@ -83,6 +90,9 @@ void TypeBox::handleEvent(const sf::Event& event) {
             if (mString.getSize() > 0) {
                 mString.erase(mString.getSize() - 1, 1);
             }
+            isShowCursor = true;
+            mClock.restart();
+            mCursor.setFillColor(sf::Color::White);
         }
         else if (event.text.unicode == 13) {
             if (mString.getSize() != 0) mPlayerName = mString;
@@ -92,6 +102,9 @@ void TypeBox::handleEvent(const sf::Event& event) {
         else if ((event.text.unicode >= 65 && event.text.unicode <= 90) || (event.text.unicode >= 48 && event.text.unicode <= 57) || (event.text.unicode >= 97 && event.text.unicode <= 122) && mString.getSize() < LimitOfName) {
             mString += event.text.unicode;
             std::cout << "TypeBox: " << mID << " input: " << mString.toAnsiString() << std::endl;
+            isShowCursor = true;
+            mClock.restart();
+            mCursor.setFillColor(sf::Color::White);
         }
     }
     if (!mStatus.isClickable()) return;
@@ -108,9 +121,15 @@ void TypeBox::handleEvent(const sf::Event& event) {
 }
 
 void TypeBox::update(sf::Time dt) {
-   /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) && !mStatus.isClickable()) {
-        if (mString.getSize() > 0) {
-            mString.erase(mString.getSize() - 1, 1);
-        }
-    }*/
+    if (mStatus.isClickable()) return;
+    if (mClock.getElapsedTime().asSeconds() > 0.5) {
+        isShowCursor = !isShowCursor;
+        mClock.restart();
+    }
+    if (isShowCursor) {
+        mCursor.setFillColor(sf::Color::White);
+    }
+    else {
+        mCursor.setFillColor(sf::Color::Transparent);
+    }
 }

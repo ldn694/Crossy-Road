@@ -15,7 +15,7 @@ public:
         TypeCount
     };
     const float WITDH_SIZE = 1050;
-    const float HEIGHT_SIZE = 50;
+    const float HEIGHT_SIZE = 65;
     const float NUM_ZONE = 15;
     const int MIN_ZONE_ID = -8;
     const int MAX_ZONE_ID = 7;

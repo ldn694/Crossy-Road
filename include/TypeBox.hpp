@@ -12,6 +12,9 @@ private:
     sf::String mString, mPlayerName;
     Textures::ID mTextureID[3];
     sf::Sprite mSprite, mSpriteInput;
+    sf::RectangleShape mCursor;
+    sf::Clock mClock;
+    bool isShowCursor;
     bool isHovering;
     double ratio = 1.0/6;
     int LimitOfName = 9;
