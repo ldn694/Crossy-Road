@@ -9,7 +9,6 @@
 
 
 Land::Land(const TextureHolder& textures) : Road(Textures::Land, textures, Road::Type::Land, Zone::Safety::Safe){
-    // srand(time(NULL));
     int numberRocks = rand() % (MAX_NUMBER_ROCKS + 1);
     for (int i = 0; i < numberRocks; i++){
         int type = rand() % Rock::NumTypes;
@@ -21,7 +20,7 @@ Land::Land(const TextureHolder& textures) : Road(Textures::Land, textures, Road:
             break;
         }
         std::unique_ptr<Rock> rock(new Rock(rockType, textures));
-        rock->setPosition(x, 0);
+        rock->setPosition(x, HEIGHT_SIZE / 2.0f);
         addEntity(std::move(rock));
     }
 }
