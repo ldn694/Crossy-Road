@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <stdlib.h>
+#include <time.h> 
 #include "SFML/System/Time.hpp"
 #include <SFML/Graphics/Rect.hpp>
 

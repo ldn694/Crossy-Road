@@ -1,4 +1,5 @@
 #include "World.hpp"
+#include "GameStatus.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -42,7 +43,6 @@ void World::update(sf::Time dt)
 	adaptPlayerVelocity();
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt);
-	//std::cout << mSceneGraph.countChildren() << "\n";
 	adaptPlayerPosition();
 }
 
@@ -96,15 +96,13 @@ void World::buildScene()
 	// //mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
 	// mSceneLayers[Background]->requestAttach(std::move(backgroundSprite));
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(1)));
-	roadList->setPosition(mSpawnPosition.x, mWorldView.getSize().y - 25.f);
-	std::cout << "RoadList position: " << roadList->getWorldPosition().x << ", " << roadList->getWorldPosition().y << std::endl;
+	mPlayerAnimal = new Animal(Animal::Cat, mTextures, mSceneLayers[Air]);
+	mPlayerAnimal->setPosition(0, 0);
+
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(5), mPlayerAnimal));
+	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
 
-	std::unique_ptr<Animal> animal(new Animal(Animal::Cat, mTextures));
-	mPlayerAnimal = animal.get();
-	mPlayerAnimal->setPosition(mSpawnPosition);
-	mSceneLayers[Air]->requestAttach(std::move(animal));
 
 
 	// std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::AllyRaptor, mTextures));
@@ -130,12 +128,15 @@ void World::adaptPlayerPosition()
 	sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
 	const float borderDistance = 40.f;
 
-	sf::Vector2f position = mPlayerAnimal->getPosition();
-	position.x = std::max(position.x, viewBounds.left + borderDistance);
-	position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-	position.y = std::max(position.y, viewBounds.top + borderDistance);
-	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-	mPlayerAnimal->setPosition(position);
+	sf::Vector2f position = mPlayerAnimal->getWorldPosition();
+	if (!viewBounds.contains(position)) {
+		throw GameStatus::GAME_LOST;
+	}
+	// position.x = std::max(position.x, viewBounds.left + borderDistance);
+	// position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
+	// position.y = std::max(position.y, viewBounds.top + borderDistance);
+	// position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+	// mPlayerAnimal->setPosition(position);
 }
 
 void World::adaptPlayerVelocity()

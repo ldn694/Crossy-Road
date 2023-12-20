@@ -8,7 +8,7 @@
 
 class RoadList: public SceneNode{
 public:
-                            RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period);
+                            RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player);
     // Road*                   getFirstRoad();
     // Road*                   getLastRoad();
     virtual void            updateCurrent(sf::Time dt);
@@ -27,7 +27,7 @@ private:
     std::map<Road::Type, std::function<std::unique_ptr<Road>()>>	mFactories;
     const TextureHolder&                                            mTextures;
     sf::Time                                                        mPeriod;
-    sf::Time                                                        mTimeSinceLastUpdate;
+    Animal*                                                         mPlayer;
 };
 
 template <typename T>

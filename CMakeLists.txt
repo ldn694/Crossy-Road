@@ -50,6 +50,7 @@ add_executable(CrossyRoad
     src/RoadList.cpp
     src/Rock.cpp
     src/TypeBox.cpp
+    src/Category.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

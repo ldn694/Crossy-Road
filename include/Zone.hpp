@@ -12,6 +12,7 @@ public:
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     sf::FloatRect getHitbox() const;
     Safety getSafety() const;
+    virtual unsigned int	getCategory() const;
 private:
     sf::FloatRect mHitbox;
     Safety mSafety;

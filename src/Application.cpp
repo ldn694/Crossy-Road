@@ -18,7 +18,7 @@ Application::Application()
 	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
-
+	srand(time(NULL));
 	mFonts.load(Fonts::Main, "Assets/Fonts/Sansation.ttf");
 	mTextures.load(Textures::TitleScreen, "Assets/Images/TitleScreen.png");
     mTextures.load(Textures::SettingBackground, "Assets/Images/SettingBackground.png");

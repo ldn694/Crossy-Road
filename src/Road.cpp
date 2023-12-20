@@ -14,11 +14,11 @@ Road::Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone
 {
     mSprite.setTexture(textures.get(ID));
     setSize(mSprite, sf::Vector2f(WITDH_SIZE, HEIGHT_SIZE));
-    centerOrigin(mSprite);
+    setOrigin(0, 0);
     mType = type;
     mSafety = safety;
-    for (int i = MIN_ZONE_ID; i <= MAX_ZONE_ID; i++) {
-        std::unique_ptr<Zone> zone(new Zone(safety, sf::FloatRect(i * WITDH_SIZE / NUM_ZONE, -HEIGHT_SIZE / 2.0f, WITDH_SIZE / NUM_ZONE, HEIGHT_SIZE)));
+    for (int i = 0; i < NUM_ZONE; i++) {
+        std::unique_ptr<Zone> zone(new Zone(safety, sf::FloatRect(i * WITDH_SIZE / NUM_ZONE, 0, WITDH_SIZE / NUM_ZONE, HEIGHT_SIZE)));
         mZones.push_back(zone.get());
         requestAttach(std::move(zone));
     }
@@ -29,7 +29,7 @@ sf::FloatRect Road::getHitbox() const
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-Entity* Road::nearestZone(sf::Vector2f position, Zone::Safety safety)
+Zone* Road::nearestZone(sf::Vector2f position, Zone::Safety safety)
 {
     float minDistance = 10000.0f;
     Zone* nearest = nullptr;
@@ -41,4 +41,23 @@ Entity* Road::nearestZone(sf::Vector2f position, Zone::Safety safety)
         }
     }
     return nearest;
+}
+
+Zone* Road::randomZone(Zone::Safety safety)
+{
+    std::vector<Zone*> zones;
+    for (auto& zone : mZones) {
+        if (zone->getSafety() == safety) {
+            zones.push_back(zone);
+        }
+    }
+    assertThrow(!zones.empty(), "No zone of this safety type");
+    int index = rand() % zones.size();
+    std::cout << zones.size() << " " << index << "\n";
+    return zones[index];
+}
+
+Zone::Safety Road::getSafety() const
+{
+    return mSafety;
 }
