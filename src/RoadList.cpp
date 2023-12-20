@@ -3,8 +3,6 @@
 #include "River.hpp"
 #include "SRoad.hpp"
 #include "Land.hpp"
-#include <stdlib.h>
-#include <time.h> 
 
 
 Road::Type RoadList::getNextType()
@@ -13,24 +11,36 @@ Road::Type RoadList::getNextType()
     return static_cast<Road::Type>(type);
 }
 
-RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period): mTextures(textures), mPeriod(period), mView(view)
+RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player)
+    : mView(view)
+    , mTextures(textures)
+    , mPeriod(period)
+    , mPlayer(player)
 {
     registerRoad<Railways>(Road::Railways);
 	registerRoad<River>(Road::River);
 	registerRoad<SRoad>(Road::SRoad);
 	registerRoad<Land>(Road::Land);
-    srand(time(NULL));
     if (numRoads < 1) return;
     firstRoad = nullptr;
     lastRoad = nullptr;
+    int midID = numRoads / 2;
     for (int i = 0; i < numRoads; i++)
     {
-        Road::Type type = getNextType();
+        // while (i == midID && type == Road::River) {
+        //     type = getNextType();
+        // }
+        Road::Type type = Road::Land;
+        if (i > 0) {
+            type = getNextType();
+        }
         std::unique_ptr<Road> road = mFactories[type]();
-        road->setPosition(0, -(i - 2) * road->Road::HEIGHT_SIZE);
+        road->setPosition(0, -i * road->Road::HEIGHT_SIZE);
         push_back(std::move(road));
     }
-    mTimeSinceLastUpdate = sf::Time::Zero;
+    Zone* firstZone = firstRoad->randomZone(Zone::Safe);
+    switchParent(player, firstZone);
+    setZone(player, firstZone);
 }
 
 void RoadList::updateCurrent(sf::Time dt)

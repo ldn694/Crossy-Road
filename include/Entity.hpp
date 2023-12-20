@@ -25,6 +25,7 @@ class Entity : public SceneNode
 		void						accelerate(float vx, float vy);
 		sf::Vector2f				getVelocity() const;
 		bool			    		pendingAnimation();
+		bool						isFakeAnimation(); //return true if current animation is a fake animation
 		bool						addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration);
 		bool						addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset = sf::Vector2f(0, 0));
 		CollisionType				handleCollision();
@@ -35,11 +36,13 @@ class Entity : public SceneNode
 
 	private:
 		Animation*					curAnimation = nullptr;
+		bool						isMovingBack = false;
 		FakeEntity*					mOriginNode = nullptr;
-		virtual void				updateCurrent(sf::Time dt);
 		void 						setOriginNode();
 		void						resetOriginNode();
-
+		
+	protected:
+		virtual void				updateCurrent(sf::Time dt);
 	
 
 	private:

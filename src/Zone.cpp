@@ -5,7 +5,8 @@
 
 Zone::Zone(Zone::Safety safety, sf::FloatRect hitbox)
 {
-    mHitbox = hitbox;
+    setPosition(hitbox.left + hitbox.width / 2, hitbox.top + hitbox.height / 2);
+    mHitbox = sf::FloatRect(-hitbox.width / 2, -hitbox.height / 2, hitbox.width, hitbox.height);
     mSafety = safety;
 }
 
@@ -22,11 +23,22 @@ Zone::Safety Zone::getSafety() const
 void Zone::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     //draw hitbox
-    sf::RectangleShape hitbox;
-    hitbox.setSize(sf::Vector2f(mHitbox.width, mHitbox.height));
+    sf::FloatRect rect = mHitbox;
+    sf::RectangleShape hitbox = sf::RectangleShape();
+    hitbox.setSize(sf::Vector2f(rect.width, rect.height));
     hitbox.setFillColor(sf::Color::Transparent);
     hitbox.setOutlineColor(sf::Color::Red);
     hitbox.setOutlineThickness(1);
-    hitbox.setPosition(mHitbox.left, mHitbox.top);
+    hitbox.setPosition(rect.left, rect.top);
     target.draw(hitbox, states);
+}
+
+unsigned int Zone::getCategory() const
+{
+    switch(mSafety) {
+        case Safe:
+            return Category::SafeZone;
+        case Unsafe:
+            return Category::DeadZone;
+    }
 }

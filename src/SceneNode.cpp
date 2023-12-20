@@ -1,6 +1,7 @@
 #include "SceneNode.hpp"
 #include "Command.hpp"
 #include "Foreach.hpp"
+#include "Utility.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -8,9 +9,27 @@
 
 
 SceneNode::SceneNode()
-: mChildren()
-, mParent(nullptr)
+	: mChildren()
+	, mParent(nullptr)
 {
+}
+
+SceneNode::~SceneNode()
+{
+	//std::cout << "SceneNode destructor " << this << " " << fromCategoryToString(getCategory()) << "\n";
+}
+
+void SceneNode::filterEmptyChildren()
+{
+	while (true) {
+		auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](Ptr& p) { return p.get() == nullptr; });
+		if (found != mChildren.end()) {
+			mChildren.erase(found);
+		}
+		else {
+			break;
+		}
+	}
 }
 
 void SceneNode::attachChild(Ptr child)
@@ -21,7 +40,7 @@ void SceneNode::attachChild(Ptr child)
 
 SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 {
-	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&] (Ptr& p) { return p.get() == &node; });
+	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](Ptr& p) { return p.get() == &node; });
 	assert(found != mChildren.end());
 
 	Ptr result = std::move(*found);
@@ -32,6 +51,7 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 
 void SceneNode::update(sf::Time dt)
 {
+	filterEmptyChildren();
 	detachChildren();
 	attachChildren();
 	updateCurrent(dt);
@@ -45,8 +65,10 @@ void SceneNode::updateCurrent(sf::Time)
 
 void SceneNode::updateChildren(sf::Time dt)
 {
-	FOREACH(Ptr& child, mChildren) {
-		child->update(dt);
+	FOREACH(Ptr & child, mChildren) {
+		if (child.get()) {
+			child->update(dt);
+		}
 	}
 }
 
@@ -67,8 +89,10 @@ void SceneNode::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
 
 void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	FOREACH(const Ptr& child, mChildren)
-		child->draw(target, states);
+	FOREACH(const Ptr & child, mChildren)
+		if (child.get()) {
+			child->draw(target, states);
+		}
 }
 
 sf::Vector2f SceneNode::getWorldPosition() const
@@ -92,10 +116,9 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 	if (command.category & getCategory()) {
 		command.action(*this, dt);
 	}
-	//std::cout << this->getCategory() << "\n";
 
 	// Command children
-	FOREACH(Ptr& child, mChildren) {
+	FOREACH(Ptr & child, mChildren) {
 		if (child.get()) {
 			child->onCommand(command, dt);
 		}
@@ -130,6 +153,33 @@ void SceneNode::attachChildren()
 	}
 }
 
+std::unique_ptr<SceneNode>& SceneNode::findDirectChild(SceneNode* child)
+{
+	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](Ptr& p) { return p.get() == child; });
+	assert(found != mChildren.end());
+	return *found;
+}
+
+void switchParent(SceneNode* child, SceneNode* newParent)
+{
+	SceneNode* oldParent = child->getParent();
+	assertThrow(newParent != nullptr, "newParent is nullptr");
+	if (oldParent == newParent)
+		return;
+	if (oldParent == nullptr) {
+		SceneNode::Ptr childPtr(child);
+		newParent->requestAttach(std::move(childPtr));
+		newParent->attachChildren();
+		return;
+	}
+	std::unique_ptr<SceneNode>& childPtr = oldParent->findDirectChild(child);
+	childPtr.release();
+	std::unique_ptr<SceneNode> childPtrCopy(child);
+	// oldParent->requestDetach(child);
+	newParent->requestAttach(std::move(childPtrCopy));
+	newParent->attachChildren();
+}
+
 SceneNode* SceneNode::getParent()
 {
 	return mParent;
@@ -151,7 +201,7 @@ SceneNode* SceneNode::getRoot()
 int SceneNode::countChildren() const
 {
 	int res = mChildren.size();
-	FOREACH(const Ptr& child, mChildren)
+	FOREACH(const Ptr & child, mChildren)
 		res += child->countChildren();
 	return res;
 }

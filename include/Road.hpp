@@ -17,8 +17,6 @@ public:
     const float WITDH_SIZE = 1050;
     const float HEIGHT_SIZE = 50;
     const float NUM_ZONE = 15;
-    const int MIN_ZONE_ID = -8;
-    const int MAX_ZONE_ID = 7;
     Road*                      mNextRoad;
     Road*                      mPreviousRoad;
 
@@ -26,11 +24,13 @@ public:
                     Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone::Safety safety);
     virtual void    drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const = 0;
     sf::FloatRect   getHitbox() const;
-    Entity*         nearestZone(sf::Vector2f position, Zone::Safety safety);
+    Zone*           nearestZone(sf::Vector2f position, Zone::Safety safety);
+    Zone*           randomZone(Zone::Safety safety);
     template <typename T>
     T*              addZone(std::unique_ptr<T> zone);
     template <typename T>
     T*              addEntity(std::unique_ptr<T> zone);
+    Zone::Safety    getSafety() const;
 
 protected:
     sf::Sprite                 mSprite;

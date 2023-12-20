@@ -95,12 +95,20 @@ Entity::CollisionType Entity::handleCollision()
 	return CollisionType::NoCollision;
 }
 
+bool Entity::isFakeAnimation()
+{
+	return mOriginNode != nullptr;
+}
+
 void Entity::updateCurrent(sf::Time dt)
 {
 	if (pendingAnimation()) {
 		auto animationStep = curAnimation->getAnimationStep(this, dt);
 		move(mVelocity * dt.asSeconds() + animationStep);
-		auto collisionType = handleCollision();
+		CollisionType collisionType = CollisionType::NoCollision;
+		if (!isMovingBack) {
+			collisionType = handleCollision();
+		}
 		if (collisionType == CollisionType::DeathCollision) {
 			throw GameStatus::GAME_LOST;
 		}
@@ -108,6 +116,7 @@ void Entity::updateCurrent(sf::Time dt)
 			move(-mVelocity * dt.asSeconds() - animationStep);
 			sf::Time duration = curAnimation->duration - curAnimation->elapsedTime;
 			removeAnimation();
+			isMovingBack = true;
 			SceneNode* parent = getParent();
 			auto fakeEntities = parent->findDirectChildrenByCategory<Entity>(Category::FakeEntity);
 			Entity* thisFakeEntity = nullptr;
@@ -145,6 +154,7 @@ void Entity::removeAnimation()
 {
 	delete curAnimation;
 	curAnimation = nullptr;
+	isMovingBack = false;
 }
 
 void Entity::resetOriginNode() {
