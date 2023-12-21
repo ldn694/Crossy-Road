@@ -23,5 +23,6 @@ public:
     void draw();
     void handleEvent(const sf::Event& event);
     void update(sf::Time dt);
+    sf::String getString();
     bool isInside(sf::Vector2f position);
 };

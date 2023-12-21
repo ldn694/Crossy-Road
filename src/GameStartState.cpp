@@ -212,6 +212,56 @@ bool GameStartState::handleEvent(const sf::Event& event)
             if (announcement.id == ButtonNames::Play){
                 requestStackPop();
                 State::Info info;
+				info.stringList.push_back(mClickableList.getString(ButtonNames::TypingBox));
+				switch (mChoiceDifficultyIndex)
+				{
+				case ButtonNames::Easy:
+					info.stringList.push_back("Easy");
+					break;
+				case ButtonNames::Medium:
+					info.stringList.push_back("Medium");
+					break;
+				case ButtonNames::Hard:
+					info.stringList.push_back("Hard");
+					break;
+				default:
+					break;
+				}
+				switch (mChoicePlayerIndex)
+				{
+				case ButtonNames::OnePlayer:
+					info.floatList.push_back(1);
+					break;
+				case ButtonNames::TwoPlayer:
+					info.floatList.push_back(2);
+					break;
+				default:
+					break;
+				}
+				switch (mCharacterIndex)
+				{
+				case 0:
+					info.stringList.push_back("Cat");
+					break;
+				case 1:
+					info.stringList.push_back("Chicken");
+					break;
+				case 2:
+					info.stringList.push_back("Fox");
+					break;
+				case 3:
+					info.stringList.push_back("Lion");
+					break;
+				case 4:
+					info.stringList.push_back("Pig");
+					break;
+				default:
+					break;
+				}
+				for (int i = 0; i < info.stringList.size(); i++) {
+					std::cout << info.stringList[i] << "\n";
+				}
+				std::cout << info.floatList[0] << "\n";
                 requestStackPush(States::Game, info);
             } else if (announcement.id == ButtonNames::Back){
                 requestStackPop();

@@ -18,4 +18,5 @@ public:
     void handleEvent(const sf::Event& event);
     void update(sf::Time dt);
     bool isInside(sf::Vector2f position);
+    sf::String getString();
 };
