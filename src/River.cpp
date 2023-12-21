@@ -38,8 +38,8 @@ River::River(const TextureHolder& textures, Difficulty difficulty) : Road(Textur
 }
 
 River::~River() {
-    // std::cout << "---------------------\n";
-    // std::cout << "River destroyed\n";
+    // std::cerr << "---------------------\n";
+    // std::cerr << "River destroyed\n";
     // for (int i = 0; i < zones.size(); i++) {
     //     mediateNode->requestDetach(zones[i]->getParent());
     // }

@@ -16,7 +16,7 @@ SceneNode::SceneNode()
 
 SceneNode::~SceneNode()
 {
-	//std::cout << "SceneNode destructor " << this << " " << fromCategoryToString(getCategory()) << "\n";
+	//std::cerr << "SceneNode destructor " << this << " " << fromCategoryToString(getCategory()) << "\n";
 }
 
 void SceneNode::filterEmptyChildren()
@@ -36,6 +36,12 @@ void SceneNode::attachChild(Ptr child)
 {
 	child->mParent = this;
 	mChildren.push_back(std::move(child));
+}
+
+void SceneNode::attachChildAtFront(Ptr child)
+{
+	child->mParent = this;
+	mChildren.insert(mChildren.begin(), std::move(child));
 }
 
 SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
@@ -128,19 +134,24 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 
 void SceneNode::requestDetach(SceneNode* node)
 {
-	// std::cout << "request detach " << node << "\n";
+	// std::cerr << "request detach " << node << "\n";
 	mDetachQueue.push(node);
+}
+
+void SceneNode::requestAttachAtFront(Ptr child)
+{
+	mAttachQueueAtFront.push(std::move(child));
 }
 
 void SceneNode::detachChildren()
 {
 	// if (!mDetachQueue.empty()) {
-	// 	std::cout << "--------\n";
-	// 	std::cout << "deleting " << this << " " << fromCategoryToString(getCategory()) << "\n";
+	// 	std::cerr << "--------\n";
+	// 	std::cerr << "deleting " << this << " " << fromCategoryToString(getCategory()) << "\n";
 	// 	for (int i = 0; i < mChildren.size(); i++) {
-	// 		std::cout << mChildren[i].get() << " ";
+	// 		std::cerr << mChildren[i].get() << " ";
 	// 	}
-	// 	std::cout << "\n";
+	// 	std::cerr << "\n";
 	// }
 	while (!mDetachQueue.empty()) {
 		SceneNode* child = mDetachQueue.front();
@@ -160,6 +171,11 @@ void SceneNode::attachChildren()
 		Ptr child = std::move(mAttachQueue.front());
 		mAttachQueue.pop();
 		attachChild(std::move(child));
+	}
+	while (!mAttachQueueAtFront.empty()) {
+		Ptr child = std::move(mAttachQueueAtFront.front());
+		mAttachQueueAtFront.pop();
+		attachChildAtFront(std::move(child));
 	}
 }
 

@@ -54,7 +54,7 @@ bool TypeBox::isInside(sf::Vector2f position) {
 
 void TypeBox::draw() {
     if (mStatus.isClickable()){
-        //std::cout << "TypeBox: " << mID << " is not available to input" << std::endl;
+        //std::cerr << "TypeBox: " << mID << " is not available to input" << std::endl;
         mSprite.setTexture(mContext.textures->get(isHovering ? mTextureID[1] : mTextureID[0]));
 
         mShowText.setString(mPlayerName);
@@ -64,7 +64,7 @@ void TypeBox::draw() {
         mContext.window->draw(mSprite);
         mContext.window->draw(mShowText);
     } else {
-        //std::cout << "TypeBox: " << mID << " is available to input" << std::endl;
+        //std::cerr << "TypeBox: " << mID << " is available to input" << std::endl;
         mSprite.setTexture(mContext.textures->get(mTextureID[0]));
 
         mInputText.setString(mString);
@@ -101,7 +101,7 @@ void TypeBox::handleEvent(const sf::Event& event) {
         }
         else if ((event.text.unicode >= 65 && event.text.unicode <= 90) || (event.text.unicode >= 48 && event.text.unicode <= 57) || (event.text.unicode >= 97 && event.text.unicode <= 122) && mString.getSize() < LimitOfName) {
             mString += event.text.unicode;
-            std::cout << "TypeBox: " << mID << " input: " << mString.toAnsiString() << std::endl;
+            std::cerr << "TypeBox: " << mID << " input: " << mString.toAnsiString() << std::endl;
             isShowCursor = true;
             mClock.restart();
             mCursor.setFillColor(sf::Color::White);

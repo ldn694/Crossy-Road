@@ -55,7 +55,7 @@ Entity::CollisionType Entity::handleCollision()
 		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
 		for (auto obstacle : obstacles) {
 			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
-				// std::cout << "blocked by " << fromCategoryToString(obstacle->getCategory()) << "\n";
+				// std::cerr << "blocked by " << fromCategoryToString(obstacle->getCategory()) << "\n";
 				return CollisionType::BlockedCollision;
 			}
 		}

@@ -109,17 +109,17 @@ void Animal::updateCurrent(sf::Time dt)
         assertThrow(this->getParent() != nullptr, "Animal has no parent");
         Entity* parent = static_cast<Entity*>(this->getParent());
         if (squaredDistance(mTmpOldPosition, getPosition()) < 1) {//unsuccesful move
-            std::cout << "unsuccesful move\n";
+            // std::cerr << "unsuccesful move\n";
             switchParent(this, mZone);
             setPosition(mOldPosition);
         }
         else {
-            std::cout << "succesful move\n";
+            // std::cerr << "succesful move\n";
             switchParent(this, mNextZone);
             setPosition(0, 0);
             mZone = mNextZone;
             if (mZone->getSafety() == Zone::Unsafe) {
-                std::cout << "unsafe zone\n";
+                std::cerr << "unsafe zone\n";
                 throw GameStatus(GameStatus::GAME_LOST);
             }
         }

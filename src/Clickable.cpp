@@ -49,7 +49,7 @@ void Clickable::setDrawable(bool drawable) {
 }
 
 void Clickable::setClickable(bool clickable) {
-    std::cout << "Clickable: " << mID << " is set clickable to " << clickable << std::endl;
+    std::cerr << "Clickable: " << mID << " is set clickable to " << clickable << std::endl;
     mStatus.setClickable(clickable);
 }
 

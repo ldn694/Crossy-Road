@@ -31,6 +31,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		void						attachChildren();
 		void						requestDetach(SceneNode* node);
 		void						requestAttach(Ptr child);
+		void						requestAttachAtFront(Ptr child);
 		void						filterEmptyChildren();
 		friend void					switchParent(SceneNode* child, SceneNode* newParent);
 		
@@ -54,6 +55,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 	private:
 		Ptr						detachChild(const SceneNode& node);
 		void					attachChild(Ptr child);
+		void 					attachChildAtFront(Ptr child);
 
 		virtual void			updateCurrent(sf::Time dt);
 		void					updateChildren(sf::Time dt);
@@ -69,6 +71,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		SceneNode*											mParent;
 		std::queue <SceneNode*>								mDetachQueue;
 		std::queue <SceneNode::Ptr> 						mAttachQueue;
+		std::queue <SceneNode::Ptr> 						mAttachQueueAtFront;
 };
 
 template <typename GameObject>

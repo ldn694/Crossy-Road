@@ -52,7 +52,7 @@ void RoadList::updateCurrent(sf::Time dt)
         pop_front();
         Road::Type type = getNextType();
         std::unique_ptr<Road> road = mFactories[type]();
-        road->setPosition(0, lastRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
+        road->setPosition(0, firstRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
         push_back(std::move(road));
     }
     move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
@@ -60,9 +60,10 @@ void RoadList::updateCurrent(sf::Time dt)
 
 void RoadList::pop_front()
 {
-    if (firstRoad == nullptr) return;
-    Road* tmp = firstRoad;
+    //double linked list
+    if (firstRoad->mNextRoad != nullptr) {
+        firstRoad->mNextRoad->mPreviousRoad = nullptr;
+    }
     firstRoad = firstRoad->mNextRoad;
-    firstRoad->mPreviousRoad = nullptr;
-    requestDetach(tmp);
+    requestDetach(firstRoad->mPreviousRoad);
 }

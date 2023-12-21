@@ -7,7 +7,7 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 , mWorld(*context.window)
 {
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
-	std::cout << "GameState::GameState()\n";
+	std::cerr << "GameState::GameState()\n";
 }
 
 void GameState::draw()
@@ -30,7 +30,7 @@ bool GameState::handleEvent(const sf::Event& event)
 
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		std::cout << info.stringList[0] << "\n";
+		std::cerr << info.stringList[0] << "\n";
 	}
 
 	// Escape pressed, trigger the pause screen
