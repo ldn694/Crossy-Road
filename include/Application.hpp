@@ -13,7 +13,7 @@
 class Application
 {
 	public:
-								Application();
+								Application(sf::ContextSettings settings);
 		void					run();
 		
 

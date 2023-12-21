@@ -36,18 +36,15 @@ template <typename T>
 void RoadList::push_back(std::unique_ptr<T> road)
 {
     //double linked list
-    if (lastRoad != nullptr)
-    {
+    if (lastRoad != nullptr) {
         lastRoad->mNextRoad = road.get();
         road->mPreviousRoad = lastRoad;
-        lastRoad = road.get();
-        lastRoad->mNextRoad = nullptr;
     }
-    else {
+    lastRoad = road.get();
+    if (firstRoad == nullptr) {
         firstRoad = road.get();
-        lastRoad = road.get();
     }
-    requestAttach(std::move(road));
+    requestAttachAtFront(std::move(road));
 }
 
 template <typename T>

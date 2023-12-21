@@ -132,10 +132,10 @@ mClickableList.handleEvent(event);
 while (mClickableList.pendingAnnouncement()) {
 	Clickable::Announcement announcement = mClickableList.popAnnouncement();
 	if (announcement.action == Clickable::LeftPressed) {
-		std::cout << "Left Clicked " << announcement.id << "\n";
+		std::cerr << "Left Clicked " << announcement.id << "\n";
 	}
 	else if (announcement.action == Clickable::RightPressed) {
-		std::cout << "Right Clicked " << announcement.id << "\n";
+		std::cerr << "Right Clicked " << announcement.id << "\n";
 	}
 }
 ```
@@ -235,7 +235,7 @@ Below is an example of handling notifications:
 //Assuming you are in a State class's handleEvent() method
 while (pendingNotification()) {
 	State::Info info = popNotification();
-	std::cout << info.stringList[0] << "\n"; //print the message
+	std::cerr << info.stringList[0] << "\n"; //print the message
 }
 ```
 

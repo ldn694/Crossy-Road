@@ -208,7 +208,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			std::cout << "Left Clicked " << announcement.id << "\n";
+			std::cerr << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Play){
                 requestStackPop();
                 State::Info info;
@@ -242,12 +242,12 @@ bool GameStartState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			std::cout << "Right Clicked " << announcement.id << "\n";
+			std::cerr << "Right Clicked " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		std::cout << info.stringList[0] << "\n";
+		std::cerr << info.stringList[0] << "\n";
 	}
 	if (event.type == sf::Event::MouseButtonPressed) {
 

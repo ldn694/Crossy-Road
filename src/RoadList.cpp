@@ -60,9 +60,10 @@ void RoadList::updateCurrent(sf::Time dt)
 
 void RoadList::pop_front()
 {
-    if (firstRoad == nullptr) return;
-    Road* tmp = firstRoad;
-    firstRoad = firstRoad->mNextRoad;
-    firstRoad->mPreviousRoad = nullptr;
-    requestDetach(tmp);
+    if (!firstRoad) return;
+    if (firstRoad->mNextRoad) {
+        firstRoad->mNextRoad->mPreviousRoad = nullptr;
+        requestDetach(firstRoad);
+        firstRoad = firstRoad->mNextRoad;
+    }
 }

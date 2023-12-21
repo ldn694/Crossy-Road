@@ -22,7 +22,7 @@ River::River(const TextureHolder& textures, Difficulty difficulty) : Road(Textur
     mediateNode = mediate.get();
     requestAttach(std::move(mediate));
     mTimeSinceLastSpawn = sf::Time::Zero;
-    float minimumDistance = WITDH_SIZE / (maximumLog + 1);
+    float minimumDistance = WITDH_SIZE / ((maximumLog + 1) * 2);
     int numLog = rand() % maximumLog + 1;
     float x = rand() % (int)minimumDistance, y = (HEIGHT_SIZE - 50) / 2;
     for (int i = 0; i < numLog; i++) {
@@ -38,8 +38,8 @@ River::River(const TextureHolder& textures, Difficulty difficulty) : Road(Textur
 }
 
 River::~River() {
-    // std::cout << "---------------------\n";
-    // std::cout << "River destroyed\n";
+    // std::cerr << "---------------------\n";
+    // std::cerr << "River destroyed\n";
     // for (int i = 0; i < zones.size(); i++) {
     //     mediateNode->requestDetach(zones[i]->getParent());
     // }
