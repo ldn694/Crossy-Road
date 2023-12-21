@@ -16,7 +16,7 @@ SceneNode::SceneNode()
 
 SceneNode::~SceneNode()
 {
-	//std::cout << "SceneNode destructor " << this << " " << fromCategoryToString(getCategory()) << "\n";
+	std::cout << "SceneNode destructor " << this << " " << fromCategoryToString(getCategory()) << "\n";
 }
 
 void SceneNode::filterEmptyChildren()

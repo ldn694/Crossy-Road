@@ -7,6 +7,7 @@
 #include <functional>
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 
 class SceneNode;

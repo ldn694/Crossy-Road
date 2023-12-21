@@ -55,6 +55,7 @@ Entity::CollisionType Entity::handleCollision()
 		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
 		for (auto obstacle : obstacles) {
 			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
+				std::cout << "blocked by " << fromCategoryToString(obstacle->getCategory()) << "\n";
 				return CollisionType::BlockedCollision;
 			}
 		}
@@ -114,7 +115,7 @@ void Entity::updateCurrent(sf::Time dt)
 		}
 		else if (collisionType == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds() - animationStep);
-			sf::Time duration = curAnimation->duration - curAnimation->elapsedTime;
+			sf::Time duration = curAnimation->elapsedTime;
 			removeAnimation();
 			isMovingBack = true;
 			SceneNode* parent = getParent();
