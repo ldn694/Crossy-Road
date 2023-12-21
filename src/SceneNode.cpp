@@ -145,6 +145,7 @@ void SceneNode::requestAttachAtFront(Ptr child)
 
 void SceneNode::detachChildren()
 {
+	filterEmptyChildren();
 	// if (!mDetachQueue.empty()) {
 	// 	std::cerr << "--------\n";
 	// 	std::cerr << "deleting " << this << " " << fromCategoryToString(getCategory()) << "\n";
@@ -156,6 +157,7 @@ void SceneNode::detachChildren()
 	while (!mDetachQueue.empty()) {
 		SceneNode* child = mDetachQueue.front();
 		mDetachQueue.pop();
+		// std::cerr << "detaching " << child << "\n";
 		detachChild(*child);
 	}
 }

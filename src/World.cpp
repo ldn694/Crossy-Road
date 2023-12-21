@@ -35,7 +35,7 @@ World::World(sf::RenderWindow& window)
 
 void World::update(sf::Time dt)
 {
-	std::cerr << "num scenenode: " << mSceneGraph.countChildren() << "\n";
+	// std::cerr << "num scenenode: " << mSceneGraph.countChildren() << "\n";
 	//std::cerr << (mSceneGraph.findChildrenByCategory<Entity>(Category::Player)).size();
 	// Scroll the world, reset player velocity
 	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
@@ -72,8 +72,6 @@ void World::loadTextures()
 	mTextures.load(Textures::Desert, "Assets/Images/Desert.png");
 	mTextures.load(Textures::Railways, "Assets/Images/Railways.png");
 	mTextures.load(Textures::River, "Assets/Images/ForGame/river_log/river0.png");
-	sf::Texture& texture = mTextures.get(Textures::River);
-	texture.setRepeated(true);
 	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
 	mTextures.load(Textures::Land, "Assets/Images/Land.png");
 	mTextures.load(Textures::Rock1, "Assets/Images/Rock1.png");
@@ -112,7 +110,7 @@ void World::buildScene()
 	mPlayerAnimal = new Animal(Animal::Cat, mTextures, airNode);
 	mPlayerAnimal->setPosition(0, 0);
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(15), mPlayerAnimal, Difficulty::Easy));
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, sf::seconds(3), mPlayerAnimal, Difficulty::Easy));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
 
