@@ -35,6 +35,7 @@ void Zone::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 
 unsigned int Zone::getCategory() const
 {
+    //No general return
     switch(mSafety) {
         case Safe:
             return Category::SafeZone;

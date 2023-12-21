@@ -22,7 +22,7 @@ Choice::Choice(ClickableList* mList, int id, Context context, Clickable::Info in
     mText.setPosition(mRect.left + mRect.width / 2.f, mRect.top + mRect.height / 2.f);
     mSprite.setTexture(mContext.textures->get(mTextureID[0]));
     mSprite.setPosition(info.floatList[0], info.floatList[1]);
-    mSprite.setScale(mRect.width / mSprite.getLocalBounds().width, mRect.height / mSprite.getLocalBounds().height);
+    setSize(mSprite, sf::Vector2f(mRect.width, mRect.height));
 }
 
 bool Choice::isInside(sf::Vector2f position) {
@@ -32,11 +32,11 @@ bool Choice::isInside(sf::Vector2f position) {
 void Choice::draw() {
     if (mStatus.isClickable()){
         mSprite.setTexture(mContext.textures->get(isHovering ? mTextureID[1] : mTextureID[0]));
-        mSprite.setColor(sf::Color(255, 255, 255, 255));
     } else {
         mSprite.setTexture(mContext.textures->get(mTextureID[2]));
-        mSprite.setColor(sf::Color(100, 100, 255, 128));
     }
+    setSize(mSprite, sf::Vector2f(mRect.width, mRect.height));
+    mSprite.setPosition(mRect.left, mRect.top);
     mContext.window->draw(mSprite);
     mContext.window->draw(mText);
 }

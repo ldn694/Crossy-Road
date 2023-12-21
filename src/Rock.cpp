@@ -8,6 +8,7 @@
 
 Textures::ID toTextureID(Rock::Type type)
 {
+    //No general return
 	switch (type)
 	{
 	case Rock::Rock1:
@@ -43,6 +44,7 @@ sf::FloatRect Rock::getHitbox() const
 
 unsigned int Rock::getCategory() const
 {
+    //No general return
     switch (mType)
     {
     case Rock1:

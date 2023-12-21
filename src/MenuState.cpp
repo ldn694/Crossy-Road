@@ -26,10 +26,6 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	context.textures->load(Textures::Exit, path + "exit.png");
 	context.textures->load(Textures::Exit_, path + "exit_hover.png");
 
-	context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
-	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
-	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
-
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(0.55, 0.55);
 	
@@ -113,7 +109,7 @@ bool MenuState::handleEvent(const sf::Event& event)
 			switch (announcement.id) {
 				case MenuState::ClickableID::Play: {
 					requestStackPop();
-					requestStackPush(States::Game);
+					requestStackPush(States::GameStart);
 					break;
 				}
 				case MenuState::ClickableID::Set: {
