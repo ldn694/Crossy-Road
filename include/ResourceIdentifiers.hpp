@@ -72,6 +72,10 @@ namespace Textures
 		Land,
 		SettingBackground,
 		Rock1,
+		//River
+		Lily,
+		SmallLog,
+		BigLog,
 		//Cat
 		CatUp,
 		CatDown,

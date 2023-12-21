@@ -5,7 +5,7 @@
 class SRoad : public Road{
 private:
 public:
-    SRoad(const TextureHolder& textures);
+    SRoad(const TextureHolder& textures, Difficulty difficulty);
     void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     
 };

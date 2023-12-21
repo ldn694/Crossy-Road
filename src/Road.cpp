@@ -10,7 +10,7 @@
 //     mType = Road::Railways;
 // }
 
-Road::Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone::Safety safety)
+Road::Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone::Safety safety, Difficulty difficulty)
 {
     mSprite.setTexture(textures.get(ID));
     setSize(mSprite, sf::Vector2f(WITDH_SIZE, HEIGHT_SIZE));
@@ -18,7 +18,7 @@ Road::Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone
     mType = type;
     mSafety = safety;
     for (int i = 0; i < NUM_ZONE; i++) {
-        std::unique_ptr<Zone> zone(new Zone(safety, sf::FloatRect(i * WITDH_SIZE / NUM_ZONE, 0, WITDH_SIZE / NUM_ZONE, HEIGHT_SIZE)));
+        std::unique_ptr<Zone> zone(new Zone(safety, sf::FloatRect(i * WITDH_SIZE / NUM_ZONE, 0, WITDH_SIZE / NUM_ZONE, HEIGHT_SIZE), this));
         mZones.push_back(zone.get());
         requestAttach(std::move(zone));
     }
@@ -26,7 +26,7 @@ Road::Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone
 
 sf::FloatRect Road::getHitbox() const
 {
-    return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+    return getWorldTransform().transformRect(mSprite.getLocalBounds());
 }
 
 Zone* Road::nearestZone(sf::Vector2f position, Zone::Safety safety)
@@ -60,4 +60,10 @@ Zone* Road::randomZone(Zone::Safety safety)
 Zone::Safety Road::getSafety() const
 {
     return mSafety;
+}
+
+void Road::addZone(Zone* zone)
+{
+    mZones.push_back(zone);
+    std::cout << "added zone " << mZones.size() << "\n";
 }
