@@ -5,7 +5,7 @@
 class Railways : public Road{
 private:
 public:
-    Railways(const TextureHolder& textures);
+    Railways(const TextureHolder& textures, Difficulty difficulty);
     void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

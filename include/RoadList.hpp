@@ -2,13 +2,14 @@
 
 #include <SFML/Graphics/View.hpp>
 
+#include "Difficulty.hpp"
 #include "Animal.hpp"
 #include "Road.hpp"
 #include "ResourceIdentifiers.hpp"
 
 class RoadList: public SceneNode{
 public:
-                            RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player);
+                            RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty);
     // Road*                   getFirstRoad();
     // Road*                   getLastRoad();
     virtual void            updateCurrent(sf::Time dt);
@@ -20,14 +21,15 @@ private:
     void                    pop_front();
     Road::Type              getNextType();
 private:
-    Road*                                                           curRoad;
-    Road*                                                           firstRoad;
-    Road*                                                           lastRoad;
-    sf::View                                                        mView;
-    std::map<Road::Type, std::function<std::unique_ptr<Road>()>>	mFactories;
-    const TextureHolder&                                            mTextures;
-    sf::Time                                                        mPeriod;
-    Animal*                                                         mPlayer;
+    Road*                                                                   curRoad;
+    Road*                                                                   firstRoad;
+    Road*                                                                   lastRoad;
+    sf::View                                                                mView;
+    std::map<Road::Type, std::function<std::unique_ptr<Road>()>>	        mFactories;
+    const TextureHolder&                                                    mTextures;
+    sf::Time                                                                mPeriod;
+    Animal*                                                                 mPlayer;
+    Difficulty                                                              mDifficulty;
 };
 
 template <typename T>
@@ -53,7 +55,7 @@ void RoadList::registerRoad(Road::Type roadType)
 {
    // Create a lambda function that returns a new instance of T
     auto factoryFunction = [this]() -> std::unique_ptr<Road> {
-        return std::make_unique<T>(mTextures);
+        return std::make_unique<T>(mTextures, mDifficulty);
     };
 
     // Register the factory function for the specified road type

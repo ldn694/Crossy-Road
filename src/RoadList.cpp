@@ -11,16 +11,18 @@ Road::Type RoadList::getNextType()
     return static_cast<Road::Type>(type);
 }
 
-RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player)
+RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty)
     : mView(view)
     , mTextures(textures)
     , mPeriod(period)
     , mPlayer(player)
+    , mDifficulty(difficulty)
 {
     registerRoad<Railways>(Road::Railways);
 	registerRoad<River>(Road::River);
 	registerRoad<SRoad>(Road::SRoad);
 	registerRoad<Land>(Road::Land);
+
     if (numRoads < 1) return;
     firstRoad = nullptr;
     lastRoad = nullptr;
@@ -33,6 +35,7 @@ RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, s
         Road::Type type = Road::Land;
         if (i > 0) {
             type = getNextType();
+            // type = Road::River;
         }
         std::unique_ptr<Road> road = mFactories[type]();
         road->setPosition(0, -i * road->Road::HEIGHT_SIZE);

@@ -107,7 +107,7 @@ void Animal::updateCurrent(sf::Time dt)
     if (isMoving && !pendingAnimation()) {
         isMoving = false;
         assertThrow(this->getParent() != nullptr, "Animal has no parent");
-        SceneNode* parent = this->getParent();
+        Entity* parent = static_cast<Entity*>(this->getParent());
         if (squaredDistance(mTmpOldPosition, getPosition()) < 1) {//unsuccesful move
             std::cout << "unsuccesful move\n";
             switchParent(this, mZone);
@@ -118,6 +118,10 @@ void Animal::updateCurrent(sf::Time dt)
             switchParent(this, mNextZone);
             setPosition(0, 0);
             mZone = mNextZone;
+            if (mZone->getSafety() == Zone::Unsafe) {
+                std::cout << "unsafe zone\n";
+                throw GameStatus(GameStatus::GAME_LOST);
+            }
         }
     }
 }
@@ -130,6 +134,8 @@ bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offs
     SceneNode* parent = this->getParent();
     assertThrow(this->getParent() != nullptr, "Animal has no parent");
     mNextZone = zone;
+    Road* curRoad = static_cast<Road*>(parent->getParent());
+    Road* nextRoad = curRoad->mNextRoad == nullptr ? curRoad->mPreviousRoad : curRoad->mNextRoad;
     mOldPosition = getPosition();
     sf::Vector2f newTmpPosition = parent->getWorldPosition() - tmpNode->getWorldPosition() + getPosition();
     mTmpOldPosition = newTmpPosition;
@@ -155,25 +161,28 @@ void setZone(Animal* player, Zone* zone)
 
 void Animal::move(Direction direction)
 {
+    if (pendingAnimation()) {
+        return;
+    }
     float step = 70.f;
     sf::Time duration = sf::seconds(0.5f);
     Road* nextRoad = nullptr;
     sf::Vector2f offset;
     switch (direction) {
         case Animal::Direction::Left:
-            nextRoad = static_cast<Road*>(mZone->getParent());
+            nextRoad = mZone->getRoad();
             offset = sf::Vector2f(-step, 0.f);
             break;
         case Animal::Direction::Right:
-            nextRoad = static_cast<Road*>(mZone->getParent());
+            nextRoad = mZone->getRoad();
             offset = sf::Vector2f(step, 0.f);
             break;
         case Animal::Direction::Up:
-            nextRoad = static_cast<Road*>(mZone->getParent())->mNextRoad;
+            nextRoad = mZone->getRoad()->mNextRoad;
             offset = sf::Vector2f(0.f, -step);
             break;
         case Animal::Direction::Down:
-            nextRoad = static_cast<Road*>(mZone->getParent())->mPreviousRoad;
+            nextRoad = mZone->getRoad()->mPreviousRoad;
             offset = sf::Vector2f(0.f, step);
             break;
         default:
@@ -184,18 +193,20 @@ void Animal::move(Direction direction)
     }
     Zone* nextSafeZone = nextRoad->nearestZone(getWorldPosition() + offset, Zone::Safe);
     Zone* nextUnsafeZone = nextRoad->nearestZone(getWorldPosition() + offset, Zone::Unsafe);
-    if (nextSafeZone != nullptr) {
-        float distanceToSafe = squaredDistance(nextSafeZone->getWorldPosition(), getWorldPosition() + offset);
-        if (distanceToSafe < 2 * step * step) {
-            if (addAnimalAnimation(nextSafeZone, duration)) {
-                changeDirection(direction);
-            }
-        }
-        return;
+    float distanceToSafe = 100000000;
+    if (nextSafeZone != nullptr && nextSafeZone != mZone) {
+        distanceToSafe = squaredDistance(nextSafeZone->getWorldPosition(), getWorldPosition() + offset);
     }
-    assertThrow(nextUnsafeZone != nullptr, "No unsafe zone");
-    if (addAnimalAnimation(nextUnsafeZone, duration)) {
-        changeDirection(direction);
+    if (distanceToSafe <= step * step) {
+        if (addAnimalAnimation(nextSafeZone, duration)) {
+            changeDirection(direction);
+        }
+    }
+    else {
+        assertThrow(nextUnsafeZone != nullptr, "No unsafe zone");
+        if (addAnimalAnimation(nextUnsafeZone, duration)) {
+            changeDirection(direction);
+        }
     }
     // if (addStaticAnimation(offset, duration)) {
     //     changeDirection(direction);

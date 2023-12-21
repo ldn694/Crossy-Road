@@ -1,8 +1,11 @@
 #pragma once
+#include "Difficulty.hpp"
 #include "Entity.hpp"
 #include "Zone.hpp"
 #include "ResourceIdentifiers.hpp"
 #include <SFML/Graphics/Sprite.hpp>
+
+const bool NO_ATTACHING = false;
 
 class Road : public Entity{
 
@@ -21,13 +24,15 @@ public:
     Road*                      mPreviousRoad;
 
 public:
-                    Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone::Safety safety);
+                    Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone::Safety safety, Difficulty difficulty);
     virtual void    drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const = 0;
     sf::FloatRect   getHitbox() const;
     Zone*           nearestZone(sf::Vector2f position, Zone::Safety safety);
     Zone*           randomZone(Zone::Safety safety);
     template <typename T>
     T*              addZone(std::unique_ptr<T> zone);
+    void            addZone(Zone* zone);
+    void            removeZone(Zone* zone);
     template <typename T>
     T*              addEntity(std::unique_ptr<T> zone);
     Zone::Safety    getSafety() const;

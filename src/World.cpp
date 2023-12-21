@@ -1,5 +1,6 @@
 #include "World.hpp"
 #include "GameStatus.hpp"
+#include "AirEntity.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -29,10 +30,13 @@ World::World(sf::RenderWindow& window)
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
+	// mWorldView.setRotation(45);
 }
 
 void World::update(sf::Time dt)
 {
+	//std::cout << "num scenenode: " << mSceneGraph.countChildren() << std::endl;
+	//std::cout << (mSceneGraph.findChildrenByCategory<Entity>(Category::Player)).size();
 	// Scroll the world, reset player velocity
 	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
 	mPlayerAnimal->setVelocity(0.f, 0.f);
@@ -67,10 +71,15 @@ void World::loadTextures()
 	mTextures.load(Textures::Raptor, "Assets/Images/Raptor.png");
 	mTextures.load(Textures::Desert, "Assets/Images/Desert.png");
 	mTextures.load(Textures::Railways, "Assets/Images/Railways.png");
-	mTextures.load(Textures::River, "Assets/Images/River.png");
+	mTextures.load(Textures::River, "Assets/Images/ForGame/river_log/river0.png"); 
+	sf::Texture& texture = mTextures.get(Textures::River);
+    texture.setRepeated(true);
 	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
 	mTextures.load(Textures::Land, "Assets/Images/Land.png");
 	mTextures.load(Textures::Rock1, "Assets/Images/Rock1.png");
+	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
+	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");
+	mTextures.load(Textures::Lily, "Assets/Images/ForGame/river_log/lily.png");
 }
 
 void World::buildScene()
@@ -96,10 +105,14 @@ void World::buildScene()
 	// //mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
 	// mSceneLayers[Background]->requestAttach(std::move(backgroundSprite));
 
-	mPlayerAnimal = new Animal(Animal::Cat, mTextures, mSceneLayers[Air]);
+	std::unique_ptr<Entity> airEntity(new AirEntity());
+	SceneNode* airNode = airEntity.get();
+	mSceneLayers[Air]->requestAttach(std::move(airEntity));
+
+	mPlayerAnimal = new Animal(Animal::Cat, mTextures, airNode);
 	mPlayerAnimal->setPosition(0, 0);
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(5), mPlayerAnimal));
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(5), mPlayerAnimal, Difficulty::Easy));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
 
@@ -128,8 +141,7 @@ void World::adaptPlayerPosition()
 	sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
 	const float borderDistance = 40.f;
 
-	sf::Vector2f position = mPlayerAnimal->getWorldPosition();
-	if (!viewBounds.contains(position)) {
+	if (intersection(mPlayerAnimal->getHitbox(), viewBounds) < 1) {
 		throw GameStatus::GAME_LOST;
 	}
 	// position.x = std::max(position.x, viewBounds.left + borderDistance);

@@ -104,8 +104,9 @@ sf::Transform SceneNode::getWorldTransform() const
 {
 	sf::Transform transform = sf::Transform::Identity;
 
-	for (const SceneNode* node = this; node != nullptr; node = node->mParent)
+	for (const SceneNode* node = this; node != nullptr; node = node->mParent) {
 		transform = node->getTransform() * transform;
+	}
 
 	return transform;
 }
@@ -116,7 +117,7 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 	if (command.category & getCategory()) {
 		command.action(*this, dt);
 	}
-
+	filterEmptyChildren();
 	// Command children
 	FOREACH(Ptr & child, mChildren) {
 		if (child.get()) {
@@ -127,11 +128,20 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 
 void SceneNode::requestDetach(SceneNode* node)
 {
+	// std::cout << "request detach " << node << "\n";
 	mDetachQueue.push(node);
 }
 
 void SceneNode::detachChildren()
 {
+	// if (!mDetachQueue.empty()) {
+	// 	std::cout << "--------\n";
+	// 	std::cout << "deleting " << this << " " << fromCategoryToString(getCategory()) << "\n";
+	// 	for (int i = 0; i < mChildren.size(); i++) {
+	// 		std::cout << mChildren[i].get() << " ";
+	// 	}
+	// 	std::cout << "\n";
+	// }
 	while (!mDetachQueue.empty()) {
 		SceneNode* child = mDetachQueue.front();
 		mDetachQueue.pop();
@@ -201,7 +211,10 @@ SceneNode* SceneNode::getRoot()
 int SceneNode::countChildren() const
 {
 	int res = mChildren.size();
-	FOREACH(const Ptr & child, mChildren)
-		res += child->countChildren();
+	FOREACH(const Ptr & child, mChildren) {
+		if (child.get()) {
+			res += child->countChildren();
+		}
+	}
 	return res;
 }

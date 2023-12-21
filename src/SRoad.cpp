@@ -3,7 +3,7 @@
 #include "ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-SRoad::SRoad(const TextureHolder& textures) : Road(Textures::SRoad, textures, Road::Type::SRoad, Zone::Safety::Unsafe){
+SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty) : Road(Textures::SRoad, textures, Road::Type::SRoad, Zone::Safety::Safe, difficulty){
 }
 void SRoad::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
