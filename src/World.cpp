@@ -73,7 +73,7 @@ void World::loadTextures()
 	mTextures.load(Textures::Railways, "Assets/Images/Railways.png");
 	mTextures.load(Textures::River, "Assets/Images/ForGame/river_log/river0.png");
 	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
-	mTextures.load(Textures::Land, "Assets/Images/Land.png");
+	mTextures.load(Textures::Land, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light_shadow.png");
 	mTextures.load(Textures::Rock1, "Assets/Images/Rock1.png");
 	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
 	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");
