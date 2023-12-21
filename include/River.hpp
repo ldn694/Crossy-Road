@@ -11,10 +11,11 @@ private:
     sf::Time mPeriod;
     sf::Time mTimeSinceLastSpawn;
     const TextureHolder& textures;
-    std::vector <Zone*> zones;
+    std::vector <FloatingLog*> logs;
 private:
     FloatingLog* addLog(FloatingLog::Type logType, sf::Vector2f position);
 public:
+    ~River();
     River(const TextureHolder& textures, Difficulty difficulty);
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);

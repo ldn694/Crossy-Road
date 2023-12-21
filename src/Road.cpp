@@ -53,7 +53,7 @@ Zone* Road::randomZone(Zone::Safety safety)
     }
     assertThrow(!zones.empty(), "No zone of this safety type");
     int index = rand() % zones.size();
-    std::cout << zones.size() << " " << index << "\n";
+    // std::cout << zones.size() << " " << index << "\n";
     return zones[index];
 }
 
@@ -65,5 +65,12 @@ Zone::Safety Road::getSafety() const
 void Road::addZone(Zone* zone)
 {
     mZones.push_back(zone);
-    std::cout << "added zone " << mZones.size() << "\n";
+    // std::cout << "added zone " << mZones.size() << "\n";
+}
+
+void Road::removeZone(Zone* zone)
+{
+    auto found = std::find_if(mZones.begin(), mZones.end(), [&](Zone* z) { return z == zone; });
+    assertThrow(found != mZones.end(), "Zone not found");
+    mZones.erase(found);
 }

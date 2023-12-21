@@ -197,7 +197,7 @@ void Animal::move(Direction direction)
     if (nextSafeZone != nullptr && nextSafeZone != mZone) {
         distanceToSafe = squaredDistance(nextSafeZone->getWorldPosition(), getWorldPosition() + offset);
     }
-    if (distanceToSafe <= 2 * step * step) {
+    if (distanceToSafe <= step * step) {
         if (addAnimalAnimation(nextSafeZone, duration)) {
             changeDirection(direction);
         }

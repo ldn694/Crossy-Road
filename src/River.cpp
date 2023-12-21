@@ -33,11 +33,22 @@ River::River(const TextureHolder& textures, Difficulty difficulty) : Road(Textur
         float newX = x + log->getHitbox().width + minimumDistance + offsetToNextLog;
         x = newX;
     }
+    attachChildren();
+    mediateNode->attachChildren();
+}
+
+River::~River() {
+    // std::cout << "---------------------\n";
+    // std::cout << "River destroyed\n";
+    // for (int i = 0; i < zones.size(); i++) {
+    //     mediateNode->requestDetach(zones[i]->getParent());
+    // }
 }
 
 FloatingLog* River::addLog(FloatingLog::Type logType, sf::Vector2f position)
 {
     std::unique_ptr<FloatingLog> log(new FloatingLog(logType, position, textures, this));
+    logs.push_back(log.get());
     log->setPosition(position);
     std::vector <Zone*> zones = log->getZones();
     for (int j = 0; j < zones.size(); j++) {
@@ -69,6 +80,23 @@ void River::updateCurrent(sf::Time dt)
         
         }
         addLog(static_cast<FloatingLog::Type>(type), position);
+        mediateNode->attachChildren();
+    }
+    while (true) {
+        int index = -1;
+        for (int i = 0; i < logs.size(); i++) {
+            if (logs[i]->getWorldPosition().x + logs[i]->getHitbox().width < 0 || logs[i]->getWorldPosition().x > WITDH_SIZE) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) break;
+        FloatingLog* log = logs[index];
+        for (int i = 0; i < log->getZones().size(); i++) {
+            removeZone(log->getZones()[i]);
+        }
+        logs.erase(logs.begin() + index);
+        mediateNode->requestDetach(log);
     }
     mediateNode->move(dt / mPeriod * 300 * movementSign, 0);
 }

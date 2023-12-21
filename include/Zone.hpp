@@ -11,6 +11,7 @@ public:
         Unsafe
     };
     Zone(Safety safety, sf::FloatRect hitbox, Road* road);
+    ~Zone();
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     sf::FloatRect getHitbox() const;
     Safety getSafety() const;

@@ -32,6 +32,7 @@ public:
     template <typename T>
     T*              addZone(std::unique_ptr<T> zone);
     void            addZone(Zone* zone);
+    void            removeZone(Zone* zone);
     template <typename T>
     T*              addEntity(std::unique_ptr<T> zone);
     Zone::Safety    getSafety() const;
