@@ -10,7 +10,8 @@ public:
     enum Type {
         Button,
         Slide,
-        Choice
+        Choice,
+        TypeBox,
     };
     enum Action {
         LeftPressed,

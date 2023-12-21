@@ -9,6 +9,7 @@
 
 Textures::ID toTextureID(Aircraft::Type type)
 {
+	//No general return
 	switch (type)
 	{
 	case Aircraft::Eagle:

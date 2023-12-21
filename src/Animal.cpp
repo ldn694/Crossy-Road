@@ -39,7 +39,9 @@ unsigned int Animal::getCategory() const
     return Category::Player;
 }
 
-Textures::ID Animal::toTextureID(Type type, Direction direction) {
+Textures::ID Animal::toTextureID(Type type, Direction direction) 
+{
+    //No general return
     switch (type) {
         case Cat:
             switch (direction) {
