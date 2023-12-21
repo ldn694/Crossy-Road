@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include "River.hpp"
+#include "Land.hpp"
 
 Zone::Zone(Zone::Safety safety, sf::FloatRect hitbox, Road* road):
     mRoad(road)
@@ -9,6 +11,15 @@ Zone::Zone(Zone::Safety safety, sf::FloatRect hitbox, Road* road):
     setPosition(hitbox.left + hitbox.width / 2, hitbox.top + hitbox.height / 2);
     mHitbox = sf::FloatRect(-hitbox.width / 2, -hitbox.height / 2, hitbox.width, hitbox.height);
     mSafety = safety;
+}
+
+Zone::~Zone() {
+    // if (dynamic_cast<River*>(mRoad) != nullptr) {
+    //     std::cout << "River zone deleted\n";
+    // }
+    // if (dynamic_cast<Land*>(mRoad) != nullptr) {
+    //     std::cout << "Land zone deleted\n";
+    // }
 }
 
 sf::FloatRect Zone::getHitbox() const

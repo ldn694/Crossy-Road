@@ -30,10 +30,12 @@ World::World(sf::RenderWindow& window)
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
+	// mWorldView.setRotation(45);
 }
 
 void World::update(sf::Time dt)
 {
+	//std::cout << "num scenenode: " << mSceneGraph.countChildren() << std::endl;
 	//std::cout << (mSceneGraph.findChildrenByCategory<Entity>(Category::Player)).size();
 	// Scroll the world, reset player velocity
 	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
@@ -69,7 +71,7 @@ void World::loadTextures()
 	mTextures.load(Textures::Raptor, "Assets/Images/Raptor.png");
 	mTextures.load(Textures::Desert, "Assets/Images/Desert.png");
 	mTextures.load(Textures::Railways, "Assets/Images/Railways.png");
-	mTextures.load(Textures::River, "Assets/Images/River.png"); 
+	mTextures.load(Textures::River, "Assets/Images/ForGame/river_log/river0.png"); 
 	sf::Texture& texture = mTextures.get(Textures::River);
     texture.setRepeated(true);
 	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
