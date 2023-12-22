@@ -199,7 +199,7 @@ void GameStartState::loadTextures(Context context){
 bool GameStartState::update(sf::Time dt)
 {
 	mClickableList.update(dt);
-	return true;
+	return false;
 }
 
 bool GameStartState::handleEvent(const sf::Event& event)
@@ -210,7 +210,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 		if (announcement.action == Clickable::LeftPressed) {
 			std::cout << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Play){
-                requestStackPop();
+                requestStateClear();
                 State::Info info;
 				info.stringList.push_back(mClickableList.getString(ButtonNames::TypingBox));
 				switch (mChoiceDifficultyIndex)
@@ -307,5 +307,5 @@ bool GameStartState::handleEvent(const sf::Event& event)
 		return false;
 
 
-	return true;
+	return false;
 }

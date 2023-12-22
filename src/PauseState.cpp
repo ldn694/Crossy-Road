@@ -30,7 +30,7 @@ PauseState::PauseState(StateStack& stack, States::ID stateID, Context context, S
 	mClickableList.registerClickable<Button>(Clickable::Type::Button);
 	Clickable::Info info;
 
-	info.floatList = { 260, 300, 130, 130, 10 };
+	info.floatList = { 260, 280, 130, 130, 10 };
 	info.stringList = { "" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
@@ -38,7 +38,7 @@ PauseState::PauseState(StateStack& stack, States::ID stateID, Context context, S
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::BackToMenu, info);
 
-	info.floatList = { 260 + 200, 300, 130, 130, 10 };
+	info.floatList = { 260 + 200, 280, 130, 130, 10 };
 	info.stringList = { "" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
@@ -46,7 +46,7 @@ PauseState::PauseState(StateStack& stack, States::ID stateID, Context context, S
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Continue, info);
 
-	info.floatList = { 260 + 400, 300, 130, 130, 10 };
+	info.floatList = { 260 + 400, 280, 130, 130, 10 };
 	info.stringList = { "" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
@@ -98,7 +98,7 @@ bool PauseState::handleEvent(const sf::Event& event)
 			else if (announcement.id == ButtonNames::Continue) {
 				requestStackPop();
 				State::Info info;
-				requestNotifyState(States::Game, info);
+				//requestNotifyState(States::Game, info);
 			}
 			else if (announcement.id == ButtonNames::Setting) {
 				requestStackPush(States::Setting);

@@ -99,7 +99,7 @@ void World::buildScene()
 	mPlayerAnimal = new Animal(Animal::Cat, mTextures, mSceneLayers[Air]);
 	mPlayerAnimal->setPosition(0, 0);
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(5), mPlayerAnimal));
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(50), mPlayerAnimal));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
 
