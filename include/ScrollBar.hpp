@@ -4,7 +4,7 @@
 class ScrollBar{
     public:
                                   ScrollBar();
-                                  ScrollBar(float x, float y, float width,sf::RenderWindow &window);
+                                  ScrollBar(float x, float y, float width,sf::RenderWindow &window,float z);
     void                          update(sf::RenderWindow& window);
     void                          draw(sf::RenderWindow& window);
     float                         getValue() const;

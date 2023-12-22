@@ -1,6 +1,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
 #include "ScrollBar.hpp"
 
 ScrollBar::ScrollBar()
@@ -8,17 +9,17 @@ ScrollBar::ScrollBar()
     std::cout<<"ScrollBar::default constructor"<<std::endl;
 }
 
-ScrollBar::ScrollBar(float x, float y, float width,sf::RenderWindow &window)
+ScrollBar::ScrollBar(float x, float y, float width,sf::RenderWindow &window,float z)
  {
         bar.setSize(sf::Vector2f(width, 20.f));
         bar.setPosition(x, y);
         bar.setFillColor(sf::Color(200, 200, 200));
 
         slider.setSize(sf::Vector2f(20.f, 20.f));
-        slider.setPosition(x, y);
+        slider.setPosition(z, y);
         slider.setFillColor(sf::Color(100, 100, 100));
         
-        updateBar.setSize(sf::Vector2f(20.f, 20.f));
+        updateBar.setSize(sf::Vector2f(z-x, 20.f));
         updateBar.setPosition(x, y);
         updateBar.setFillColor(sf::Color(100, 100, 100));
         isDragging = false;
@@ -39,7 +40,8 @@ void ScrollBar::update(sf::RenderWindow &window)
                 slider.setPosition(bar.getPosition().x + bar.getSize().x - slider.getSize().x, slider.getPosition().y);
             float diff = slider.getPosition().x - 30.f;
             updateBar.setSize(sf::Vector2f(diff,20.f));
-
+            updateBar.setPosition(bar.getPosition().x,bar.getPosition().y);
+            updateBar.setFillColor(sf::Color(100,100,100));
          }
          
         // Handle mouse press/release events
@@ -88,6 +90,12 @@ void ScrollBar::handleEvent(const sf::Event& event,sf::RenderWindow &window) {
             float diff = slider.getPosition().x - bar.getPosition().x;
             std::cout<<diff<<std::endl;
             updateBar.setSize(sf::Vector2f(diff,20.f));
+            updateBar.setPosition(bar.getPosition().x,bar.getPosition().y);
+            updateBar.setFillColor(sf::Color(100,100,100));
+            // save to text file
+            std::ofstream fout2("Assets/Files/ScrollBar2.txt",std::ios::trunc);
+            fout2<<slider.getPosition().x;
+            fout2.close();
         }
     }
 }

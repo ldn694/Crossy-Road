@@ -10,6 +10,7 @@
 #include <StateIdentifiers.hpp>
 #include "ScrollBar.hpp"
 #include<iostream>
+#include<fstream>
 #include<string>
 
 SettingState::SettingState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
@@ -55,11 +56,30 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Back, info);
 
 	// create 2 ScrollBar
+	// load from file txt
+	std::ifstream fin1("Assets/Files/ScrollBar1.txt");
+	std::ifstream fin2("Assets/Files/ScrollBar2.txt");
+	float a[2];
+	a[0] = a[1] = 600;
+	if(fin1.is_open())
+	{
+        fin1>>a[0];
+	}
+	if(fin2.is_open())
+	{
+		fin2>>a[1];
+	}
+	fin1.close();
+	fin2.close();
 	sf::RenderWindow &window = *getContext().window;
-	ScrollBar x(600.f,270.f,220.f,window);
-	ScrollBar y(600.f,370.f,220.f,window);
+	ScrollBar x(600.f,270.f,220.f,window,a[0]);
+	ScrollBar y(600.f,370.f,220.f,window,a[1]);
 	mSB_Sound = x;
 	mSB_Music = y;
+	mMusic.openFromFile("Assets/Music/CROSSY.wav");
+	mMusic.setLoop(true);
+	mMusic.setVolume(100.f);
+	mMusic.play();
 }
 
 void SettingState::draw()
@@ -79,6 +99,8 @@ void SettingState::draw()
 bool SettingState::update(sf::Time dt) 
 {
 	mClickableList.update(dt);
+	float x = mSB_Music.getValue();
+	mMusic.setVolume(100.f*x);
 	return true;
 }
 

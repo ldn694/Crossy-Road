@@ -33,4 +33,5 @@ class SettingState : public State{
         ClickableList           mClickableList;
         std::size_t             mChoiceIndex;
         ScrollBar               mSB_Sound,mSB_Music;
+        sf::Music               mMusic;
 };
