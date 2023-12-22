@@ -15,7 +15,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts,backgroundmusic)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
 
@@ -26,6 +26,9 @@ Application::Application()
 	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
 	mTextures.load(Textures::M1, "Assets/Images/M1.PNG");
 	mTextures.load(Textures::M2, "Assets/Images/M2.PNG");
+    backgroundmusic.openFromFile("Assets/Music/CROSSY.wav");
+	backgroundmusic.setLoop(true);
+	backgroundmusic.setVolume(50.f);
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
@@ -39,6 +42,7 @@ void Application::run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	backgroundmusic.play();
 
 	while (mWindow.isOpen())
 	{

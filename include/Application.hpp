@@ -8,6 +8,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Audio.hpp>
 
 
 class Application
@@ -33,6 +34,7 @@ class Application
 		TextureHolder			mTextures;
 	  	FontHolder				mFonts;
 		// Player					mPlayer;
+		sf::Music               backgroundmusic;
 
 		StateStack				mStateStack;
 

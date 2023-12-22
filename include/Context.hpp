@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Audio.hpp>
 #include "StateIdentifiers.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
@@ -7,10 +8,11 @@
 
 struct Context
 {
-                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts);
+                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts,sf::Music &backgroundmusic);
 
     sf::RenderWindow*	window;
     TextureHolder*		textures;
     FontHolder*			fonts;
     //Player*				player;
+    sf::Music*          backgroundmusic;
 };

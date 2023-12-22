@@ -76,10 +76,10 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	ScrollBar y(600.f,370.f,220.f,window,a[1]);
 	mSB_Sound = x;
 	mSB_Music = y;
-	mMusic.openFromFile("Assets/Music/CROSSY.wav");
-	mMusic.setLoop(true);
-	mMusic.setVolume(100.f);
-	mMusic.play();
+	//mMusic.openFromFile("Assets/Music/CROSSY.wav");
+	//mMusic.setLoop(true);
+	//mMusic.setVolume(100.f);
+	//mMusic.play();
 }
 
 void SettingState::draw()
@@ -100,7 +100,7 @@ bool SettingState::update(sf::Time dt)
 {
 	mClickableList.update(dt);
 	float x = mSB_Music.getValue();
-	mMusic.setVolume(100.f*x);
+	getContext().backgroundmusic->setVolume(100.f*x);
 	return true;
 }
 
