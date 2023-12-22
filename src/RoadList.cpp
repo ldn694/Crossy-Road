@@ -26,15 +26,27 @@ int getNumType(Road::Type type)
     return 0;
 }
 
-void RoadList::addRirvers(int numRivers, const TextureHolder& textures)
-{
-    //last and first road must not be stable
-    for (int i = 0; i < numRivers; i++) {
-        Road::Type type = Road::River;
-        std::unique_ptr<Road> road = mFactories[type](0);
-        road->setPosition(0, lastRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
-        push_back(std::move(road));
+std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 1) {
+    Road::Type type = Road::Land;
+    if (i > 0) {
+        type = getNextType();
+        // type = Road::Land;
     }
+    int variant = rand() % getNumType(type);
+    if (type == Road::Land) {
+        if (pre != Road::Land) {
+            variant = Land::Start;
+        }
+        else {
+            variant = Land::Normal;
+        }
+    }
+    if (i == 0) {
+        type = Road::Land;
+        variant = Land::Empty;
+    }
+    pre = type;
+    return std::make_pair(type, variant);
 }
 
 RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty)
@@ -48,28 +60,23 @@ RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, s
 	registerRoad<River>(Road::River);
 	registerRoad<SRoad>(Road::SRoad);
 	registerRoad<Land>(Road::Land);
-
+    pre = Road::Land;
     if (numRoads < 1) return;
     firstRoad = nullptr;
     lastRoad = nullptr;
+    Road::Type pre = Road::Land;
     for (int i = 0; i < numRoads; i++)
     {
         // while (i == midID && type == Road::River) {
         //     type = getNextType();
         // }
-        Road::Type type = Road::Land;
-        if (i > 0) {
-            type = getNextType();
-            // type = Road::Land;
-        }
-        int variant = rand() % getNumType(type);
-        if (i == 0) {
-            type = Road::Land;
-            variant = 0;
-        }
+        std::pair <Road::Type, int> pair = getNextRoadInfo(i);
+        Road::Type type = pair.first;
+        int variant = pair.second;
         std::unique_ptr<Road> road = mFactories[type](variant);
         road->setPosition(0, -i * road->Road::HEIGHT_SIZE);
         push_back(std::move(road));
+        pre = type;
     }
     Zone* firstZone = firstRoad->randomZone(Zone::Safe);
     switchParent(player, firstZone);
@@ -80,8 +87,10 @@ void RoadList::updateCurrent(sf::Time dt)
 {
     if (lastRoad->getParent() == this && firstRoad->getWorldPosition().y > mView.getCenter().y + mView.getSize().y / 2 + firstRoad->HEIGHT_SIZE / 2) {
         pop_front();
-        Road::Type type = getNextType();
-        std::unique_ptr<Road> road = mFactories[type](0);
+        std::pair <Road::Type, int> pair = getNextRoadInfo();
+        Road::Type type = pair.first;
+        int variant = pair.second;
+        std::unique_ptr<Road> road = mFactories[type](variant);
         road->setPosition(0, lastRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
         push_back(std::move(road));
     }

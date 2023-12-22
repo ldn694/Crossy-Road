@@ -188,7 +188,7 @@ std::unique_ptr<SceneNode>& SceneNode::findDirectChild(SceneNode* child)
 	return *found;
 }
 
-void switchParent(SceneNode* child, SceneNode* newParent)
+void switchParent(SceneNode* child, SceneNode* newParent, bool atFront)
 {
 	SceneNode* oldParent = child->getParent();
 	assertThrow(newParent != nullptr, "newParent is nullptr");
@@ -204,7 +204,12 @@ void switchParent(SceneNode* child, SceneNode* newParent)
 	childPtr.release();
 	std::unique_ptr<SceneNode> childPtrCopy(child);
 	// oldParent->requestDetach(child);
-	newParent->requestAttach(std::move(childPtrCopy));
+	if (atFront) {
+		newParent->requestAttachAtFront(std::move(childPtrCopy));
+	}
+	else {
+		newParent->requestAttach(std::move(childPtrCopy));
+	}
 	newParent->attachChildren();
 }
 

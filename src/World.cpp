@@ -75,8 +75,12 @@ void World::loadTextures()
 	mTextures.load(Textures::RiverLeftToRight, "Assets/Images/ForGame/river_log/river0.png");
 	mTextures.load(Textures::RiverRightToLeft, "Assets/Images/ForGame/river_log/river1.png");
 	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
-	mTextures.load(Textures::Land, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light_shadow.png");
-	mTextures.load(Textures::Rock1, "Assets/Images/Rock1.png");
+	mTextures.load(Textures::StartLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light_shadow.png");
+	mTextures.load(Textures::NormalLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light.png");
+	mTextures.load(Textures::Rock1, "Assets/Images/ForGame/sidewalk_stuff/rock.png");
+	mTextures.load(Textures::SmallTree, "Assets/Images/ForGame/sidewalk_stuff/tree_small.png");
+	mTextures.load(Textures::MediumTree, "Assets/Images/ForGame/sidewalk_stuff/tree_medium.png");
+	mTextures.load(Textures::BigTree, "Assets/Images/ForGame/sidewalk_stuff/tree_big.png");
 	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
 	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");
 	mTextures.load(Textures::Lily, "Assets/Images/ForGame/river_log/lily.png");
@@ -112,7 +116,7 @@ void World::buildScene()
 	mPlayerAnimal = new Animal(Animal::Cat, mTextures, airNode);
 	mPlayerAnimal->setPosition(0, 0);
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, sf::seconds(3), mPlayerAnimal, Difficulty::Easy));
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(3), mPlayerAnimal, Difficulty::Easy));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
 

@@ -34,7 +34,7 @@ Zone::Safety Zone::getSafety() const
 
 void Zone::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    //draw hitbox
+    // draw hitbox
     // sf::FloatRect rect = mHitbox;
     // sf::RectangleShape hitbox = sf::RectangleShape();
     // hitbox.setSize(sf::Vector2f(rect.width, rect.height));

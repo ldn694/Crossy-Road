@@ -134,12 +134,16 @@ bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offs
     SceneNode* parent = this->getParent();
     assertThrow(this->getParent() != nullptr, "Animal has no parent");
     mNextZone = zone;
-    Road* curRoad = static_cast<Road*>(parent->getParent());
-    Road* nextRoad = curRoad->mNextRoad == nullptr ? curRoad->mPreviousRoad : curRoad->mNextRoad;
+    Road* curRoad = mZone->getRoad();
+    Road* nextRoad = mNextZone->getRoad();
     mOldPosition = getPosition();
-    sf::Vector2f newTmpPosition = parent->getWorldPosition() - tmpNode->getWorldPosition() + getPosition();
+    SceneNode* tmpZone = mZone;
+    if (curRoad != nextRoad) {
+        tmpZone = tmpNode;
+    }
+    sf::Vector2f newTmpPosition = parent->getWorldPosition() - tmpZone->getWorldPosition() + getPosition();
     mTmpOldPosition = newTmpPosition;
-    switchParent(this, tmpNode);
+    switchParent(this, tmpZone);
     setPosition(newTmpPosition);
     addDynamicAnimation(zone, duration, offset);
     isMoving = true;
