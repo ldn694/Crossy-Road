@@ -8,7 +8,7 @@
 
 
 
-Land::Land(const TextureHolder& textures, Difficulty difficulty) : Road(Textures::Land, textures, Road::Type::Land, Zone::Safety::Safe, difficulty){
+Land::Land(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(Textures::Land, textures, Road::Type::Land, Zone::Safety::Safe, difficulty){
     int numberRocks = rand() % (MAX_NUMBER_ROCKS + 1);
     for (int i = 0; i < numberRocks; i++){
         int type = rand() % Rock::NumTypes;

@@ -11,6 +11,17 @@ Road::Type RoadList::getNextType()
     return static_cast<Road::Type>(type);
 }
 
+void RoadList::addRirvers(int numRivers, const TextureHolder& textures)
+{
+    //last and first road must not be stable
+    for (int i = 0; i < numRivers; i++) {
+        Road::Type type = Road::River;
+        std::unique_ptr<Road> road = mFactories[type](0);
+        road->setPosition(0, lastRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
+        push_back(std::move(road));
+    }
+}
+
 RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty)
     : mView(view)
     , mTextures(textures)
@@ -26,7 +37,6 @@ RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, s
     if (numRoads < 1) return;
     firstRoad = nullptr;
     lastRoad = nullptr;
-    int midID = numRoads / 2;
     for (int i = 0; i < numRoads; i++)
     {
         // while (i == midID && type == Road::River) {
@@ -37,7 +47,7 @@ RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, s
             type = getNextType();
             // type = Road::River;
         }
-        std::unique_ptr<Road> road = mFactories[type]();
+        std::unique_ptr<Road> road = mFactories[type](rand() % River::NumRiverVariants);
         road->setPosition(0, -i * road->Road::HEIGHT_SIZE);
         push_back(std::move(road));
     }
@@ -51,7 +61,7 @@ void RoadList::updateCurrent(sf::Time dt)
     if (lastRoad->getParent() == this && firstRoad->getWorldPosition().y > mView.getCenter().y + mView.getSize().y / 2 + firstRoad->HEIGHT_SIZE / 2) {
         pop_front();
         Road::Type type = getNextType();
-        std::unique_ptr<Road> road = mFactories[type]();
+        std::unique_ptr<Road> road = mFactories[type](0);
         road->setPosition(0, lastRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
         push_back(std::move(road));
     }

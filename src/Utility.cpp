@@ -64,3 +64,7 @@ void assertThrow(bool expression, std::string message) {
 		throw std::runtime_error(message);
 	}
 }
+
+int Rand(int l, int r) {
+	return rand() % (r - l + 1) + l;
+}
