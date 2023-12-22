@@ -101,7 +101,14 @@ namespace Textures
 		ZebraUp,
 		ZebraDown,
 		ZebraLeft,
-		ZebraRight
+		ZebraRight,
+		//Pause State
+		BackToMenu,
+		BackToMenu_Hover,
+		Continue,
+		Continue_Hover,
+		Setting,
+		Setting_Hover,
 	};
 }
 

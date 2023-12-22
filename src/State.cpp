@@ -46,3 +46,7 @@ Context State::getContext() const
 {
 	return mContext;
 }
+int State::getStackSize()
+{
+	return mStack->getSize();
+}

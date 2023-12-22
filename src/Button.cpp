@@ -61,3 +61,6 @@ void Button::handleEvent(const sf::Event& event) {
 void Button::update(sf::Time dt) {
 
 }
+sf::String Button::getString() {
+    return mText.getString();
+}

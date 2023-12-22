@@ -96,7 +96,7 @@ void MenuState::draw()
 bool MenuState::update(sf::Time dt)
 {
 	mClickableList.update(dt);
-	return true;
+	return false;
 }
 
 bool MenuState::handleEvent(const sf::Event& event)
@@ -116,8 +116,13 @@ bool MenuState::handleEvent(const sf::Event& event)
 					requestStackPush(States::Setting);
 					break;
 				}
+				case MenuState::ClickableID::Load: {
+					int Size = getStackSize();
+					if (Size != 1) requestStackPop();
+					break;
+				}
 				case MenuState::ClickableID::Exit: {
-					requestStackPop();
+					requestStateClear();
 					break;
 				}
 			}
@@ -138,5 +143,5 @@ bool MenuState::handleEvent(const sf::Event& event)
 		return false;
 
 
-	return true;
+	return false;
 }

@@ -52,6 +52,7 @@ protected:
 	void				requestNotifyState(States::ID stateID, State::Info info);
 	bool 			  	pendingNotification();
 	State::Info 		popNotification();
+	int 				getStackSize();
 
 	Context				getContext() const;
 

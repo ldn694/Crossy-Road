@@ -39,7 +39,7 @@ private:
 
 
 private:
-	sf::Sprite				mBackgroundSprite, mCharacterSprite;
+	sf::Sprite				mCharacterSprite;
 	ClickableList			mClickableList;
 	std::vector<sf::Text>	mTexts;
 	std::size_t				mChoicePlayerIndex, mChoiceDifficultyIndex, mCharacterIndex;

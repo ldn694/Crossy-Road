@@ -61,3 +61,7 @@ void Choice::handleEvent(const sf::Event& event) {
 void Choice::update(sf::Time dt) {
    
 }
+
+sf::String Choice::getString() {
+    return mText.getString();
+}
