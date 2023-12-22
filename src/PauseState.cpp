@@ -91,20 +91,20 @@ bool PauseState::handleEvent(const sf::Event& event)
             if (announcement.id == ButtonNames::BackToMenu) {
 				requestStackPop();
 				requestStackPush(States::Menu);
-				State::Info info;
-				info.stringList = { "Hello from PauseState to MenuState" };
-				requestNotifyState(States::Menu, info);
+				//State::Info info;
+				//info.stringList = { "Hello from PauseState to MenuState" };
+				//requestNotifyState(States::Menu, info);
 			}
 			else if (announcement.id == ButtonNames::Continue) {
 				requestStackPop();
-				State::Info info;
+				//State::Info info;
 				//requestNotifyState(States::Game, info);
 			}
 			else if (announcement.id == ButtonNames::Setting) {
 				requestStackPush(States::Setting);
-				State::Info info;
-				info.stringList = { "Hello from PauseState to SettingState" };
-				requestNotifyState(States::Setting, info);
+				//State::Info info;
+				//info.stringList = { "Hello from PauseState to SettingState" };
+				//requestNotifyState(States::Setting, info);
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
