@@ -18,19 +18,19 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	sf::Texture &texture = context.textures->get(Textures::SettingBackground);
 	sf::Font &font = context.fonts->get(Fonts::Main);
-    context.textures->load(Textures::Sound, "Assets/Images/Play.PNG");
-	context.textures->load(Textures::Sound_, "Assets/Images/Play_.PNG");
-	context.textures->load(Textures::Music, "Assets/Images/Load.PNG");
-	context.textures->load(Textures::Music_, "Assets/Images/Load_.PNG");
-	context.textures->load(Textures::Back, "Assets/Images/Score.PNG");
-	context.textures->load(Textures::Back_, "Assets/Images/Score_.PNG");
+    context.textures->load(Textures::Sound, "Assets/Images/sound.png");
+	context.textures->load(Textures::Sound_, "Assets/Images/sound_hover.png");
+	context.textures->load(Textures::Music, "Assets/Images/music.png");
+	context.textures->load(Textures::Music_, "Assets/Images/music_hover.png");
+	context.textures->load(Textures::Back, "Assets/Images/back.png");
+	context.textures->load(Textures::Back_, "Assets/Images/back_hover.png");
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(1050.0f / mBackgroundSprite.getGlobalBounds().width, 600.0f / mBackgroundSprite.getGlobalBounds().height);
     
 	
 	mClickableList.registerClickable<Button>(Clickable::Type::Button);
 	Clickable::Info info;
-	info.floatList = { 295, 240, 220, 70, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.floatList = { 295, 240, 220, 90, 15 };				//toa do (x,y, +x, +y, scale/10)
 	info.status = Clickable::Status(true, true, true);      //cac trang thai duoc cho phep cua button					
 	info.textureIDList = { Textures::Sound_, Textures::Sound};	//cac nut
 	info.stringList = { "" };
@@ -38,7 +38,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Sound, info);
 
-	info.floatList = {300, 340, 220, 70, 15};
+	info.floatList = {300, 340, 220, 90, 15};
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Music_, Textures::Music };
 	info.stringList = { "" };
@@ -46,7 +46,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Music, info);
 
-	info.floatList = {400, 440, 240, 70, 15};//300
+	info.floatList = {400, 440, 240, 90, 15};//300
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Back_, Textures::Back };
 	info.stringList = { "" };
