@@ -6,6 +6,7 @@
 #include "SettingState.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <SFML/Audio.hpp>
 #include <StateIdentifiers.hpp>
 #include "ScrollBar.hpp"
 #include<iostream>
