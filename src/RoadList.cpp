@@ -11,6 +11,21 @@ Road::Type RoadList::getNextType()
     return static_cast<Road::Type>(type);
 }
 
+int getNumType(Road::Type type)
+{
+    switch (type) {
+    case Road::Railways:
+        return 1;
+    case Road::River:
+        return River::NumRiverVariants;
+    case Road::SRoad:
+        return 1;
+    case Road::Land:
+        return Land::NumLandVariants;
+    }
+    return 0;
+}
+
 void RoadList::addRirvers(int numRivers, const TextureHolder& textures)
 {
     //last and first road must not be stable
@@ -47,7 +62,12 @@ RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, s
             type = getNextType();
             // type = Road::River;
         }
-        std::unique_ptr<Road> road = mFactories[type](rand() % River::NumRiverVariants);
+        int variant = rand() % getNumType(type);
+        if (i == 0) {
+            type = Road::Land;
+            variant = 0;
+        }
+        std::unique_ptr<Road> road = mFactories[type](variant);
         road->setPosition(0, -i * road->Road::HEIGHT_SIZE);
         push_back(std::move(road));
     }
