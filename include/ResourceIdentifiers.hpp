@@ -68,15 +68,14 @@ namespace Textures
 		//
 		Railways,
 		SRoad,
-		RiverLeftToRight,
-		RiverRightToLeft,
-		Land,
-		SettingBackground,
-		Rock1,
 		//River
-		Lily,
-		SmallLog,
-		BigLog,
+		RiverLeftToRight, RiverRightToLeft,
+		Lily, SmallLog, BigLog,
+		//Land
+		NormalLand, StartLand,
+		Rock1,
+		SmallTree, MediumTree, BigTree,
+		SettingBackground,
 		//Cat
 		CatUp,
 		CatDown,

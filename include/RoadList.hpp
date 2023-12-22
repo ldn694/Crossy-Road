@@ -16,13 +16,14 @@ public:
     template <typename T>
     void                    registerRoad(Road::Type roadType);
 private:
-    void                    addRirvers(int numRivers, const TextureHolder& textures);
+    std::pair <Road::Type, int> getNextRoadInfo(int i);
 
     template <typename T>
     void                    push_back(std::unique_ptr<T> road);
     void                    pop_front();
     Road::Type              getNextType();
 private:
+    Road::Type                                                              pre;
     Road*                                                                   curRoad;
     Road*                                                                   firstRoad;
     Road*                                                                   lastRoad;

@@ -13,7 +13,7 @@
 Road::Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone::Safety safety, Difficulty difficulty)
 {
     mSprite.setTexture(textures.get(ID));
-    setSize(mSprite, sf::Vector2f(WITDH_SIZE, HEIGHT_SIZE));
+    setSize(mSprite, sf::Vector2f(WITDH_SIZE, HEIGHT_SIZE + 2));
     setOrigin(0, 0);
     mType = type;
     mSafety = safety;
