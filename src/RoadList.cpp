@@ -60,7 +60,7 @@ RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, s
         Road::Type type = Road::Land;
         if (i > 0) {
             type = getNextType();
-            // type = Road::River;
+            // type = Road::Land;
         }
         int variant = rand() % getNumType(type);
         if (i == 0) {

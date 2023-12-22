@@ -19,7 +19,6 @@ int Land::getNumberRocks(Variant variant){
 
 Land::Land(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(Textures::Land, textures, Road::Type::Land, Zone::Safety::Safe, difficulty){
     int numberRocks = getNumberRocks(static_cast<Variant>(variant));
-    std::cout << numberRocks << " " << NUM_ZONE << "\n";
     std::vector <int> index = randomIntSampling(NUM_ZONE, numberRocks);
     for (int i = 0; i < numberRocks; i++){
         int type = rand() % Rock::NumTypes;

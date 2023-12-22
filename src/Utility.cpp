@@ -73,7 +73,7 @@ int Rand(int l, int r) {
 std::vector <int> randomIntSampling(int n, int k) {
     assert(0 <= k && k <= n);
     std::vector <int> s;
-    for (int i = 1; i <= n; i++) {
+    for (int i = 0; i < n; i++) {
         s.push_back(i);
     }
     std::vector <int> res = randomSampling<int>(s, k);
