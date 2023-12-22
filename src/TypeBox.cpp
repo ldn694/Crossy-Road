@@ -133,3 +133,6 @@ void TypeBox::update(sf::Time dt) {
         mCursor.setFillColor(sf::Color::Transparent);
     }
 }
+sf::String TypeBox::getString() {
+    return mPlayerName;
+}

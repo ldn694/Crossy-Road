@@ -49,6 +49,7 @@ public:
 	State::Info			popNotification(States::ID stateID);
 
 	bool				isEmpty() const;
+	int					getSize() const;
 
 
 private:

@@ -25,6 +25,7 @@ public:
     void                        setClickable(int id, bool clickable);
     void                        setDrawable(int id, bool drawable);
     void                        setHoverable(int id, bool hoverable);
+    sf::String                  getString(int id);
 
 
     void                        addClickable(Clickable::Type clickableType, int id, Clickable::Info info);

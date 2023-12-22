@@ -124,3 +124,6 @@ StateStack::PendingChange::PendingChange(Action action, States::ID stateID, Stat
 	this->stateID = stateID;
 	this->info = info;
 }
+int StateStack::getSize() const {
+	return mStack.size();
+}
