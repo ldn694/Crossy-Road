@@ -29,4 +29,6 @@ float squaredDistance(sf::Vector2f v1, sf::Vector2f v2);
 
 void assertThrow(bool expression, std::string message);
 
+int Rand(int l, int r);
+
 #include "Utility.inl"

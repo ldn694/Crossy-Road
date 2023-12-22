@@ -16,6 +16,8 @@ public:
     template <typename T>
     void                    registerRoad(Road::Type roadType);
 private:
+    void                    addRirvers(int numRivers, const TextureHolder& textures);
+
     template <typename T>
     void                    push_back(std::unique_ptr<T> road);
     void                    pop_front();
@@ -25,7 +27,7 @@ private:
     Road*                                                                   firstRoad;
     Road*                                                                   lastRoad;
     sf::View                                                                mView;
-    std::map<Road::Type, std::function<std::unique_ptr<Road>()>>	        mFactories;
+    std::map<Road::Type, std::function<std::unique_ptr<Road>(int)>>	        mFactories;
     const TextureHolder&                                                    mTextures;
     sf::Time                                                                mPeriod;
     Animal*                                                                 mPlayer;
@@ -51,8 +53,8 @@ template <typename T>
 void RoadList::registerRoad(Road::Type roadType)
 {
    // Create a lambda function that returns a new instance of T
-    auto factoryFunction = [this]() -> std::unique_ptr<Road> {
-        return std::make_unique<T>(mTextures, mDifficulty);
+    auto factoryFunction = [this](int variant) -> std::unique_ptr<Road> {
+        return std::make_unique<T>(mTextures, mDifficulty, variant);
     };
 
     // Register the factory function for the specified road type

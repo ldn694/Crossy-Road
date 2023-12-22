@@ -68,7 +68,8 @@ namespace Textures
 		//
 		Railways,
 		SRoad,
-		River,
+		RiverLeftToRight,
+		RiverRightToLeft,
 		Land,
 		SettingBackground,
 		Rock1,

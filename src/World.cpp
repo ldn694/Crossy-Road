@@ -31,6 +31,7 @@ World::World(sf::RenderWindow& window)
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
 	// mWorldView.setRotation(45);
+	// mWorldView.move(200, 0);
 }
 
 void World::update(sf::Time dt)
@@ -71,9 +72,10 @@ void World::loadTextures()
 	mTextures.load(Textures::Raptor, "Assets/Images/Raptor.png");
 	mTextures.load(Textures::Desert, "Assets/Images/Desert.png");
 	mTextures.load(Textures::Railways, "Assets/Images/Railways.png");
-	mTextures.load(Textures::River, "Assets/Images/ForGame/river_log/river0.png");
+	mTextures.load(Textures::RiverLeftToRight, "Assets/Images/ForGame/river_log/river0.png");
+	mTextures.load(Textures::RiverRightToLeft, "Assets/Images/ForGame/river_log/river1.png");
 	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
-	mTextures.load(Textures::Land, "Assets/Images/Land.png");
+	mTextures.load(Textures::Land, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light_shadow.png");
 	mTextures.load(Textures::Rock1, "Assets/Images/Rock1.png");
 	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
 	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");

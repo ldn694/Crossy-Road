@@ -4,6 +4,13 @@
 #include "FloatingLog.hpp"
 
 class River : public Road{
+public:
+    enum Variant{
+        LeftToRight,
+        RightToLeft,
+        Stable,
+        NumRiverVariants
+    };
 private:
     int movementSign;
     SceneNode* mediateNode;
@@ -16,7 +23,7 @@ private:
     FloatingLog* addLog(FloatingLog::Type logType, sf::Vector2f position);
 public:
     ~River();
-    River(const TextureHolder& textures, Difficulty difficulty);
+    River(const TextureHolder& textures, Difficulty difficulty, int variant);
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
 };
