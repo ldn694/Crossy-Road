@@ -1,13 +1,13 @@
 #pragma once
 #include"State.hpp"
 
-
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "Button.hpp"
 #include "Choice.hpp"
 #include "ClickableList.hpp"
-
+#include "ScrollBar.hpp"
 class SettingState : public State{
     public:
                                 SettingState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
@@ -32,4 +32,5 @@ class SettingState : public State{
 		std::size_t				mOptionIndex;
         ClickableList           mClickableList;
         std::size_t             mChoiceIndex;
+        ScrollBar               mSB_Sound,mSB_Music;
 };

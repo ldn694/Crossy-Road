@@ -25,6 +25,7 @@ add_executable(CrossyRoad
     src/PauseState.cpp
     src/Player.cpp
     src/SceneNode.cpp
+    src/ScrollBar.cpp
     src/SettingState.cpp
     src/SpriteNode.cpp
     src/State.cpp
@@ -45,7 +46,7 @@ add_executable(CrossyRoad
     src/SRoad.cpp
     src/Land.cpp
     )
-target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
+target_link_libraries(CrossyRoad PRIVATE sfml-graphics sfml-audio)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
 
 if(WIN32)

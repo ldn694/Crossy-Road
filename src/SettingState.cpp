@@ -7,12 +7,12 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <StateIdentifiers.hpp>
-
+#include "ScrollBar.hpp"
 #include<iostream>
 #include<string>
 
 SettingState::SettingState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
-	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context)
+	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context),mSB_Sound(),mSB_Music()
 {
 
 	sf::Texture &texture = context.textures->get(Textures::SettingBackground);
@@ -52,6 +52,13 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Back, info);
+
+	// create 2 ScrollBar
+	sf::RenderWindow &window = *getContext().window;
+	ScrollBar x(600.f,270.f,220.f,window);
+	ScrollBar y(600.f,370.f,220.f,window);
+	mSB_Sound = x;
+	mSB_Music = y;
 }
 
 void SettingState::draw()
@@ -64,6 +71,8 @@ void SettingState::draw()
 	FOREACH(const sf::Text &text, mOptions)
 	window.draw(text);
 	mClickableList.draw();
+	mSB_Sound.draw(window);
+	mSB_Music.draw(window);
 }
 
 bool SettingState::update(sf::Time dt) 
@@ -74,6 +83,11 @@ bool SettingState::update(sf::Time dt)
 
 bool SettingState::handleEvent(const sf::Event &event)
 {
+	sf::RenderWindow &window = *getContext().window;
+	mSB_Sound.handleEvent(event,window);
+    mSB_Music.handleEvent(event,window);
+	//mSB_Sound.update(window);
+	//mSB_Music.update(window);
 	mClickableList.handleEvent(event);
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
