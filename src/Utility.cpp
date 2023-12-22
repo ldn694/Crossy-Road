@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <cassert>
+#include <vector>
 #include <iostream>
 
 
@@ -67,4 +68,15 @@ void assertThrow(bool expression, std::string message) {
 
 int Rand(int l, int r) {
 	return rand() % (r - l + 1) + l;
+}
+
+std::vector <int> randomIntSampling(int n, int k) {
+    assert(0 <= k && k <= n);
+    std::vector <int> s;
+    for (int i = 1; i <= n; i++) {
+        s.push_back(i);
+    }
+    std::vector <int> res = randomSampling<int>(s, k);
+    sort(res.begin(), res.end());
+    return res;
 }

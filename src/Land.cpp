@@ -7,12 +7,22 @@
 #include <stdlib.h>
 
 
+int Land::getNumberRocks(Variant variant){
+    switch (variant){
+    case Land::Variant::Empty:
+        return 0;
+    case Land::Variant::Normal:
+        return rand() % (MAX_NUMBER_ROCKS + 1);
+    }
+    return 0;
+}
 
 Land::Land(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(Textures::Land, textures, Road::Type::Land, Zone::Safety::Safe, difficulty){
-    int numberRocks = rand() % (MAX_NUMBER_ROCKS + 1);
+    int numberRocks = getNumberRocks(static_cast<Variant>(variant));
+    std::cout << numberRocks << " " << NUM_ZONE << "\n";
+    std::vector <int> index = randomIntSampling(NUM_ZONE, numberRocks);
     for (int i = 0; i < numberRocks; i++){
         int type = rand() % Rock::NumTypes;
-        float x = rand() % 500 + 1;
         Rock::Type rockType;
         switch (type){
         case 0:
@@ -20,7 +30,7 @@ Land::Land(const TextureHolder& textures, Difficulty difficulty, int variant) : 
             break;
         }
         std::unique_ptr<Rock> rock(new Rock(rockType, textures));
-        rock->setPosition(x, HEIGHT_SIZE / 2.0f);
+        rock->setPosition(mZones[index[i]]->getPosition());
         addEntity(std::move(rock));
     }
 }
