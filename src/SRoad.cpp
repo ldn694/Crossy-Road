@@ -23,20 +23,20 @@ Car::Type getRandCarType(int movementSign) {
 }
 
 SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(), textures, Road::Type::SRoad, Zone::Safety::Safe, difficulty), textures(textures) {
-    sf::Time basePeriodTime = sf::seconds(2.0f);
+    sf::Time basePeriodTime = sf::seconds(2.5f);
     int numPartionPeriod;
     switch (difficulty) {
     case Difficulty::Easy:
-        numPartionPeriod = Rand(25, 30);
+        numPartionPeriod = Rand(80, 90);
         break;
     case Difficulty::Medium:
-        numPartionPeriod = Rand(20, 25);
+        numPartionPeriod = Rand(60, 70);
         break;
     case Difficulty::Hard:
-        numPartionPeriod = Rand(15, 20);
+        numPartionPeriod = Rand(40, 50);
         break;
     }
-    mPeriod = basePeriodTime * (numPartionPeriod / 30.f);
+    mPeriod = basePeriodTime * (numPartionPeriod / 100.f);
     switch (variant) {
     case SRoad::LeftToRight:
         movementSign = 1;

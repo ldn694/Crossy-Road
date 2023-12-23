@@ -14,7 +14,7 @@ public:
 private:
     int movementSign;
     SceneNode* mediateNode;
-    const int maximumLog = 5;
+    const int maximumLog = 7;
     sf::Time mPeriod;
     sf::Time mTimeSinceLastSpawn;
     const TextureHolder& textures;
