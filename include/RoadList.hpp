@@ -9,7 +9,7 @@
 
 class RoadList: public SceneNode{
 public:
-                            RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty);
+                            RoadList(const TextureHolder& textures, sf::View& view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty);
     // Road*                   getFirstRoad();
     // Road*                   getLastRoad();
     virtual void            updateCurrent(sf::Time dt);
@@ -27,7 +27,7 @@ private:
     Road*                                                                   curRoad;
     Road*                                                                   firstRoad;
     Road*                                                                   lastRoad;
-    sf::View                                                                mView;
+    sf::View&                                                               mView;
     std::map<Road::Type, std::function<std::unique_ptr<Road>(int)>>	        mFactories;
     const TextureHolder&                                                    mTextures;
     sf::Time                                                                mPeriod;

@@ -49,7 +49,7 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 1) {
     return std::make_pair(type, variant);
 }
 
-RoadList::RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty)
+RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty)
     : mView(view)
     , mTextures(textures)
     , mPeriod(period)

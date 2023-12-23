@@ -145,6 +145,10 @@ void World::adaptPlayerPosition()
 	sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
 	const float borderDistance = 40.f;
 
+	if (mPlayerAnimal->getWorldPosition().y < viewBounds.top + viewBounds.height * 0.3f) {
+		mWorldView.move(0.f, mPlayerAnimal->getWorldPosition().y - (viewBounds.top + viewBounds.height * 0.3f));
+	}
+
 	if (intersection(mPlayerAnimal->getHitbox(), viewBounds) < 1) {
 		throw GameStatus::GAME_LOST;
 	}
