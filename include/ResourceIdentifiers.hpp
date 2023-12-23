@@ -67,7 +67,6 @@ namespace Textures
 		Lion,
 		//
 		Railways,
-		SRoad,
 		//River
 		RiverLeftToRight, RiverRightToLeft,
 		Lily, SmallLog, BigLog,
@@ -76,6 +75,10 @@ namespace Textures
 		Rock1,
 		SmallTree, MediumTree, BigTree,
 		SettingBackground,
+		//SRoad
+		RedCarRight, RedCarLeft,
+		BlueCarRight, BlueCarLeft,
+		SRoad_Default, SRoad_Line, SRoad_Stripe,
 		//Cat
 		CatUp,
 		CatDown,

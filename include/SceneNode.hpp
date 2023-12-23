@@ -33,7 +33,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		void						requestAttach(Ptr child);
 		void						requestAttachAtFront(Ptr child);
 		void						filterEmptyChildren();
-		friend void					switchParent(SceneNode* child, SceneNode* newParent, bool atFront = false);
+		friend void					switchParent(SceneNode* child, SceneNode* newParent);
 		
 		void					update(sf::Time dt);
 

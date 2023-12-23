@@ -6,7 +6,7 @@
 
 
 Road::Type RoadList::getNextType()
-{
+{   
     int type = rand() % Road::TypeCount;
     return static_cast<Road::Type>(type);
 }
@@ -19,7 +19,7 @@ int getNumType(Road::Type type)
     case Road::River:
         return River::NumRiverVariants;
     case Road::SRoad:
-        return 1;
+        return SRoad::NumSRoadVariants;
     case Road::Land:
         return Land::NumLandVariants;
     }
