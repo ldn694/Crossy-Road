@@ -59,7 +59,20 @@ void Tree::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 
 sf::FloatRect Tree::getHitbox() const
 {
-    return getWorldTransform().transformRect(sf::FloatRect(-25, -15, 50, 30));
+    sf::FloatRect rect;
+    switch (mType) {
+    case SmallTree:
+        rect = sf::FloatRect(-20, -25, 20, 10);
+        break;
+    case MediumTree:
+        rect = sf::FloatRect(-20, -15, 20, 20);
+        break;
+    case BigTree:
+        rect = sf::FloatRect(-15, -15, 20, 20);
+        break;
+    }
+
+    return getWorldTransform().transformRect(rect);
 }
 
 unsigned int Tree::getCategory() const

@@ -12,7 +12,7 @@ class Animal: public Entity {
         enum Type {
             Cat,
             Chicken,
-            Zebra,
+            Lion,
             Pig,
             Fox,
             NumAnimalTypes
@@ -31,6 +31,7 @@ class Animal: public Entity {
         sf::FloatRect			getHitbox() const;
         void                    move(Direction direction);
         friend void             setZone(Animal* player, Zone* zone);
+        void                    setMovementDuration(sf::Time duration);
     
     private:
         virtual void            updateCurrent(sf::Time dt);
@@ -50,4 +51,5 @@ class Animal: public Entity {
         Type					mType;
         Direction               mDirection;
         sf::Sprite				mSprite;
+        sf::Time                mDuration;
 };

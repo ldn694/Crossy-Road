@@ -32,7 +32,7 @@ namespace sf
 class World : private sf::NonCopyable
 {
 	public:
-		explicit							World(sf::RenderWindow& window);
+		explicit							World(sf::RenderWindow& window, Animal::Type playerType, std::string playerName, Difficulty difficulty);
 		void								update(sf::Time dt);
 		void								draw();
 		
@@ -71,4 +71,7 @@ class World : private sf::NonCopyable
 		float								mScrollSpeed;
 		//Aircraft*							mPlayerAircraft;
 		Animal*								mPlayerAnimal;
+		Difficulty							mDifficulty;
+		std::string							mPlayerName;
+		Animal::Type						mPlayerType;
 };
