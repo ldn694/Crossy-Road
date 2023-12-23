@@ -54,6 +54,7 @@ add_executable(CrossyRoad
     src/FloatingLog.cpp
     src/AirEntity.cpp
     src/Tree.cpp
+    src/Car.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

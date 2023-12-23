@@ -93,7 +93,13 @@ void World::loadTextures()
 	mTextures.load(Textures::Railways, "Assets/Images/Railways.png");
 	mTextures.load(Textures::RiverLeftToRight, "Assets/Images/ForGame/river_log/river0.png");
 	mTextures.load(Textures::RiverRightToLeft, "Assets/Images/ForGame/river_log/river1.png");
-	mTextures.load(Textures::SRoad, "Assets/Images/SRoad.png");
+	mTextures.load(Textures::SRoad_Default, "Assets/Images/ForGame/road_car/default.png");
+	mTextures.load(Textures::SRoad_Line, "Assets/Images/ForGame/road_car/line.png");
+	mTextures.load(Textures::SRoad_Stripe, "Assets/Images/ForGame/road_car/stripe.png");
+	mTextures.load(Textures::BlueCarLeft, "Assets/Images/ForGame/road_car/blue_left.png");
+	mTextures.load(Textures::BlueCarRight, "Assets/Images/ForGame/road_car/blue_right.png");
+	mTextures.load(Textures::RedCarLeft, "Assets/Images/ForGame/road_car/red_left.png");
+	mTextures.load(Textures::RedCarRight, "Assets/Images/ForGame/road_car/red_right.png");
 	mTextures.load(Textures::StartLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light_shadow.png");
 	mTextures.load(Textures::NormalLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light.png");
 	mTextures.load(Textures::Rock1, "Assets/Images/ForGame/sidewalk_stuff/rock.png");
