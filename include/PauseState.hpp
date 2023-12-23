@@ -14,8 +14,8 @@ class PauseState : public State
 public:
 	enum ButtonNames
 	{
-		BackToMenu,
-		Continue,
+		Home,
+		Resume,
 		Setting,
 	};
 
