@@ -33,7 +33,8 @@ Difficulty toDifficulty(std::string difficulty) {
 
 GameState::GameState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 : State(stack, stateID, context)
-, mWorld(*context.window, toAnimalType(stateInfo.stringList[2]), stateInfo.stringList[0], toDifficulty(stateInfo.stringList[1]))
+, mWorld(*context.window, context, toAnimalType(stateInfo.stringList[2]), stateInfo.stringList[0], toDifficulty(stateInfo.stringList[1]))
+, mContext(context)
 {
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	std::cerr << "GameState::GameState()\n";
@@ -42,11 +43,18 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 	for (int i = 0; i < stateInfo.floatList.size(); i++) {
 		std::cerr << stateInfo.floatList[i] << " ";
 	}
+	mCurrentScoreText.setFont(context.fonts->get(Fonts::Bungee));
+	setCurrentScore();
+	mCurrentScoreText.setCharacterSize(20);
+	mCurrentScoreText.setFillColor(sf::Color::White);
+	mCurrentScoreText.setPosition(10, 10);
 }
 
 void GameState::draw()
 {
 	mWorld.draw();
+	mContext.window->setView(mContext.window->getDefaultView());
+	mContext.window->draw(mCurrentScoreText);
 }
 
 bool GameState::update(sf::Time dt) {
@@ -54,6 +62,7 @@ bool GameState::update(sf::Time dt) {
 		mWorld.update(dt);
 		CommandQueue& commands = mWorld.getCommandQueue();
 		mPlayer.handleRealtimeInput(commands);
+		setCurrentScore();
 	}
 	catch (GameStatus status) {
 		State::Info info;
@@ -89,4 +98,8 @@ bool GameState::handleEvent(const sf::Event& event)
 		requestStackPush(States::GameOver, info);
 	}
 	return true;
+}
+
+void GameState::setCurrentScore() {
+	mCurrentScoreText.setString("Score: " + std::to_string(mWorld.getCurrentScore()));
 }

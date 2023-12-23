@@ -13,7 +13,7 @@ SceneNode& World::getSceneGraph()
 	return mSceneGraph;
 }
 
-World::World(sf::RenderWindow& window, Animal::Type playerType, std::string playerName, Difficulty difficulty)
+World::World(sf::RenderWindow& window, Context context, Animal::Type playerType, std::string playerName, Difficulty difficulty)
 	: mWindow(window)
 	, mWorldView(window.getDefaultView())
 	, mTextures()

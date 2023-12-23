@@ -30,7 +30,8 @@ Application::Application(sf::ContextSettings settings)
 	mTextures.load(Textures::M2, "Assets/Images/ForMenu/M2.PNG");
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
-	mStatisticsText.setPosition(5.f, 5.f);
+	//top right
+	mStatisticsText.setPosition(1045, 5);
 	mStatisticsText.setCharacterSize(10u);
 
 	registerStates();
@@ -98,6 +99,7 @@ void Application::updateStatistics(sf::Time dt)
 	if (mStatisticsUpdateTime >= sf::seconds(1.0f))
 	{
 		mStatisticsText.setString("FPS: " + toString(mStatisticsNumFrames));
+		mStatisticsText.setOrigin(mStatisticsText.getLocalBounds().width + mStatisticsText.getLocalBounds().left, 0);
 
 		mStatisticsUpdateTime -= sf::seconds(1.0f);
 		mStatisticsNumFrames = 0;

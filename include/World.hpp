@@ -14,10 +14,12 @@
 #include "Command.hpp"
 #include "Player.hpp"
 #include "RoadList.hpp"
+#include "Context.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include <array>
 #include <queue>
@@ -32,7 +34,7 @@ namespace sf
 class World : private sf::NonCopyable
 {
 	public:
-		explicit							World(sf::RenderWindow& window, Animal::Type playerType, std::string playerName, Difficulty difficulty);
+		explicit							World(sf::RenderWindow& window, Context context, Animal::Type playerType, std::string playerName, Difficulty difficulty);
 		void								update(sf::Time dt);
 		void								draw();
 		
