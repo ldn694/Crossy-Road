@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "ScrollBar.hpp"
 
 ScrollBar::ScrollBar()
@@ -9,7 +10,7 @@ ScrollBar::ScrollBar()
     std::cout<<"ScrollBar::default constructor"<<std::endl;
 }
 
-ScrollBar::ScrollBar(float x, float y, float width,sf::RenderWindow &window,float z)
+ScrollBar::ScrollBar(float x, float y, float width,float z,int id)
  {
         bar.setSize(sf::Vector2f(width, 20.f));
         bar.setPosition(x, y);
@@ -23,6 +24,8 @@ ScrollBar::ScrollBar(float x, float y, float width,sf::RenderWindow &window,floa
         updateBar.setPosition(x, y);
         updateBar.setFillColor(sf::Color(100, 100, 100));
         isDragging = false;
+        this->id = id;
+       // std::cout<<this->id<<std::endl;
          
     }
 void ScrollBar::update(sf::RenderWindow &window)
@@ -88,14 +91,16 @@ void ScrollBar::handleEvent(const sf::Event& event,sf::RenderWindow &window) {
             if (slider.getPosition().x + slider.getSize().x > bar.getPosition().x + bar.getSize().x)
                 slider.setPosition(bar.getPosition().x + bar.getSize().x - slider.getSize().x, slider.getPosition().y);
             float diff = slider.getPosition().x - bar.getPosition().x;
-            std::cout<<diff<<std::endl;
+           //std::cout<<diff<<std::endl;
             updateBar.setSize(sf::Vector2f(diff,20.f));
             updateBar.setPosition(bar.getPosition().x,bar.getPosition().y);
             updateBar.setFillColor(sf::Color(100,100,100));
             // save to text file
-            std::ofstream fout2("Assets/Files/ScrollBar2.txt",std::ios::trunc);
-            fout2<<slider.getPosition().x;
-            fout2.close();
+            std::string filename = "Assets/Files/ScrollBar" + std::to_string(this->id) + ".txt";
+            //std::cout<<std::to_string(this->id)<<std::endl;
+            std::ofstream fout(filename,std::ios::trunc);
+            fout<<slider.getPosition().x;
+            fout.close();
         }
     }
 }

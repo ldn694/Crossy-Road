@@ -71,9 +71,11 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	}
 	fin1.close();
 	fin2.close();
-	sf::RenderWindow &window = *getContext().window;
-	ScrollBar x(600.f,270.f,220.f,window,a[0]);
-	ScrollBar y(600.f,370.f,220.f,window,a[1]);
+	int num1 = 1;
+	int num2 = 2;
+	//std::cout<<num1<<" "<<num2<<std::endl;
+	ScrollBar x(600.f,270.f,220.f,a[0],num1);
+	ScrollBar y(600.f,370.f,220.f,a[1],num2);
 	mSB_Sound = x;
 	mSB_Music = y;
 	//mMusic.openFromFile("Assets/Music/CROSSY.wav");
@@ -101,6 +103,9 @@ bool SettingState::update(sf::Time dt)
 	mClickableList.update(dt);
 	float x = mSB_Music.getValue();
 	getContext().backgroundmusic->setVolume(100.f*x);
+	float y = mSB_Sound.getValue();
+	*getContext().mVolume = y;
+	//std::cout<<y<<std::endl;
 	return true;
 }
 

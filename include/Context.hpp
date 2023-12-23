@@ -8,11 +8,12 @@
 
 struct Context
 {
-                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts,sf::Music &backgroundmusic);
+                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts,sf::Music &backgroundmusic,float &mVolume);
 
     sf::RenderWindow*	window;
     TextureHolder*		textures;
     FontHolder*			fonts;
     //Player*				player;
     sf::Music*          backgroundmusic;
+    float*               mVolume;
 };

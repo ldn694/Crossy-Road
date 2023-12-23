@@ -1,10 +1,11 @@
 #pragma once
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <string>
 class ScrollBar{
     public:
                                   ScrollBar();
-                                  ScrollBar(float x, float y, float width,sf::RenderWindow &window,float z);
+                                  ScrollBar(float x, float y, float width,float z,int id);
     void                          update(sf::RenderWindow& window);
     void                          draw(sf::RenderWindow& window);
     float                         getValue() const;
@@ -14,4 +15,5 @@ class ScrollBar{
     sf::RectangleShape slider;
     sf::RectangleShape updateBar;
     bool isDragging;
+    int id;
 };

@@ -35,7 +35,7 @@ class Application
 	  	FontHolder				mFonts;
 		// Player					mPlayer;
 		sf::Music               backgroundmusic;
-
+        float                   mVolume;
 		StateStack				mStateStack;
 
 		sf::Text				mStatisticsText;
