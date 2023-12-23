@@ -7,11 +7,12 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-Animal::Animal(Type type, TextureHolder& textures, SceneNode* tmpNode)
+Animal::Animal(Type type, TextureHolder& textures, SceneNode* tmpNode, int& passedRoad)
     : mType(type)
     , mTextures(textures)
     , mDirection(Down)
     , tmpNode(tmpNode)
+    , passedRoad(passedRoad)
 {
     changeDirection(Down);
 }
@@ -124,6 +125,7 @@ void Animal::updateCurrent(sf::Time dt)
             }
         }
     }
+    passedRoad += mZone->getRoad()->visit();
 }
 
 

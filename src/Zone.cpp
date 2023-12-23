@@ -56,7 +56,7 @@ unsigned int Zone::getCategory() const
     }
 }
 
-Road* Zone::getRoad() const
+Road* Zone::getRoad()
 {
     return mRoad;
 }

@@ -15,7 +15,6 @@ public:
     virtual void            updateCurrent(sf::Time dt);
     template <typename T>
     void                    registerRoad(Road::Type roadType);
-    int                     getCurrentScore();
     const int NUM_ROAD_LEVEL_UP = 40;
 private:
     std::pair <Road::Type, int> getNextRoadInfo(int i);

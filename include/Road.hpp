@@ -36,6 +36,7 @@ public:
     template <typename T>
     T*              addEntity(std::unique_ptr<T> zone);
     Zone::Safety    getSafety() const;
+    bool            visit();
 
 protected:
     sf::Sprite                 mSprite;
@@ -43,6 +44,7 @@ protected:
     Zone::Safety               mSafety;
     std::vector<Zone*>         mZones;
     std::vector<Entity*>       mEntities;
+    bool                       mVisited;
 };
 
 template <typename T>
