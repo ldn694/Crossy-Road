@@ -1,8 +1,10 @@
-chicken
+df
+16
+Player
+13
+hehe
+12
+Player
 10
-pig
-9
-fox
-11
-lion
-76
+Player
+7

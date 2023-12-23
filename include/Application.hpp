@@ -4,6 +4,7 @@
 #include "ResourceIdentifiers.hpp"
 #include "Player.hpp"
 #include "StateStack.hpp"
+#include "Scoreboard.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -32,6 +33,7 @@ class Application
 		sf::RenderWindow		mWindow;
 		TextureHolder			mTextures;
 	  	FontHolder				mFonts;
+		Scoreboard				mScoreboard;
 		// Player					mPlayer;
 
 		StateStack				mStateStack;

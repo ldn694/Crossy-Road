@@ -57,12 +57,21 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Leaderboard, info);
 
+	assertThrow(stateInfo.floatList.size() == 2, "GameOverState: stateInfo.floatList.size() != 2");
+	assertThrow(stateInfo.stringList.size() == 1, "GameOverState: stateInfo.stringList.size() != 1");
+	
+	int score = int(stateInfo.floatList[0]);
+	std::string name = stateInfo.stringList[0];
+	int difficulty = int(stateInfo.floatList[1]);
+
     mResult.setFont(font);
 	mResult.setStyle(sf::Text::Bold);
-    mResult.setString("Your score: " + std::to_string(int(stateInfo.floatList[0])));
+    mResult.setString("Your score: " + std::to_string(score));
     mResult.setCharacterSize(90);
     centerOrigin(mResult);
     mResult.setPosition(0.5f * viewSize.x, 0.2f * viewSize.y);
+
+	context.scoreboard->addNewScore(Difficulty(difficulty), name, score);
 }
 void GameOverState::loadTextures(Context context)
 {
@@ -111,7 +120,7 @@ bool GameOverState::handleEvent(const sf::Event& event)
 				//requestNotifyState(States::Game, info);
 			}
 			else if (announcement.id == ButtonNames::Leaderboard) {
-				requestStackPush(States::Setting);
+				requestStackPush(States::Scoreboard);
 				//State::Info info;
 				//info.stringList = { "Hello from GameOverState to SettingState" };
 				//requestNotifyState(States::Setting, info);

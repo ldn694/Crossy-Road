@@ -35,6 +35,8 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 : State(stack, stateID, context)
 , mWorld(*context.window, context, toAnimalType(stateInfo.stringList[2]), stateInfo.stringList[0], toDifficulty(stateInfo.stringList[1]))
 , mContext(context)
+, mPlayerName(stateInfo.stringList[0])
+, mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	std::cerr << "GameState::GameState()\n";
@@ -66,7 +68,8 @@ bool GameState::update(sf::Time dt) {
 	}
 	catch (GameStatus status) {
 		State::Info info;
-		info.floatList = {float(mWorld.getCurrentScore())};
+		info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
+		info.stringList = {mPlayerName};
 		requestStackPush(States::GameOver, info);
 	}
 	return true;
