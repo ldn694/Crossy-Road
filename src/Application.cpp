@@ -9,6 +9,7 @@
 #include "GameOverState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
+#include "ScoreboardState.hpp"
 #include <iostream>
 
 #include<iostream>
@@ -21,6 +22,10 @@ Application::Application(sf::ContextSettings settings)
 	mWindow.setKeyRepeatEnabled(false);
 	srand(time(NULL));
 	mFonts.load(Fonts::Main, "Assets/Fonts/Sansation.ttf");
+	mFonts.load(Fonts::T1, "Assets/Fonts/Colo-Pro.otf");
+	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
+	mFonts.load(Fonts::Bungee,"Assets/Fonts/Bungee-Regular.otf");
+
 	mTextures.load(Textures::TitleScreen, "Assets/Images/TitleScreen.png");
     mTextures.load(Textures::SettingBackground, "Assets/Images/SettingBackground.png");
 	mFonts.load(Fonts::T1, "Assets/Fonts/Colo-Pro.otf");
@@ -28,6 +33,7 @@ Application::Application(sf::ContextSettings settings)
 	mFonts.load(Fonts::Bungee, "Assets/Fonts/Bungee-Regular.otf");
 	mTextures.load(Textures::M1, "Assets/Images/M1.PNG");
 	mTextures.load(Textures::M2, "Assets/Images/ForMenu/M2.PNG");
+	mTextures.load(Textures::ScoreBoard_Background, "Assets/Images/ForScore/scoreboard.png");
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	//top right
@@ -115,4 +121,5 @@ void Application::registerStates()
 	mStateStack.registerState<PauseState>(States::Pause);
     mStateStack.registerState<SettingState>(States::Setting);
 	mStateStack.registerState<GameOverState>(States::GameOver);
+	mStateStack.registerState<ScoreboardState>(States::Scoreboard);
 }
