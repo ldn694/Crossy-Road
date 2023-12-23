@@ -18,7 +18,7 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	
 	mBackgroundSprite.setTexture(context.textures->get(Textures::GameOverBackground));
 	setSize(mBackgroundSprite, viewSize);
-	mBackgroundSprite.setColor(sf::Color(255, 255, 255, 200));
+	mBackgroundSprite.setColor(sf::Color(255, 255, 255, 220));
 	/*mGameOverdText.setFont(font);
 	mGameOverdText.setString("Game GameOverd");
 	mGameOverdText.setCharacterSize(70);
@@ -58,8 +58,9 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Leaderboard, info);
 
     mResult.setFont(font);
+	mResult.setStyle(sf::Text::Bold);
     mResult.setString("Your score: " + std::to_string(int(stateInfo.floatList[0])));
-    mResult.setCharacterSize(70);
+    mResult.setCharacterSize(90);
     centerOrigin(mResult);
     mResult.setPosition(0.5f * viewSize.x, 0.2f * viewSize.y);
 }
