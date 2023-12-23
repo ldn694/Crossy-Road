@@ -100,10 +100,10 @@ namespace Textures
 		PigLeft,
 		PigRight,
 		//Zebra
-		ZebraUp,
-		ZebraDown,
-		ZebraLeft,
-		ZebraRight,
+		LionUp,
+		LionDown,
+		LionLeft,
+		LionRight,
 		//Pause State
 		BackToMenu,
 		BackToMenu_Hover,

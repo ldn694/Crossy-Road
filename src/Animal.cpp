@@ -65,16 +65,16 @@ Textures::ID Animal::toTextureID(Type type, Direction direction)
                 case Down:
                     return Textures::ChickenDown;
             }
-        case Zebra:
+        case Lion:
             switch (direction) {
                 case Left:
-                    return Textures::ZebraLeft;
+                    return Textures::LionLeft;
                 case Right:
-                    return Textures::ZebraRight;
+                    return Textures::LionRight;
                 case Up:
-                    return Textures::ZebraUp;
+                    return Textures::LionUp;
                 case Down:
-                    return Textures::ZebraDown;
+                    return Textures::LionDown;
             }
         case Pig:
             switch (direction) {
@@ -126,6 +126,8 @@ void Animal::updateCurrent(sf::Time dt)
     }
 }
 
+
+
 bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offset)
 {
     if (pendingAnimation()) {
@@ -150,11 +152,29 @@ bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offs
     return true;
 }
 
+void Animal::setMovementDuration(sf::Time duration)
+{
+    mDuration = duration;
+}
+
 void Animal::changeDirection(Direction direction)
 {
     mDirection = direction;
     mSprite.setTexture(mTextures.get(toTextureID(mType, direction)));
-    setSize(mSprite, sf::Vector2f(45, 45));
+    float width, height;
+    switch (direction) {
+        case Left:
+        case Right:
+            width = 45;
+            height = 45;
+            break;
+        case Up:
+        case Down:
+            width = 42;
+            height = 57;
+            break;
+    }
+    setSize(mSprite, sf::Vector2f(width, height));
     centerOrigin(mSprite);
 }
 
@@ -169,7 +189,6 @@ void Animal::move(Direction direction)
         return;
     }
     float step = 70.f;
-    sf::Time duration = sf::seconds(0.5f);
     Road* nextRoad = nullptr;
     sf::Vector2f offset;
     switch (direction) {
@@ -202,13 +221,13 @@ void Animal::move(Direction direction)
         distanceToSafe = squaredDistance(nextSafeZone->getWorldPosition(), getWorldPosition() + offset);
     }
     if (distanceToSafe <= step * step) {
-        if (addAnimalAnimation(nextSafeZone, duration)) {
+        if (addAnimalAnimation(nextSafeZone, mDuration)) {
             changeDirection(direction);
         }
     }
     else {
         assertThrow(nextUnsafeZone != nullptr, "No unsafe zone");
-        if (addAnimalAnimation(nextUnsafeZone, duration)) {
+        if (addAnimalAnimation(nextUnsafeZone, mDuration)) {
             changeDirection(direction);
         }
     }
