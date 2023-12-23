@@ -24,5 +24,7 @@ private:
 	Player				mPlayer;
 	World				mWorld;
 	Context				mContext;
+	std::string 		mPlayerName;
 	sf::Text 			mCurrentScoreText;
+	Difficulty 			mStartDifficulty;
 };

@@ -17,7 +17,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application(sf::ContextSettings settings)
-	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, settings), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, settings), mTextures(), mFonts(), mScoreboard(), mStateStack(Context(mWindow, mTextures, mFonts, mScoreboard)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
 	srand(time(NULL));
