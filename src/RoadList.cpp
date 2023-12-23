@@ -47,11 +47,6 @@ void RoadList::setDifficulty(Difficulty difficulty)
     }
 }
 
-int RoadList::getCurrentScore()
-{
-    return mPassedRoad;
-}
-
 std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     Road::Type type = Road::Land;
     if (i > 5) {
@@ -106,8 +101,10 @@ RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, 
     }
     Road* curRoad = firstRoad;
     for (int i = 0; i < 5; i++) {
+        curRoad->visit();
         curRoad = curRoad->mNextRoad;
     }
+    curRoad->visit();
     Zone* firstZone = curRoad->randomZone(Zone::Safe);
     switchParent(player, firstZone);
     setZone(player, firstZone);

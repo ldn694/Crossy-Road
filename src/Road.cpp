@@ -22,6 +22,16 @@ Road::Road(Textures::ID ID, const TextureHolder& textures, Road::Type type, Zone
         mZones.push_back(zone.get());
         requestAttach(std::move(zone));
     }
+    mVisited = false;
+}
+
+bool Road::visit()
+{
+    if (mVisited) {
+        return false;
+    }
+    mVisited = true;
+    return true;
 }
 
 sf::FloatRect Road::getHitbox() const

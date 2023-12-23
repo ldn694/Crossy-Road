@@ -77,4 +77,5 @@ class World : private sf::NonCopyable
 		Difficulty							mDifficulty;
 		std::string							mPlayerName;
 		Animal::Type						mPlayerType;
+		int									mCurrentScore;
 };

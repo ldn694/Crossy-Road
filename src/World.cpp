@@ -27,6 +27,7 @@ World::World(sf::RenderWindow& window, Animal::Type playerType, std::string play
 	, mDifficulty(difficulty)
 	, mPlayerName(playerName)
 	, mPlayerType(playerType)
+	, mCurrentScore(0)
 {
 	loadTextures();
 	buildScene();
@@ -138,7 +139,7 @@ void World::buildScene()
 	SceneNode* airNode = airEntity.get();
 	mSceneLayers[Air]->requestAttach(std::move(airEntity));
 
-	mPlayerAnimal = new Animal(mPlayerType, mTextures, airNode);
+	mPlayerAnimal = new Animal(mPlayerType, mTextures, airNode, mCurrentScore);
 	mPlayerAnimal->setPosition(0, 0);
 
 	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayerAnimal, mDifficulty));
@@ -199,5 +200,5 @@ void World::adaptPlayerVelocity()
 
 
 int World::getCurrentScore() {
-	return mRoadList->getCurrentScore();
+	return mCurrentScore;
 }

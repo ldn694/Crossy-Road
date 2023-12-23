@@ -26,7 +26,7 @@ class Animal: public Entity {
         };
 
     public:
-                                Animal(Type type, TextureHolder& textures, SceneNode* tmpNode);
+                                Animal(Type type, TextureHolder& textures, SceneNode* tmpNode, int& passedRoad);
         virtual unsigned int	getCategory() const;
         sf::FloatRect			getHitbox() const;
         void                    move(Direction direction);
@@ -52,4 +52,5 @@ class Animal: public Entity {
         Direction               mDirection;
         sf::Sprite				mSprite;
         sf::Time                mDuration;
+        int&                    passedRoad;
 };

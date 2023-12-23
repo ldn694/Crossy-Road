@@ -16,7 +16,7 @@ public:
     sf::FloatRect getHitbox() const;
     Safety getSafety() const;
     virtual unsigned int	getCategory() const;
-    Road* getRoad() const;
+    Road* getRoad();
 private:
     Road* mRoad;
     sf::FloatRect mHitbox;
