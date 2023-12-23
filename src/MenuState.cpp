@@ -26,10 +26,6 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	context.textures->load(Textures::Exit, path + "exit.png");
 	context.textures->load(Textures::Exit_, path + "exit_hover.png");
 
-	context.textures->load(Textures::Choice, "Assets/Images/Choice.png");
-	context.textures->load(Textures::PressedChoice, "Assets/Images/Button.png");
-	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
-
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(1050.0f / mBackgroundSprite.getGlobalBounds().width, 600.0f / mBackgroundSprite.getGlobalBounds().height);
 	
@@ -100,7 +96,7 @@ void MenuState::draw()
 bool MenuState::update(sf::Time dt)
 {
 	mClickableList.update(dt);
-	return true;
+	return false;
 }
 
 bool MenuState::handleEvent(const sf::Event& event)
@@ -109,15 +105,20 @@ bool MenuState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			std::cout << "Left Clicked " << announcement.id << "\n";
+			std::cerr << "Left Clicked " << announcement.id << "\n";
 			switch (announcement.id) {
 				case MenuState::ClickableID::Play: {
 					requestStackPop();
-					requestStackPush(States::Game);
+					requestStackPush(States::GameStart);
 					break;
 				}
 				case MenuState::ClickableID::Set: {
 					requestStackPush(States::Setting);
+					break;
+				}
+				case MenuState::ClickableID::Load: {
+					int Size = getStackSize();
+					if (Size != 1) requestStackPop();
 					break;
 				}
 				case MenuState::ClickableID::Score: {
@@ -125,18 +126,18 @@ bool MenuState::handleEvent(const sf::Event& event)
 					break;
 				}
 				case MenuState::ClickableID::Exit: {
-					requestStackPop();
+					requestStateClear();
 					break;
 				}
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			std::cout << "Right Clicked " << announcement.id << "\n";
+			std::cerr << "Right Clicked " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		std::cout << info.stringList[0] << "\n";
+		std::cerr << info.stringList[0] << "\n";
 	}
 	if (event.type == sf::Event::MouseButtonPressed) {
 
@@ -146,5 +147,5 @@ bool MenuState::handleEvent(const sf::Event& event)
 		return false;
 
 
-	return true;
+	return false;
 }

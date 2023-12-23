@@ -8,11 +8,13 @@ int main()
 {
     try
     {
-        Application app;
+        sf::ContextSettings settings;
+        // settings.antialiasingLevel = 16;
+        Application app(settings);
         app.run();
     }
-    catch (std::exception &e)
+    catch (std::exception& e)
     {
-        std::cout << "\nEXCEPTION: " << e.what() << std::endl;
+        std::cerr << "\nEXCEPTION: " << e.what() << std::endl;
     }
 }

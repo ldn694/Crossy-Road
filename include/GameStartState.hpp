@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "Button.hpp"
 #include "Choice.hpp"
+#include "TypeBox.hpp"
 #include "ClickableList.hpp"
 
 
@@ -32,13 +33,18 @@ private:
 		Extreme,
 		Back,
 		LeftArrow,
-		RightArrow
+		RightArrow,
+		TypingBox,
 	};
 
 
 private:
-	sf::Sprite				mBackgroundSprite;
+	sf::Sprite				mCharacterSprite;
 	ClickableList			mClickableList;
 	std::vector<sf::Text>	mTexts;
-	std::size_t				mChoicePlayerIndex, mChoiceDifficultyIndex;
+	std::size_t				mChoicePlayerIndex, mChoiceDifficultyIndex, mCharacterIndex;
+	std::size_t 			mCharacterCount = 5;
+	Textures::ID			mCharacterList[10];
+	sf::Sprite				mCharacterListSprite[10];
+	sf::RectangleShape		mBackground;
 };

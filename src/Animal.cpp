@@ -1,12 +1,18 @@
 #include "Animal.hpp"
 #include "Category.hpp"
 #include "Utility.hpp"
+#include "GameStatus.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-Animal::Animal(Type type, TextureHolder& textures) : mType(type), mTextures(textures)
+Animal::Animal(Type type, TextureHolder& textures, SceneNode* tmpNode, int& passedRoad)
+    : mType(type)
+    , mTextures(textures)
+    , mDirection(Down)
+    , tmpNode(tmpNode)
+    , passedRoad(passedRoad)
 {
     changeDirection(Down);
 }
@@ -34,7 +40,9 @@ unsigned int Animal::getCategory() const
     return Category::Player;
 }
 
-Textures::ID Animal::toTextureID(Type type, Direction direction) {
+Textures::ID Animal::toTextureID(Type type, Direction direction) 
+{
+    //No general return
     switch (type) {
         case Cat:
             switch (direction) {
@@ -58,16 +66,16 @@ Textures::ID Animal::toTextureID(Type type, Direction direction) {
                 case Down:
                     return Textures::ChickenDown;
             }
-        case Zebra:
+        case Lion:
             switch (direction) {
                 case Left:
-                    return Textures::ZebraLeft;
+                    return Textures::LionLeft;
                 case Right:
-                    return Textures::ZebraRight;
+                    return Textures::LionRight;
                 case Up:
-                    return Textures::ZebraUp;
+                    return Textures::LionUp;
                 case Down:
-                    return Textures::ZebraDown;
+                    return Textures::LionDown;
             }
         case Pig:
             switch (direction) {
@@ -94,36 +102,139 @@ Textures::ID Animal::toTextureID(Type type, Direction direction) {
     }
 }
 
+void Animal::updateCurrent(sf::Time dt)
+{
+    Entity::updateCurrent(dt);
+    if (isMoving && !pendingAnimation()) {
+        isMoving = false;
+        assertThrow(this->getParent() != nullptr, "Animal has no parent");
+        Entity* parent = static_cast<Entity*>(this->getParent());
+        if (squaredDistance(mTmpOldPosition, getPosition()) < 1) {//unsuccesful move
+            // std::cerr << "unsuccesful move\n";
+            switchParent(this, mZone);
+            setPosition(mOldPosition);
+        }
+        else {
+            // std::cerr << "succesful move\n";
+            switchParent(this, mNextZone);
+            setPosition(0, 0);
+            mZone = mNextZone;
+            if (mZone->getSafety() == Zone::Unsafe) {
+                std::cerr << "unsafe zone\n";
+                throw GameStatus(GameStatus::GAME_LOST);
+            }
+        }
+    }
+    passedRoad += mZone->getRoad()->visit();
+}
+
+
+
+bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offset)
+{
+    if (pendingAnimation()) {
+        return false;
+    }
+    SceneNode* parent = this->getParent();
+    assertThrow(this->getParent() != nullptr, "Animal has no parent");
+    mNextZone = zone;
+    Road* curRoad = mZone->getRoad();
+    Road* nextRoad = mNextZone->getRoad();
+    mOldPosition = getPosition();
+    SceneNode* tmpZone = mZone;
+    if (curRoad != nextRoad) {
+        tmpZone = tmpNode;
+    }
+    sf::Vector2f newTmpPosition = parent->getWorldPosition() - tmpZone->getWorldPosition() + getPosition();
+    mTmpOldPosition = newTmpPosition;
+    switchParent(this, tmpZone);
+    setPosition(newTmpPosition);
+    addDynamicAnimation(zone, duration, offset);
+    isMoving = true;
+    return true;
+}
+
+void Animal::setMovementDuration(sf::Time duration)
+{
+    mDuration = duration;
+}
+
 void Animal::changeDirection(Direction direction)
 {
     mDirection = direction;
     mSprite.setTexture(mTextures.get(toTextureID(mType, direction)));
-    mSprite.setScale(0.2, 0.2);
+    float width, height;
+    switch (direction) {
+        case Left:
+        case Right:
+            width = 45;
+            height = 45;
+            break;
+        case Up:
+        case Down:
+            width = 42;
+            height = 57;
+            break;
+    }
+    setSize(mSprite, sf::Vector2f(width, height));
     centerOrigin(mSprite);
+}
+
+void setZone(Animal* player, Zone* zone)
+{
+    player->mZone = zone;
 }
 
 void Animal::move(Direction direction)
 {
+    if (pendingAnimation()) {
+        return;
+    }
     float step = 70.f;
-    sf::Time duration = sf::seconds(0.5f);
+    Road* nextRoad = nullptr;
     sf::Vector2f offset;
     switch (direction) {
         case Animal::Direction::Left:
+            nextRoad = mZone->getRoad();
             offset = sf::Vector2f(-step, 0.f);
             break;
         case Animal::Direction::Right:
+            nextRoad = mZone->getRoad();
             offset = sf::Vector2f(step, 0.f);
             break;
         case Animal::Direction::Up:
+            nextRoad = mZone->getRoad()->mNextRoad;
             offset = sf::Vector2f(0.f, -step);
             break;
         case Animal::Direction::Down:
+            nextRoad = mZone->getRoad()->mPreviousRoad;
             offset = sf::Vector2f(0.f, step);
             break;
         default:
             break;
     }
-    if (addStaticAnimation(offset, duration)) {
-        changeDirection(direction);
+    if (nextRoad == nullptr) {
+        return;
     }
+    Zone* nextSafeZone = nextRoad->nearestZone(getWorldPosition() + offset, Zone::Safe);
+    Zone* nextUnsafeZone = nextRoad->nearestZone(getWorldPosition() + offset, Zone::Unsafe);
+    float distanceToSafe = 100000000;
+    if (nextSafeZone != nullptr && nextSafeZone != mZone) {
+        distanceToSafe = squaredDistance(nextSafeZone->getWorldPosition(), getWorldPosition() + offset);
+    }
+    if (distanceToSafe <= step * step) {
+        if (addAnimalAnimation(nextSafeZone, mDuration)) {
+            changeDirection(direction);
+        }
+    }
+    else {
+        assertThrow(nextUnsafeZone != nullptr, "No unsafe zone");
+        if (addAnimalAnimation(nextUnsafeZone, mDuration)) {
+            changeDirection(direction);
+        }
+    }
+    // if (addStaticAnimation(offset, duration)) {
+    //     changeDirection(direction);
+    // }
+
 }

@@ -132,10 +132,10 @@ mClickableList.handleEvent(event);
 while (mClickableList.pendingAnnouncement()) {
 	Clickable::Announcement announcement = mClickableList.popAnnouncement();
 	if (announcement.action == Clickable::LeftPressed) {
-		std::cout << "Left Clicked " << announcement.id << "\n";
+		std::cerr << "Left Clicked " << announcement.id << "\n";
 	}
 	else if (announcement.action == Clickable::RightPressed) {
-		std::cout << "Right Clicked " << announcement.id << "\n";
+		std::cerr << "Right Clicked " << announcement.id << "\n";
 	}
 }
 ```
@@ -158,6 +158,23 @@ To create a new `Button` object, we need to provide the following information:
 
 
 Detailed information about the `Button` class can be found in the [Button.hpp](include\Button.hpp) file.
+
+### TypeBox
+
+`TypeBox` is a derived class of `TypeBox` class. It is a simple button that can be clicked. It has 3 textures: normal texture, hovered texture and InputBox texture. It also has a text on it. If you hover over the button, the texture will be set to the hovered texture.
+
+To create a new `TypeBox` object, we need to provide the following information:
+| Information | Required number of elements | Description |
+| ----------- | --------------------------- | ----------- |
+| `floatList` | 7 | The first 4 elements are respectively the left, top, width and height of the button. 5-th element is the ratio between the input-box size and button size. The 2 last elements are the character size text of button and input-box. |
+| `stringList` | 1 | The initial player's name. |
+| `status` | 1 | The status of the button. |
+| `fontIDList` | 2 | The font of the button's text and input-box's text. |
+| `textureIDList` | 3 | The ID of normal texture, hovered texture and InputBox texture. |
+| `colorList` | 2 | The color of the button's text and input-box's text. |
+
+
+Detailed information about the `TypeBox` class can be found in the [TypeBox.hpp](include\TypeBox.hpp) file.
 
 # State
 
@@ -218,7 +235,7 @@ Below is an example of handling notifications:
 //Assuming you are in a State class's handleEvent() method
 while (pendingNotification()) {
 	State::Info info = popNotification();
-	std::cout << info.stringList[0] << "\n"; //print the message
+	std::cerr << info.stringList[0] << "\n"; //print the message
 }
 ```
 

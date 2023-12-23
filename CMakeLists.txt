@@ -50,6 +50,13 @@ add_executable(CrossyRoad
     src/Zone.cpp
     src/RoadList.cpp
     src/Rock.cpp
+    src/TypeBox.cpp
+    src/Category.cpp
+    src/FloatingLog.cpp
+    src/AirEntity.cpp
+    src/Tree.cpp
+    src/Car.cpp
+    src/GameOverState.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

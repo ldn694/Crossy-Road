@@ -55,6 +55,7 @@ Entity::CollisionType Entity::handleCollision()
 		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
 		for (auto obstacle : obstacles) {
 			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
+				// std::cerr << "blocked by " << fromCategoryToString(obstacle->getCategory()) << "\n";
 				return CollisionType::BlockedCollision;
 			}
 		}
@@ -62,7 +63,9 @@ Entity::CollisionType Entity::handleCollision()
 	}
 	if (mCategory & Category::Hostile) {
 		auto root = getRoot();
-		auto player = root->findChildrenByCategory<Entity>(Category::Player)[0];
+		auto players = root->findChildrenByCategory<Entity>(Category::Player);
+		if (players.empty()) return CollisionType::NoCollision;
+		auto player = players[0];
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
 			return CollisionType::DeathCollision;
 		}
@@ -76,7 +79,9 @@ Entity::CollisionType Entity::handleCollision()
 	}
 	if (mCategory & Category::Obstacle) {
 		auto root = getRoot();
-		auto player = root->findChildrenByCategory<Entity>(Category::Player)[0];
+		auto players = root->findChildrenByCategory<Entity>(Category::Player);
+		if (players.empty()) return CollisionType::NoCollision;
+		auto player = players[0];
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
 			return CollisionType::BlockedCollision;
 		}
@@ -91,19 +96,28 @@ Entity::CollisionType Entity::handleCollision()
 	return CollisionType::NoCollision;
 }
 
+bool Entity::isFakeAnimation()
+{
+	return mOriginNode != nullptr;
+}
+
 void Entity::updateCurrent(sf::Time dt)
 {
 	if (pendingAnimation()) {
 		auto animationStep = curAnimation->getAnimationStep(this, dt);
 		move(mVelocity * dt.asSeconds() + animationStep);
-		auto collisionType = handleCollision();
+		CollisionType collisionType = CollisionType::NoCollision;
+		if (!isMovingBack) {
+			collisionType = handleCollision();
+		}
 		if (collisionType == CollisionType::DeathCollision) {
 			throw GameStatus::GAME_LOST;
 		}
 		else if (collisionType == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds() - animationStep);
-			sf::Time duration = curAnimation->duration - curAnimation->elapsedTime;
+			sf::Time duration = curAnimation->elapsedTime;
 			removeAnimation();
+			isMovingBack = true;
 			SceneNode* parent = getParent();
 			auto fakeEntities = parent->findDirectChildrenByCategory<Entity>(Category::FakeEntity);
 			Entity* thisFakeEntity = nullptr;
@@ -141,6 +155,7 @@ void Entity::removeAnimation()
 {
 	delete curAnimation;
 	curAnimation = nullptr;
+	isMovingBack = false;
 }
 
 void Entity::resetOriginNode() {
@@ -178,7 +193,7 @@ bool Entity::addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vect
 		setOriginNode();
 	}
 	else {
-		
+
 	}
 	return true;
 }

@@ -3,6 +3,7 @@
 #include "Category.hpp"
 #include "Command.hpp"
 #include "Foreach.hpp"
+#include "Utility.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
@@ -24,12 +25,15 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 
 
 	public:
-								SceneNode();
-		void				    detachChildren();
-		void					attachChildren();
-		void					requestDetach(SceneNode* node);
-		void					requestAttach(Ptr child);
-		
+									SceneNode();
+		virtual						~SceneNode();
+		void				    	detachChildren();
+		void						attachChildren();
+		void						requestDetach(SceneNode* node);
+		void						requestAttach(Ptr child);
+		void						requestAttachAtFront(Ptr child);
+		void						filterEmptyChildren();
+		friend void					switchParent(SceneNode* child, SceneNode* newParent);
 		
 		void					update(sf::Time dt);
 
@@ -51,6 +55,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 	private:
 		Ptr						detachChild(const SceneNode& node);
 		void					attachChild(Ptr child);
+		void 					attachChildAtFront(Ptr child);
 
 		virtual void			updateCurrent(sf::Time dt);
 		void					updateChildren(sf::Time dt);
@@ -58,23 +63,27 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		virtual void			draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 		void					drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
+		std::unique_ptr<SceneNode>& findDirectChild(SceneNode* child);
 
 
 	private:
-		std::vector<Ptr>			mChildren;
-		SceneNode*					mParent;
-		std::queue <SceneNode*>		mDetachQueue;
-		std::queue <SceneNode::Ptr> mAttachQueue;
+		std::vector<Ptr>									mChildren;
+		SceneNode*											mParent;
+		std::queue <SceneNode*>								mDetachQueue;
+		std::queue <SceneNode::Ptr> 						mAttachQueue;
+		std::queue <SceneNode::Ptr> 						mAttachQueueAtFront;
 };
 
 template <typename GameObject>
 std::vector <GameObject*> SceneNode::findChildrenByCategory(Category::Type category)
 {
+	filterEmptyChildren();
 	std::vector <GameObject*> result;
 	if (category > 0 && getCategory() & category)
 		result.push_back(derivedPtr<GameObject>(this));
 	for (Ptr& child : mChildren)
 	{
+		assertThrow(child.get() != nullptr, "child is nullptr");
 		std::vector <GameObject*> childResult = child.get()->findChildrenByCategory<GameObject>(category);
 		result.insert(result.end(), childResult.begin(), childResult.end());
 	}
@@ -84,6 +93,7 @@ std::vector <GameObject*> SceneNode::findChildrenByCategory(Category::Type categ
 template <typename GameObject>
 std::vector <GameObject*> SceneNode::findDirectChildrenByCategory(Category::Type category)
 {
+	filterEmptyChildren();
 	std::vector <GameObject*> result;
 	for (Ptr& child : mChildren)
 	{

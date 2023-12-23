@@ -13,6 +13,7 @@ namespace States
 		Pause,
 		Setting,
 		GameStart,
+		GameOver,
 		Scoreboard,
 	};
 }

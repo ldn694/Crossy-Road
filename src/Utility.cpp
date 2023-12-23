@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <cassert>
+#include <vector>
 #include <iostream>
 
 
@@ -22,6 +23,8 @@ void centerOrigin(sf::Text& text)
 
 void setSize(sf::Sprite& sprite, float width, float height)
 {
+	sf::Vector2u textureSize = sprite.getTexture()->getSize();
+	sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
 	sf::FloatRect bounds = sprite.getLocalBounds();
 	sprite.setScale(width / bounds.width, height / bounds.height);
 }
@@ -50,10 +53,6 @@ float intersection(sf::FloatRect rect1, sf::FloatRect rect2) {
 	if (x5 > x6 || y5 > y6) {
 		return 0;
 	}
-	// std::cout << "-------------------------\n";
-	// std::cout << "x1: " << x1 << " y1: " << y1 << " x2: " << x2 << " y2: " << y2 << "\n";
-	// std::cout << "x3: " << x3 << " y3: " << y3 << " x4: " << x4 << " y4: " << y4 << "\n";
-	// std::cout << "x5: " << x5 << " y5: " << y5 << " x6: " << x6 << " y6: " << y6 << "\n";
 	return (x6 - x5) * (y6 - y5);
 }
 
@@ -65,4 +64,19 @@ void assertThrow(bool expression, std::string message) {
 	if (!expression) {
 		throw std::runtime_error(message);
 	}
+}
+
+int Rand(int l, int r) {
+	return rand() % (r - l + 1) + l;
+}
+
+std::vector <int> randomIntSampling(int n, int k) {
+    assert(0 <= k && k <= n);
+    std::vector <int> s;
+    for (int i = 0; i < n; i++) {
+        s.push_back(i);
+    }
+    std::vector <int> res = randomSampling<int>(s, k);
+    sort(res.begin(), res.end());
+    return res;
 }

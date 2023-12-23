@@ -2,58 +2,63 @@
 
 #include <SFML/Graphics/View.hpp>
 
+#include "Difficulty.hpp"
 #include "Animal.hpp"
 #include "Road.hpp"
 #include "ResourceIdentifiers.hpp"
 
 class RoadList: public SceneNode{
 public:
-                            RoadList(const TextureHolder& textures, sf::View view, int numRoads, sf::Time period);
+                            RoadList(const TextureHolder& textures, sf::View& view, int numRoads, Animal* player, Difficulty difficulty);
     // Road*                   getFirstRoad();
     // Road*                   getLastRoad();
     virtual void            updateCurrent(sf::Time dt);
     template <typename T>
     void                    registerRoad(Road::Type roadType);
+    const int NUM_ROAD_LEVEL_UP = 40;
 private:
+    std::pair <Road::Type, int> getNextRoadInfo(int i);
+
     template <typename T>
     void                    push_back(std::unique_ptr<T> road);
     void                    pop_front();
     Road::Type              getNextType();
+    void                    setDifficulty(Difficulty difficulty);
 private:
-    Road*                                                           curRoad;
-    Road*                                                           firstRoad;
-    Road*                                                           lastRoad;
-    sf::View                                                        mView;
-    std::map<Road::Type, std::function<std::unique_ptr<Road>()>>	mFactories;
-    const TextureHolder&                                            mTextures;
-    sf::Time                                                        mPeriod;
-    sf::Time                                                        mTimeSinceLastUpdate;
+    Road::Type                                                              pre;
+    Road*                                                                   curRoad;
+    Road*                                                                   firstRoad;
+    Road*                                                                   lastRoad;
+    sf::View&                                                               mView;
+    std::map<Road::Type, std::function<std::unique_ptr<Road>(int)>>	        mFactories;
+    const TextureHolder&                                                    mTextures;
+    sf::Time                                                                mPeriod;
+    Animal*                                                                 mPlayer;
+    Difficulty                                                              mDifficulty;
+    int                                                                     mPassedRoad;
 };
 
 template <typename T>
 void RoadList::push_back(std::unique_ptr<T> road)
 {
     //double linked list
-    if (lastRoad != nullptr)
-    {
+    if (lastRoad != nullptr) {
         lastRoad->mNextRoad = road.get();
         road->mPreviousRoad = lastRoad;
-        lastRoad = road.get();
-        lastRoad->mNextRoad = nullptr;
     }
-    else {
+    lastRoad = road.get();
+    if (firstRoad == nullptr) {
         firstRoad = road.get();
-        lastRoad = road.get();
     }
-    requestAttach(std::move(road));
+    requestAttachAtFront(std::move(road));
 }
 
 template <typename T>
 void RoadList::registerRoad(Road::Type roadType)
 {
    // Create a lambda function that returns a new instance of T
-    auto factoryFunction = [this]() -> std::unique_ptr<Road> {
-        return std::make_unique<T>(mTextures);
+    auto factoryFunction = [this](int variant) -> std::unique_ptr<Road> {
+        return std::make_unique<T>(mTextures, mDifficulty, variant);
     };
 
     // Register the factory function for the specified road type

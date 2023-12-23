@@ -183,12 +183,6 @@ bool Player::isRealtimeAction(Action action)
 {
 	switch (action)
 	{
-		case MoveLeft:
-		case MoveRight:
-		case MoveDown:
-		case MoveUp:
-			return true;
-
 		default:
 			return false;
 	}
