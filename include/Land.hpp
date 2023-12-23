@@ -11,7 +11,7 @@ public:
         NumLandVariants
     };
 private:
-    const int MAX_NUMBER_OBSTACLE = 8;
+    const int MAX_NUMBER_OBSTACLE = 6;
     int getNumberObstacles(Variant variant);
 public:
     Land(const TextureHolder& textures, Difficulty difficulty, int variant);

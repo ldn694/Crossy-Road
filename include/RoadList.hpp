@@ -15,6 +15,7 @@ public:
     virtual void            updateCurrent(sf::Time dt);
     template <typename T>
     void                    registerRoad(Road::Type roadType);
+    const int NUM_ROAD_LEVEL_UP = 40;
 private:
     std::pair <Road::Type, int> getNextRoadInfo(int i);
 
@@ -34,6 +35,7 @@ private:
     sf::Time                                                                mPeriod;
     Animal*                                                                 mPlayer;
     Difficulty                                                              mDifficulty;
+    int                                                                     mPassedRoad;
 };
 
 template <typename T>

@@ -28,20 +28,20 @@ FloatingLog::Type getRandLogType(int movementSign) {
 }
 
 River::River(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(static_cast<River::Variant>(variant)), textures, Road::Type::River, Zone::Safety::Unsafe, difficulty), textures(textures) {
-    sf::Time basePeriodTime = sf::seconds(2.0f);
+    sf::Time basePeriodTime = sf::seconds(2.5f);
     int numPartionPeriod;
     switch (difficulty) {
     case Difficulty::Easy:
-        numPartionPeriod = Rand(25, 30);
+        numPartionPeriod = Rand(80, 90);
         break;
     case Difficulty::Medium:
-        numPartionPeriod = Rand(20, 25);
+        numPartionPeriod = Rand(60, 70);
         break;
     case Difficulty::Hard:
-        numPartionPeriod = Rand(15, 20);
+        numPartionPeriod = Rand(40, 50);
         break;
     }
-    mPeriod = basePeriodTime * (numPartionPeriod / 30.f);
+    mPeriod = basePeriodTime * (numPartionPeriod / 100.f);
     switch (variant) {
     case River::LeftToRight:
         movementSign = 1;
@@ -61,7 +61,7 @@ River::River(const TextureHolder& textures, Difficulty difficulty, int variant) 
     requestAttach(std::move(mediate));
     mTimeSinceLastSpawn = sf::Time::Zero;
     float minimumDistance = (WITDH_SIZE - maximumLog * 50) / (maximumLog - 1);
-    int numLog = movementSign == 0 ? 7 : 3;
+    int numLog = movementSign == 0 ? 4 : 5;
     float x = rand() % (int)minimumDistance, y = (HEIGHT_SIZE - 50) / 2;
     for (int i = 0; i < numLog; i++) {
         FloatingLog::Type logType = getRandLogType(movementSign);

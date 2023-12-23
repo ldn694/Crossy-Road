@@ -31,25 +31,25 @@ void RoadList::setDifficulty(Difficulty difficulty)
     mDifficulty = difficulty;
     switch (mDifficulty) {
         case Easy:
-            mPeriod = sf::seconds(1.5f);
-            mPlayer->setMovementDuration(sf::seconds(0.5f));
+            mPeriod = sf::seconds(1.0f);
+            mPlayer->setMovementDuration(sf::seconds(0.25f));
             break;
         case Medium:
-            mPeriod = sf::seconds(0.8f);
-            mPlayer->setMovementDuration(sf::seconds(0.4f));
+            mPeriod = sf::seconds(0.7f);
+            mPlayer->setMovementDuration(sf::seconds(0.20f));
             break;
         case Hard:
             mPeriod = sf::seconds(0.4f);
-            mPlayer->setMovementDuration(sf::seconds(0.3f));
+            mPlayer->setMovementDuration(sf::seconds(0.15f));
             break;
         default:
             mPlayer->setMovementDuration(sf::seconds(0.5f));
     }
 }
 
-std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 1) {
+std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     Road::Type type = Road::Land;
-    if (i > 0) {
+    if (i > 5) {
         type = getNextType();
         // type = Road::Land;
     }
@@ -62,7 +62,7 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 1) {
             variant = Land::Normal;
         }
     }
-    if (i == 0) {
+    if (i <= 5) {
         type = Road::Land;
         variant = Land::Empty;
     }
@@ -99,7 +99,11 @@ RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, 
         push_back(std::move(road));
         pre = type;
     }
-    Zone* firstZone = firstRoad->randomZone(Zone::Safe);
+    Road* curRoad = firstRoad;
+    for (int i = 0; i < 5; i++) {
+        curRoad = curRoad->mNextRoad;
+    }
+    Zone* firstZone = curRoad->randomZone(Zone::Safe);
     switchParent(player, firstZone);
     setZone(player, firstZone);
 }
@@ -114,6 +118,10 @@ void RoadList::updateCurrent(sf::Time dt)
         std::unique_ptr<Road> road = mFactories[type](variant);
         road->setPosition(0, lastRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
         push_back(std::move(road));
+        mPassedRoad++;
+    }
+    if (mPassedRoad % NUM_ROAD_LEVEL_UP == 0 && mPassedRoad != 0) {
+        setDifficulty(static_cast<Difficulty>(std::min(int(mDifficulty + 1), int(Difficulty::NumDifficulties) - 1)));
     }
     move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
 }

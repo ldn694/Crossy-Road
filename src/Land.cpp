@@ -15,7 +15,7 @@ int Land::getNumberObstacles(Variant variant){
     case Land::Variant::Normal:
         return rand() % MAX_NUMBER_OBSTACLE + 1;
     case Land::Variant::Start:
-        return rand() % MAX_NUMBER_OBSTACLE + 1;
+        return rand() % (MAX_NUMBER_OBSTACLE / 2) + 1;
     }
     return 0;
 }
