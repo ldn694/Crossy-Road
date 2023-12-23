@@ -26,6 +26,27 @@ int getNumType(Road::Type type)
     return 0;
 }
 
+void RoadList::setDifficulty(Difficulty difficulty)
+{
+    mDifficulty = difficulty;
+    switch (mDifficulty) {
+        case Easy:
+            mPeriod = sf::seconds(1.5f);
+            mPlayer->setMovementDuration(sf::seconds(0.5f));
+            break;
+        case Medium:
+            mPeriod = sf::seconds(0.8f);
+            mPlayer->setMovementDuration(sf::seconds(0.4f));
+            break;
+        case Hard:
+            mPeriod = sf::seconds(0.4f);
+            mPlayer->setMovementDuration(sf::seconds(0.3f));
+            break;
+        default:
+            mPlayer->setMovementDuration(sf::seconds(0.5f));
+    }
+}
+
 std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 1) {
     Road::Type type = Road::Land;
     if (i > 0) {
@@ -49,13 +70,13 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 1) {
     return std::make_pair(type, variant);
 }
 
-RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, sf::Time period, Animal* player, Difficulty difficulty)
+RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, Animal* player, Difficulty difficulty)
     : mView(view)
     , mTextures(textures)
-    , mPeriod(period)
     , mPlayer(player)
     , mDifficulty(difficulty)
 {
+    setDifficulty(difficulty);
     registerRoad<Railways>(Road::Railways);
 	registerRoad<River>(Road::River);
 	registerRoad<SRoad>(Road::SRoad);

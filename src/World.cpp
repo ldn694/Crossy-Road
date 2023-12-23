@@ -13,7 +13,7 @@ SceneNode& World::getSceneGraph()
 	return mSceneGraph;
 }
 
-World::World(sf::RenderWindow& window)
+World::World(sf::RenderWindow& window, Animal::Type playerType, std::string playerName, Difficulty difficulty)
 	: mWindow(window)
 	, mWorldView(window.getDefaultView())
 	, mTextures()
@@ -24,6 +24,9 @@ World::World(sf::RenderWindow& window)
 	//, mScrollSpeed(-50.f)
 	, mScrollSpeed(0.f)
 	, mPlayerAnimal(nullptr)
+	, mDifficulty(difficulty)
+	, mPlayerName(playerName)
+	, mPlayerType(playerType)
 {
 	loadTextures();
 	buildScene();
@@ -64,10 +67,26 @@ CommandQueue& World::getCommandQueue()
 
 void World::loadTextures()
 {
-	mTextures.load(Textures::CatDown, "Assets/Images/Cat_Down.png");
-	mTextures.load(Textures::CatUp, "Assets/Images/Cat_Up.png");
-	mTextures.load(Textures::CatLeft, "Assets/Images/Cat_Left.png");
-	mTextures.load(Textures::CatRight, "Assets/Images/Cat_Right.png");
+	mTextures.load(Textures::CatDown, "Assets/Images/ForGame/character/cat/front/front0.png");
+	mTextures.load(Textures::CatUp, "Assets/Images/ForGame/character/cat/back/back0.png");
+	mTextures.load(Textures::CatLeft, "Assets/Images/ForGame/character/cat/left/left0.png");
+	mTextures.load(Textures::CatRight, "Assets/Images/ForGame/character/cat/right/right0.png");
+	mTextures.load(Textures::ChickenDown, "Assets/Images/ForGame/character/chicken/front/front0.png");
+	mTextures.load(Textures::ChickenUp, "Assets/Images/ForGame/character/chicken/back/back0.png");
+	mTextures.load(Textures::ChickenLeft, "Assets/Images/ForGame/character/chicken/left/left0.png");
+	mTextures.load(Textures::ChickenRight, "Assets/Images/ForGame/character/chicken/right/right0.png");
+	mTextures.load(Textures::LionDown, "Assets/Images/ForGame/character/lion/front.png");
+	mTextures.load(Textures::LionUp, "Assets/Images/ForGame/character/lion/back.png");
+	mTextures.load(Textures::LionLeft, "Assets/Images/ForGame/character/lion/left.png");
+	mTextures.load(Textures::LionRight, "Assets/Images/ForGame/character/lion/right.png");
+	mTextures.load(Textures::PigDown, "Assets/Images/ForGame/character/pig/front.png");
+	mTextures.load(Textures::PigUp, "Assets/Images/ForGame/character/pig/back.png");
+	mTextures.load(Textures::PigLeft, "Assets/Images/ForGame/character/pig/left.png");
+	mTextures.load(Textures::PigRight, "Assets/Images/ForGame/character/pig/right.png");
+	mTextures.load(Textures::FoxDown, "Assets/Images/ForGame/character/fox/front.png");
+	mTextures.load(Textures::FoxUp, "Assets/Images/ForGame/character/fox/back.png");
+	mTextures.load(Textures::FoxLeft, "Assets/Images/ForGame/character/fox/left.png");
+	mTextures.load(Textures::FoxRight, "Assets/Images/ForGame/character/fox/right.png");
 	mTextures.load(Textures::Eagle, "Assets/Images/Eagle.png");
 	mTextures.load(Textures::Raptor, "Assets/Images/Raptor.png");
 	mTextures.load(Textures::Desert, "Assets/Images/Desert.png");
@@ -113,10 +132,10 @@ void World::buildScene()
 	SceneNode* airNode = airEntity.get();
 	mSceneLayers[Air]->requestAttach(std::move(airEntity));
 
-	mPlayerAnimal = new Animal(Animal::Cat, mTextures, airNode);
+	mPlayerAnimal = new Animal(mPlayerType, mTextures, airNode);
 	mPlayerAnimal->setPosition(0, 0);
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 15, sf::seconds(3), mPlayerAnimal, Difficulty::Easy));
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayerAnimal, mDifficulty));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
 
