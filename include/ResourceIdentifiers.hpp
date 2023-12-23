@@ -105,12 +105,14 @@ namespace Textures
 		LionLeft,
 		LionRight,
 		//Pause State
-		BackToMenu,
-		BackToMenu_Hover,
-		Continue,
-		Continue_Hover,
+		Home,
+		Home_Hover,
+		Resume,
+		Resume_Hover,
 		Setting,
 		Setting_Hover,
+		PauseBackground,
+		
 	};
 }
 
