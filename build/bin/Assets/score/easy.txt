@@ -1,0 +1,10 @@
+chicken
+100
+pig
+89
+cat
+96
+fox
+101
+fox2
+76

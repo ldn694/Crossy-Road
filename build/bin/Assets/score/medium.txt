@@ -1,0 +1,8 @@
+chicken
+10
+pig
+9
+fox
+11
+lion
+76

@@ -31,11 +31,11 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	context.textures->load(Textures::HoveredChoice, "Assets/Images/HoveredChoice.png");
 
 	mBackgroundSprite.setTexture(texture);
-	mBackgroundSprite.setScale(0.55, 0.55);
+	mBackgroundSprite.setScale(1050.0f / mBackgroundSprite.getGlobalBounds().width, 600.0f / mBackgroundSprite.getGlobalBounds().height);
 	
 	mClickableList.registerClickable<Button>(Clickable::Type::Button);
 	Clickable::Info info;
-	info.floatList = { 165, 230, 300, 100, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.floatList = { 165, 225, 300, 100, 15 };				//toa do (x,y, +x, +y, scale/10)
 	info.status = Clickable::Status(true, true, true);          //cac trang thai duoc cho phep cua button					
 	info.textureIDList = { Textures::Play, Textures::Play_};	//cac nut
 	info.stringList = { "" };
@@ -43,7 +43,7 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Play, info);
 
-	info.floatList = {580, 230, 320, 100, 15};
+	info.floatList = {580, 225, 320, 100, 15};
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Load, Textures::Load_};
 	info.stringList = { "" };
@@ -51,7 +51,7 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Load, info);
 
-	info.floatList = {160, 320, 320, 100, 15};
+	info.floatList = {160, 325, 320, 100, 15};
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Score, Textures::Score_};
 	info.stringList = { "" };
@@ -59,7 +59,7 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Score, info);
 
-	info.floatList = {575, 320, 320, 100, 15};
+	info.floatList = {575, 325, 320, 100, 15};
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::Set, Textures::Set_};
 	info.stringList = { "" };
@@ -118,6 +118,10 @@ bool MenuState::handleEvent(const sf::Event& event)
 				}
 				case MenuState::ClickableID::Set: {
 					requestStackPush(States::Setting);
+					break;
+				}
+				case MenuState::ClickableID::Score: {
+					requestStackPush(States::Scoreboard);
 					break;
 				}
 				case MenuState::ClickableID::Exit: {

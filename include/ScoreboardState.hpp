@@ -8,10 +8,10 @@
 #include "ClickableList.hpp"
 
 
-class MenuState : public State
+class ScoreboardState : public State
 {
 public:
-	MenuState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
+	ScoreboardState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
 
 	virtual void			draw();
 	virtual bool			update(sf::Time dt);
@@ -19,13 +19,13 @@ public:
 
 	void					updateOptionText();
 		enum ClickableID {
-			Button1,
-			Button2,
-			Play,
-			Load,
-			Set,
-			Score,
-			Exit,
+			ID1, ID2, ID3, ID4, ID5, 
+			quit, mode,left, right,
+			name1, score1, 
+			name2, score2,
+			name3, score3,
+			name4, score4,
+			name5, score5,
 		};
 
 

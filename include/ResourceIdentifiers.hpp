@@ -69,7 +69,25 @@ namespace Textures
 		ZebraUp,
 		ZebraDown,
 		ZebraLeft,
-		ZebraRight
+		ZebraRight,
+		//ScoreBoard
+		ScoreBoard_Background,
+		ID1,
+		ID2,
+		ID3,
+		ID4,
+		ID5,
+		scoreboard_quit,
+		scoreboard_quit_hover,
+		mode,
+		scoreboard_left,
+		scoreboard_left_hover,
+		scoreboard_right,
+		scoreboard_right_hover,
+		scoreboard_score,
+		scoreboard_score_hover,
+		scoreboard_name,
+		scoreboard_name_hover,
 	};
 }
 
@@ -80,7 +98,8 @@ namespace Fonts
 		Main,
 		Consolas,
 		T1,
-		T2
+		T2,
+		Bungee
 	};
 }
 
