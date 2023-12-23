@@ -39,6 +39,8 @@ class World : private sf::NonCopyable
 		CommandQueue&						getCommandQueue();
 		SceneNode&							getSceneGraph();
 
+		int									getCurrentScore();
+
 
 	private:
 		void								loadTextures();
@@ -71,6 +73,7 @@ class World : private sf::NonCopyable
 		float								mScrollSpeed;
 		//Aircraft*							mPlayerAircraft;
 		Animal*								mPlayerAnimal;
+		RoadList*							mRoadList;
 		Difficulty							mDifficulty;
 		std::string							mPlayerName;
 		Animal::Type						mPlayerType;

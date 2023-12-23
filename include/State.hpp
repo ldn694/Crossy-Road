@@ -25,6 +25,7 @@ public:
 	typedef std::unique_ptr<State> Ptr;
 
 	struct Info {
+		// std::vector <int>               intList;
 		std::vector <float>             floatList;
 		std::vector <std::string>       stringList;
 		std::vector <Textures::ID>      textureIDList;

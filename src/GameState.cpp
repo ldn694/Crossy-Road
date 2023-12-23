@@ -1,6 +1,7 @@
 #include "GameState.hpp"
 #include <iostream>
 #include "Animal.hpp"
+#include "GameStatus.hpp"
 
 Animal::Type toAnimalType(std::string animalType) {
 	if (animalType == "Cat") {
@@ -49,29 +50,43 @@ void GameState::draw()
 }
 
 bool GameState::update(sf::Time dt) {
-	mWorld.update(dt);
-	CommandQueue& commands = mWorld.getCommandQueue();
-	mPlayer.handleRealtimeInput(commands);
+	try {
+		mWorld.update(dt);
+		CommandQueue& commands = mWorld.getCommandQueue();
+		mPlayer.handleRealtimeInput(commands);
+	}
+	catch (GameStatus status) {
+		State::Info info;
+		info.floatList = {float(mWorld.getCurrentScore())};
+		requestStackPush(States::GameOver, info);
+	}
 	return true;
 }
 
 bool GameState::handleEvent(const sf::Event& event)
 {
-	// Game input handling
-	CommandQueue& commands = mWorld.getCommandQueue();
-	mPlayer.handleEvent(event, commands);
+	try {
+		// Game input handling
+		CommandQueue& commands = mWorld.getCommandQueue();
+		mPlayer.handleEvent(event, commands);
 
-	// while (pendingNotification()) {
-	// 	State::Info info = popNotification();
-	// 	for (int i = 0; i < info.floatList.size(); i++) {
-	// 		std::cerr << info.floatList[i] << " ";
-	// 	}
-	// 	std::cerr << "\n";
-	// }
+		// while (pendingNotification()) {
+		// 	State::Info info = popNotification();
+		// 	for (int i = 0; i < info.floatList.size(); i++) {
+		// 		std::cerr << info.floatList[i] << " ";
+		// 	}
+		// 	std::cerr << "\n";
+		// }
 
-	// Escape pressed, trigger the pause screen
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-		requestStackPush(States::Pause);
+		// Escape pressed, trigger the pause screen
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+			requestStackPush(States::Pause);
 
+	}
+	catch (GameStatus status) {
+		State::Info info;
+		info.floatList = {float(mWorld.getCurrentScore())};
+		requestStackPush(States::GameOver, info);
+	}
 	return true;
 }

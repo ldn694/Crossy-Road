@@ -32,13 +32,13 @@ River::River(const TextureHolder& textures, Difficulty difficulty, int variant) 
     int numPartionPeriod;
     switch (difficulty) {
     case Difficulty::Easy:
-        numPartionPeriod = Rand(80, 90);
+        numPartionPeriod = Rand(70, 90);
         break;
     case Difficulty::Medium:
-        numPartionPeriod = Rand(60, 70);
+        numPartionPeriod = Rand(50, 70);
         break;
     case Difficulty::Hard:
-        numPartionPeriod = Rand(40, 50);
+        numPartionPeriod = Rand(30, 50);
         break;
     }
     mPeriod = basePeriodTime * (numPartionPeriod / 100.f);

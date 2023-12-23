@@ -47,6 +47,11 @@ void RoadList::setDifficulty(Difficulty difficulty)
     }
 }
 
+int RoadList::getCurrentScore()
+{
+    return mPassedRoad;
+}
+
 std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     Road::Type type = Road::Land;
     if (i > 5) {

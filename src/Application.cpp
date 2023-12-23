@@ -6,6 +6,7 @@
 #include "TitleState.hpp"
 #include "GameState.hpp"
 #include "GameStartState.hpp"
+#include "GameOverState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
 #include <iostream>
@@ -111,4 +112,5 @@ void Application::registerStates()
 	mStateStack.registerState<GameStartState>(States::GameStart);
 	mStateStack.registerState<PauseState>(States::Pause);
     mStateStack.registerState<SettingState>(States::Setting);
+	mStateStack.registerState<GameOverState>(States::GameOver);
 }

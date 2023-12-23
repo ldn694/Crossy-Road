@@ -143,6 +143,7 @@ void World::buildScene()
 
 	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayerAnimal, mDifficulty));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
+	mRoadList = roadList.get();
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
 
 
@@ -194,4 +195,9 @@ void World::adaptPlayerVelocity()
 
 	// Add scrolling velocity
 	mPlayerAnimal->accelerate(0.f, mScrollSpeed);
+}
+
+
+int World::getCurrentScore() {
+	return mRoadList->getCurrentScore();
 }

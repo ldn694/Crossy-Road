@@ -104,6 +104,14 @@ namespace Textures
 		LionDown,
 		LionLeft,
 		LionRight,
+		//GameOver state
+		GameOverBackground,
+		GameOverToLeaderboard,
+		GameOverToLeaderboardHovered,
+		GameOverRetry,
+		GameOverRetryHovered,
+		GameOverToHome,
+		GameOverToHomeHovered,
 		//Pause State
 		Home,
 		Home_Hover,
