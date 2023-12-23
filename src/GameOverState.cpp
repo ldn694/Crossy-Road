@@ -13,7 +13,7 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	mClickableList(context)
 {
 	loadTextures(context);
-	sf::Font& font = context.fonts->get(Fonts::Main);
+	sf::Font& font = context.fonts->get(Fonts::Bungee);
 	sf::Vector2f viewSize = context.window->getView().getSize();
 	
 	mBackgroundSprite.setTexture(context.textures->get(Textures::GameOverBackground));

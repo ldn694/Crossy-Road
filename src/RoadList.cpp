@@ -32,14 +32,14 @@ void RoadList::setDifficulty(Difficulty difficulty)
     switch (mDifficulty) {
         case Easy:
             mPeriod = sf::seconds(1.0f);
-            mPlayer->setMovementDuration(sf::seconds(0.25f));
+            mPlayer->setMovementDuration(sf::seconds(0.15f));
             break;
         case Medium:
-            mPeriod = sf::seconds(0.7f);
-            mPlayer->setMovementDuration(sf::seconds(0.20f));
+            mPeriod = sf::seconds(0.8f);
+            mPlayer->setMovementDuration(sf::seconds(0.15f));
             break;
         case Hard:
-            mPeriod = sf::seconds(0.4f);
+            mPeriod = sf::seconds(0.5f);
             mPlayer->setMovementDuration(sf::seconds(0.15f));
             break;
         default:

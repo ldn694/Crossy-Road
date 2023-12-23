@@ -16,9 +16,13 @@ public:
 	virtual void		draw();
 	virtual bool		update(sf::Time dt);
 	virtual bool		handleEvent(const sf::Event& event);
+private:
+	void				setCurrentScore();
 
 
 private:
 	Player				mPlayer;
 	World				mWorld;
+	Context				mContext;
+	sf::Text 			mCurrentScoreText;
 };
