@@ -26,6 +26,7 @@ add_executable(CrossyRoad
     src/Player.cpp
     src/SceneNode.cpp
     src/ScrollBar.cpp
+    src/ScrollBarList.cpp 
     src/SettingState.cpp
     src/SpriteNode.cpp
     src/State.cpp

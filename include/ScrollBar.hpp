@@ -5,11 +5,12 @@
 class ScrollBar{
     public:
                                   ScrollBar();
-                                  ScrollBar(float x, float y, float width,float z,int id);
+                                  ScrollBar(float x, float y, float width,float z);
     void                          update(sf::RenderWindow& window);
     void                          draw(sf::RenderWindow& window);
     float                         getValue() const;
     void                          handleEvent(const sf::Event& event,sf::RenderWindow &window);
+    float                         getPos() const;
     private:
     sf::RectangleShape bar;
     sf::RectangleShape slider;

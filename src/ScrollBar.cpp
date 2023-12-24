@@ -10,7 +10,7 @@ ScrollBar::ScrollBar()
     std::cout<<"ScrollBar::default constructor"<<std::endl;
 }
 
-ScrollBar::ScrollBar(float x, float y, float width,float z,int id)
+ScrollBar::ScrollBar(float x, float y, float width,float z)
  {
         bar.setSize(sf::Vector2f(width, 20.f));
         bar.setPosition(x, y);
@@ -24,8 +24,6 @@ ScrollBar::ScrollBar(float x, float y, float width,float z,int id)
         updateBar.setPosition(x, y);
         updateBar.setFillColor(sf::Color(100, 100, 100));
         isDragging = false;
-        this->id = id;
-       // std::cout<<this->id<<std::endl;
          
     }
 void ScrollBar::update(sf::RenderWindow &window)
@@ -96,13 +94,18 @@ void ScrollBar::handleEvent(const sf::Event& event,sf::RenderWindow &window) {
             updateBar.setPosition(bar.getPosition().x,bar.getPosition().y);
             updateBar.setFillColor(sf::Color(100,100,100));
             // save to text file
-            std::string filename = "Assets/Files/ScrollBar" + std::to_string(this->id) + ".txt";
+           // std::string filename = "Assets/Files/ScrollBar" + std::to_string(this->id) + ".txt";
             //std::cout<<std::to_string(this->id)<<std::endl;
-            std::ofstream fout(filename,std::ios::trunc);
-            fout<<slider.getPosition().x;
-            fout.close();
+           // std::ofstream fout(filename,std::ios::trunc);
+           // fout<<slider.getPosition().x;
+            //fout.close();
         }
     }
+}
+
+float ScrollBar::getPos() const
+{
+    return slider.getPosition().x;
 }
 
 

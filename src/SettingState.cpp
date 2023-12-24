@@ -9,12 +9,13 @@
 #include <SFML/Audio.hpp>
 #include <StateIdentifiers.hpp>
 #include "ScrollBar.hpp"
+#include "ScrollBarList.hpp"
 #include<iostream>
 #include<fstream>
 #include<string>
 
 SettingState::SettingState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
-	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context),mSB_Sound(),mSB_Music()
+	: State(stack, stateID, context), mOptions(), mOptionIndex(0), mClickableList(context),mScrollBarList()
 {
 
 	sf::Texture &texture = context.textures->get(Textures::SettingBackground);
@@ -55,33 +56,8 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Back, info);
 
-	// create 2 ScrollBar
-	// load from file txt
-	std::ifstream fin1("Assets/Files/ScrollBar1.txt");
-	std::ifstream fin2("Assets/Files/ScrollBar2.txt");
-	float a[2];
-	a[0] = a[1] = 600;
-	if(fin1.is_open())
-	{
-        fin1>>a[0];
-	}
-	if(fin2.is_open())
-	{
-		fin2>>a[1];
-	}
-	fin1.close();
-	fin2.close();
-	int num1 = 1;
-	int num2 = 2;
-	//std::cout<<num1<<" "<<num2<<std::endl;
-	ScrollBar x(600.f,270.f,220.f,a[0],num1);
-	ScrollBar y(600.f,370.f,220.f,a[1],num2);
-	mSB_Sound = x;
-	mSB_Music = y;
-	//mMusic.openFromFile("Assets/Music/CROSSY.wav");
-	//mMusic.setLoop(true);
-	//mMusic.setVolume(100.f);
-	//mMusic.play();
+	
+
 }
 
 void SettingState::draw()
@@ -94,16 +70,15 @@ void SettingState::draw()
 	FOREACH(const sf::Text &text, mOptions)
 	window.draw(text);
 	mClickableList.draw();
-	mSB_Sound.draw(window);
-	mSB_Music.draw(window);
+	mScrollBarList.draw(window);
 }
 
 bool SettingState::update(sf::Time dt) 
 {
 	mClickableList.update(dt);
-	float x = mSB_Music.getValue();
+	float x = mScrollBarList.getVolumeMusic();
 	getContext().backgroundmusic->setVolume(100.f*x);
-	float y = mSB_Sound.getValue();
+	float y = mScrollBarList.getVolumeSound();
 	*getContext().mVolume = y;
 	//std::cout<<y<<std::endl;
 	return true;
@@ -112,8 +87,7 @@ bool SettingState::update(sf::Time dt)
 bool SettingState::handleEvent(const sf::Event &event)
 {
 	sf::RenderWindow &window = *getContext().window;
-	mSB_Sound.handleEvent(event,window);
-    mSB_Music.handleEvent(event,window);
+	mScrollBarList.handleEvent(event,window);
 	//mSB_Sound.update(window);
 	//mSB_Music.update(window);
 	mClickableList.handleEvent(event);

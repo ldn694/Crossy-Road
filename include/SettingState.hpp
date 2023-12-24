@@ -8,6 +8,7 @@
 #include "Choice.hpp"
 #include "ClickableList.hpp"
 #include "ScrollBar.hpp"
+#include "ScrollBarList.hpp"
 class SettingState : public State{
     public:
                                 SettingState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
@@ -32,6 +33,6 @@ class SettingState : public State{
 		std::size_t				mOptionIndex;
         ClickableList           mClickableList;
         std::size_t             mChoiceIndex;
-        ScrollBar               mSB_Sound,mSB_Music;
+        ScrollBarList           mScrollBarList;
         sf::Music               mMusic;
 };
