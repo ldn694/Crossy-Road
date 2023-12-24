@@ -66,46 +66,55 @@ void ScrollBar::draw(sf::RenderWindow& window)
         return (slider.getPosition().x - bar.getPosition().x) / (bar.getSize().x - slider.getSize().x);
 }
 
-void ScrollBar::handleEvent(const sf::Event& event,sf::RenderWindow &window) {
-    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-        // Handle left mouse button press
-        sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-        if (slider.getGlobalBounds().contains(mousePos)) {
-            isDragging = true;
-        }
-    } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
-        // Handle left mouse button release
-        isDragging = false;
-    } else if (event.type == sf::Event::MouseMoved) {
-        // Handle mouse movement
-        if (isDragging) {
+void ScrollBar::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-            // Update the slider position based on the mouse movement
-            slider.setPosition(mousePos.x - slider.getSize().x / 2, slider.getPosition().y);
-            //std::cout<<slider.getPosition().x<<std::endl;
-            // Ensure the slider stays within the bounds of the bar
-            if (slider.getPosition().x < bar.getPosition().x)
-                slider.setPosition(bar.getPosition().x, slider.getPosition().y);
-            if (slider.getPosition().x + slider.getSize().x > bar.getPosition().x + bar.getSize().x)
-                slider.setPosition(bar.getPosition().x + bar.getSize().x - slider.getSize().x, slider.getPosition().y);
-            float diff = slider.getPosition().x - bar.getPosition().x;
-           //std::cout<<diff<<std::endl;
-            updateBar.setSize(sf::Vector2f(diff,20.f));
-            updateBar.setPosition(bar.getPosition().x,bar.getPosition().y);
-            updateBar.setFillColor(sf::Color(100,100,100));
-            // save to text file
-           // std::string filename = "Assets/Files/ScrollBar" + std::to_string(this->id) + ".txt";
-            //std::cout<<std::to_string(this->id)<<std::endl;
-           // std::ofstream fout(filename,std::ios::trunc);
-           // fout<<slider.getPosition().x;
-            //fout.close();
+            if (bar.getGlobalBounds().contains(mousePos)) {
+                // Clicked on the bar, set slider position accordingly
+                isDragging = true;
+                slider.setPosition(mousePos.x - slider.getSize().x / 2, slider.getPosition().y);
+
+                // Ensure the slider stays within the bounds of the bar
+                if (slider.getPosition().x < bar.getPosition().x)
+                    slider.setPosition(bar.getPosition().x, slider.getPosition().y);
+
+                if (slider.getPosition().x + slider.getSize().x > bar.getPosition().x + bar.getSize().x)
+                    slider.setPosition(bar.getPosition().x + bar.getSize().x - slider.getSize().x, slider.getPosition().y);
+
+                ScrollBar::updateBarSize();
+            } else if (slider.getGlobalBounds().contains(mousePos)) {
+                // Clicked on the slider, initiate dragging
+                isDragging = true;
+            }
+        } else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
+            isDragging = false;
+        } else if (event.type == sf::Event::MouseMoved) {
+            if (isDragging) {
+                sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+                slider.setPosition(mousePos.x - slider.getSize().x / 2, slider.getPosition().y);
+
+                // Ensure the slider stays within the bounds of the bar
+                if (slider.getPosition().x < bar.getPosition().x)
+                    slider.setPosition(bar.getPosition().x, slider.getPosition().y);
+
+                if (slider.getPosition().x + slider.getSize().x > bar.getPosition().x + bar.getSize().x)
+                    slider.setPosition(bar.getPosition().x + bar.getSize().x - slider.getSize().x, slider.getPosition().y);
+
+                ScrollBar::updateBarSize();
+            }
         }
     }
-}
 
 float ScrollBar::getPos() const
 {
     return slider.getPosition().x;
+}
+
+void ScrollBar::updateBarSize()
+{
+    float diff = slider.getPosition().x - bar.getPosition().x;
+        updateBar.setSize(sf::Vector2f(diff, updateBar.getSize().y));
+        updateBar.setPosition(bar.getPosition().x, bar.getPosition().y);
 }
 
 

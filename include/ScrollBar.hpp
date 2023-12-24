@@ -11,6 +11,7 @@ class ScrollBar{
     float                         getValue() const;
     void                          handleEvent(const sf::Event& event,sf::RenderWindow &window);
     float                         getPos() const;
+    void                          updateBarSize();
     private:
     sf::RectangleShape bar;
     sf::RectangleShape slider;
