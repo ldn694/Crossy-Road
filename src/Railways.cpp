@@ -12,8 +12,8 @@ Railways::Railways(const TextureHolder& textures, Difficulty difficulty, int var
     textures(textures)
 {
     sf::Time basePeriodTime = sf::seconds(5.f);
-    
-    float baseSpeed = 3500;
+    float baseSpeed = 4500;
+
     int numPartionPeriod;
     switch (difficulty) {
     case Difficulty::Easy:
@@ -90,15 +90,20 @@ void Railways::updateCurrent(sf::Time dt)
     if (movementSign != 0) {
         mTimeSinceLastSpawn += dt;
     }
+    if (!checkBegin && mTimeSinceLastSpawn > mBeginTime) {
+        mTimeSinceLastSpawn = sf::Time::Zero;
+        checkBegin = true;
+    }   
     
-    if (checkBegin && mPeriod - mTimeSinceLastSpawn < sf::seconds(1.0f)) {
+    if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn < sf::seconds(0.8f)) {
         isComing = true;
         mClock.restart();
         light->changeColor();
     }
-    else{
-        isComing = false;
-        light->setDefaultColor();
+
+    if (isComing && mClock.getElapsedTime().asSeconds() > 0.1f){
+        mClock.restart();
+        light->changeColor();
     }
 
     if (isTrain && ((train->getWorldPosition().x + train->getHitbox().width < 0 && movementSign == -1) || (train->getWorldPosition().x > WITDH_SIZE && movementSign == 1))){
@@ -106,26 +111,20 @@ void Railways::updateCurrent(sf::Time dt)
         train = nullptr;
         isTrain = false;
     }
-    if (!checkBegin && mTimeSinceLastSpawn > mBeginTime) {
-        mTimeSinceLastSpawn = sf::Time::Zero;
-        checkBegin = true;
-    }   
     
-    if (isComing && mClock.getElapsedTime().asSeconds() > 0.2){
-        mClock.restart();
-        light->changeColor();
-    }
     if (checkBegin && mTimeSinceLastSpawn > mPeriod) {
         mTimeSinceLastSpawn = sf::Time::Zero;
         sf::Vector2f position;
         if (movementSign == 1) {
-            position = sf::Vector2f(-1800, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
+            position = sf::Vector2f(-1500, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
         }
         else {
-            position = sf::Vector2f(WITDH_SIZE + 1000, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
+            position = sf::Vector2f(WITDH_SIZE + 300, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
         }
         addTrain(position);
         mediateNode->attachChildren();
+        isComing = false;
+        light->setDefaultColor();
     }
     
     if (isTrain) mediateNode->move(dt / mPeriod * mSpeed * movementSign, 0);

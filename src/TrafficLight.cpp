@@ -8,28 +8,32 @@
 
 
 TrafficLight::TrafficLight(sf::Vector2f position, const TextureHolder& textures, Road* road):
-    mSprite(textures.get(Textures::TrafficLight)),
     textures(textures)
 {
     float width, height;
     width = WIDTH_SIZE;
     height = HEIGHT_SIZE;
-    setSize(mSprite, sf::Vector2f(width, height));
-    mSprite.setPosition(-12, 0);
+    mSprite[0].setTexture(textures.get(Textures::TrafficLight));
+    mSprite[1].setTexture(textures.get(Textures::TrafficLight1));
+    mSprite[2].setTexture(textures.get(Textures::TrafficLight2));
+    for (int i=0; i<3; i++){
+        setSize(mSprite[i], sf::Vector2f(width, height));
+        mSprite[i].setPosition(-12, 0);
+    }
+    curChoose = 0;
 }
 void TrafficLight::setDefaultColor(){
-    mSprite.setTexture(textures.get(Textures::TrafficLight));
+    curChoose = 0;
 }
 void TrafficLight::changeColor(){
-    if (Left) mSprite.setTexture(textures.get(Textures::TrafficLight1));
-    else mSprite.setTexture(textures.get(Textures::TrafficLight2));
-    Left = !Left;
-
+    if (curChoose == 0) curChoose=1;
+    else if (curChoose == 1) curChoose=2;
+    else curChoose=1;
 }
 
 void TrafficLight::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite, states);
+    target.draw(mSprite[curChoose], states);
     //draw hitbox
     sf::FloatRect rect = getHitbox();
     sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
@@ -42,7 +46,7 @@ void TrafficLight::drawCurrent(sf::RenderTarget& target, sf::RenderStates states
 
 sf::FloatRect TrafficLight::getHitbox() const
 {
-    return getWorldTransform().transformRect(sf::FloatRect(-25, -5, WIDTH_SIZE * 0.96, HEIGHT_SIZE * 0.9));
+    return getWorldTransform().transformRect(sf::FloatRect(-25, -5, WIDTH_SIZE, HEIGHT_SIZE));
 }
 
 unsigned int TrafficLight::getCategory() const

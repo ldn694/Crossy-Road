@@ -17,9 +17,9 @@ public:
 	private:
 		virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 private:
-		sf::Sprite				            mSprite, mSprite1, mSprite2;
+		sf::Sprite				            mSprite[3];
         int                                 HEIGHT_SIZE = 50;
         int                                 WIDTH_SIZE = 45;
         const TextureHolder&                textures;
-        bool                                Left;
+        int                                 curChoose;      
 };
