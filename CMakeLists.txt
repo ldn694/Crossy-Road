@@ -59,6 +59,7 @@ add_executable(CrossyRoad
     src/GameOverState.cpp
     src/Scoreboard.cpp
     src/LoadingState.cpp
+    src/Rain.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
