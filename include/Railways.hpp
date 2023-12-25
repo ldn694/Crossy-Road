@@ -21,7 +21,7 @@ private:
     const TextureHolder& textures;
     Train*  train;
     TrafficLight* light;
-    bool isTrain, checkBegin, isComing;
+    bool checkBegin, isComing;
 
 private:
     Train* addTrain(sf::Vector2f position);

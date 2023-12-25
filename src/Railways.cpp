@@ -12,7 +12,7 @@ Railways::Railways(const TextureHolder& textures, Difficulty difficulty, int var
     textures(textures)
 {
     sf::Time basePeriodTime = sf::seconds(5.f);
-    float baseSpeed = 4500;
+    float baseSpeed = 2000;
 
     int numPartionPeriod;
     switch (difficulty) {
@@ -55,8 +55,9 @@ Railways::Railways(const TextureHolder& textures, Difficulty difficulty, int var
     
     attachChildren();
     mediateNode->attachChildren();
-    isTrain = false;
+    train = nullptr;
     checkBegin = false;
+    isComing = false;
 
 
 }
@@ -77,7 +78,6 @@ Train* Railways::addTrain(sf::Vector2f position)
 {
     std::unique_ptr<Train> curTrain(new Train(position, textures, this));
     train = curTrain.get();
-    isTrain = true;
     curTrain->setPosition(position);
     Train* trainPtr = curTrain.get();
     mediateNode->requestAttach(std::move(curTrain));
@@ -95,7 +95,7 @@ void Railways::updateCurrent(sf::Time dt)
         checkBegin = true;
     }   
     
-    if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn + sf::seconds(300.0f / mSpeed) < sf::seconds(1.2f)) {
+    if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn + sf::seconds(300.0f / mSpeed) < sf::seconds(1.0f)) {
         isComing = true;
         mClock.restart();
         light->changeColor();
@@ -106,10 +106,9 @@ void Railways::updateCurrent(sf::Time dt)
         light->changeColor();
     }
 
-    if (isTrain && ((train->getWorldPosition().x + train->getHitbox().width < 0 && movementSign == -1) || (train->getWorldPosition().x > WITDH_SIZE && movementSign == 1))){
+    if (train != nullptr && ((train->getWorldPosition().x + train->getHitbox().width < 0 && movementSign == -1) || (train->getWorldPosition().x > WITDH_SIZE && movementSign == 1))){
         mediateNode->requestDetach(train);
         train = nullptr;
-        isTrain = false;
     }
     
     if (checkBegin && mTimeSinceLastSpawn > mPeriod) {
@@ -127,5 +126,5 @@ void Railways::updateCurrent(sf::Time dt)
         light->setDefaultColor();
     }
     
-    if (isTrain) mediateNode->move(dt / mPeriod * mSpeed * movementSign, 0);
+    mediateNode->move(dt.asSeconds() * mSpeed * movementSign, 0);
 }
