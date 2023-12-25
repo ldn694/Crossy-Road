@@ -40,7 +40,7 @@ void RoadList::setDifficulty(Difficulty difficulty)
             mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
             break;
         case Hard:
-            mPeriod = sf::seconds(0.4f);
+            mPeriod = sf::seconds(0.5f);
             mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
             break;
         default:

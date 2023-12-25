@@ -46,10 +46,10 @@ Railways::Railways(const TextureHolder& textures, Difficulty difficulty, int var
     mTimeSinceLastSpawn = sf::Time::Zero;
     sf::Vector2f position;
     if (movementSign == 1) {
-        position = sf::Vector2f(WITDH_SIZE * 0.2, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
+        position = sf::Vector2f(WITDH_SIZE * 0.5, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
     }
     else {
-        position = sf::Vector2f(WITDH_SIZE * 0.8, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
+        position = sf::Vector2f(WITDH_SIZE * 0.5, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
     }
     addLight(position);
     

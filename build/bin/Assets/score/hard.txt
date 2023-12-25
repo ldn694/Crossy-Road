@@ -1,12 +1,10 @@
 Player
 69
 Player
+66
+Player
 62
-ldn
-36
 Player
-34
+55
 Player
-24
-Player
-18
+53

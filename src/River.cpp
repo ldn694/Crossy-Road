@@ -62,7 +62,7 @@ River::River(const TextureHolder& textures, Difficulty difficulty, int variant) 
     mTimeSinceLastSpawn = sf::Time::Zero;
     float minimumDistance = (WITDH_SIZE - maximumLog * 50) / (maximumLog - 1);
     if (movementSign == 0) {
-        int numLog = Rand(4, 8);
+        int numLog = Rand(6, 8);
         std::vector <int> index = randomIntSampling(NUM_ZONE, numLog);
         for (int i = 0; i < numLog; i++) {
             FloatingLog::Type logType = getRandLogType(movementSign);
