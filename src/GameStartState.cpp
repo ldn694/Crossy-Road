@@ -263,6 +263,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 				}
 				std::cout << info.floatList[0] << "\n";
                 requestStackPush(States::Game, info);
+				requestStackPush(States::Loading);
             } else if (announcement.id == ButtonNames::Back){
                 requestStackPop();
                 State::Info info;

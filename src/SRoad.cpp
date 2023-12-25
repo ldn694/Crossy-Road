@@ -56,7 +56,7 @@ SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty, int variant) 
     int numCar = movementSign == 0 ? 7 : 3;
     float x = rand() % (int)minimumDistance, y = (HEIGHT_SIZE - 50) / 2;
 
-    Car::Type carType = getRandCarType(movementSign);
+    carType = getRandCarType(movementSign);
     for (int i = 0; i < numCar; i++) {
         float offsetToNextCar = rand() % (int)minimumDistance;
         Car* car = addCar(carType, sf::Vector2f(x, y));
@@ -111,7 +111,6 @@ void SRoad::updateCurrent(sf::Time dt)
     }
     if (mTimeSinceLastSpawn > mPeriod) {
         mTimeSinceLastSpawn = sf::Time::Zero;
-        Car::Type type = getRandCarType(movementSign);
         sf::Vector2f position;
         if (movementSign == 1) {
             position = sf::Vector2f(-150 - (rand() % 50), (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
@@ -120,7 +119,7 @@ void SRoad::updateCurrent(sf::Time dt)
             position = sf::Vector2f(WITDH_SIZE + (rand() % 50), (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
 
         }
-        addCar(type, position);
+        addCar(carType, position);
         mediateNode->attachChildren();
     }
     mediateNode->move(dt / mPeriod * 300 * movementSign, 0);
