@@ -62,7 +62,8 @@ float squaredDistance(sf::Vector2f v1, sf::Vector2f v2) {
 
 void assertThrow(bool expression, std::string message) {
 	if (!expression) {
-		throw std::runtime_error(message);
+		std::cout << "ERROR: " << message << "\n";
+		assert(false);
 	}
 }
 
