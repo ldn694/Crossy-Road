@@ -123,6 +123,9 @@ void World::loadTextures()
 	mTextures.load(Textures::BlueCarRight, "Assets/Images/ForGame/road_car/blue_right.png");
 	mTextures.load(Textures::RedCarLeft, "Assets/Images/ForGame/road_car/red_left.png");
 	mTextures.load(Textures::RedCarRight, "Assets/Images/ForGame/road_car/red_right.png");
+	mTextures.load(Textures::StopLightRed, "Assets/Images/ForGame/road_car/light_red.png");
+	mTextures.load(Textures::StopLightGreen, "Assets/Images/ForGame/road_car/light_green.png");
+	mTextures.load(Textures::StopLightYellow, "Assets/Images/ForGame/road_car/light_yellow.png");
 	mTextures.load(Textures::StartLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light_shadow.png");
 	mTextures.load(Textures::NormalLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light.png");
 	mTextures.load(Textures::Rock1, "Assets/Images/ForGame/sidewalk_stuff/rock.png");

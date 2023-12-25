@@ -48,6 +48,12 @@ SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty, int variant) 
         movementSign = 0;
         break;
     }
+
+    mStopLightTimer = sf::Time::Zero;
+    const int numPartionPeriodStopLight = 10;
+    mStopLightTimer += float(rand() % numPartionPeriodStopLight / numPartionPeriodStopLight) * mStopLightPeriod[StopLight::State::Red];
+
+
     std::unique_ptr<SceneNode> mediate(new SceneNode());
     mediateNode = mediate.get();
     requestAttach(std::move(mediate));
@@ -63,6 +69,24 @@ SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty, int variant) 
         float newX = x + car->getHitbox().width + minimumDistance + offsetToNextCar;
         x = newX;
     }
+
+    std::unique_ptr<StopLight> stopLightPtr(new StopLight(sf::Vector2f(200, HEIGHT_SIZE), textures, this));
+    stopLight = stopLightPtr.get();
+    float xStopLight;
+    switch (variant) {
+    case SRoad::LeftToRight:
+        xStopLight = WITDH_SIZE / 2;
+        break;
+    case SRoad::RightToLeft:
+        xStopLight = WITDH_SIZE / 2;
+        break;
+    default:
+        xStopLight = 0;
+        break;
+    }
+    stopLight->setPosition(sf::Vector2f(xStopLight, HEIGHT_SIZE));
+    requestAttach(std::move(stopLightPtr));
+
     attachChildren();
     mediateNode->attachChildren();
 }
@@ -90,10 +114,32 @@ void SRoad::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mSprite, states);
 }
 
+float getSpeedMultiplier(StopLight::State state) {
+    switch (state) {
+    case StopLight::Red:
+        return 0;
+    case StopLight::Yellow:
+        return 0.8f;
+    case StopLight::Green:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
 void SRoad::updateCurrent(sf::Time dt)
 {
     Road::updateCurrent(dt);
-    if (movementSign != 0) {
+
+    mStopLightTimer += dt;
+    if (mStopLightTimer > mStopLightPeriod[stopLight->getState()]) {
+        mStopLightTimer = sf::Time::Zero;
+        stopLight->changeState();
+    }
+
+    float speedMultiplier = getSpeedMultiplier(stopLight->getState());
+
+    if (movementSign != 0 && stopLight->getState() != StopLight::Red) {
         mTimeSinceLastSpawn += dt;
     }
     while (true) {
@@ -122,5 +168,5 @@ void SRoad::updateCurrent(sf::Time dt)
         addCar(carType, position);
         mediateNode->attachChildren();
     }
-    mediateNode->move(dt / mPeriod * 300 * movementSign, 0);
+    mediateNode->move(dt / mPeriod * 300 * movementSign * speedMultiplier, 0);
 }
