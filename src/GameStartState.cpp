@@ -210,7 +210,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 		if (announcement.action == Clickable::LeftPressed) {
 			std::cerr << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Play){
-                requestStateClear();
+                // requestStateClear();
                 State::Info info;
 				info.stringList.push_back(mClickableList.getString(ButtonNames::TypingBox));
 				switch (mChoiceDifficultyIndex)

@@ -29,22 +29,29 @@ int getNumType(Road::Type type)
 void RoadList::setDifficulty(Difficulty difficulty)
 {
     mDifficulty = difficulty;
+    std::cerr << "setDifficulty: " << int(mDifficulty) << "\n";
     switch (mDifficulty) {
         case Easy:
             mPeriod = sf::seconds(1.0f);
-            mPlayer->setMovementDuration(sf::seconds(0.15f));
+            mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
             break;
         case Medium:
-            mPeriod = sf::seconds(0.8f);
-            mPlayer->setMovementDuration(sf::seconds(0.15f));
+            mPeriod = sf::seconds(0.7f);
+            mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
             break;
         case Hard:
-            mPeriod = sf::seconds(0.5f);
-            mPlayer->setMovementDuration(sf::seconds(0.15f));
+            mPeriod = sf::seconds(0.4f);
+            mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
             break;
         default:
-            mPlayer->setMovementDuration(sf::seconds(0.5f));
+            mPlayer->setMovementDuration(sf::seconds(0.5f) / mPlayerSpeedMultiplier);
     }
+}
+
+void RoadList::setPlayerSpeedMultiplier(float multiplier)
+{
+    mPlayerSpeedMultiplier = multiplier;
+    mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
 }
 
 std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
@@ -75,6 +82,7 @@ RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, 
     , mTextures(textures)
     , mPlayer(player)
     , mDifficulty(difficulty)
+    , mPlayerSpeedMultiplier(1.0f)
 {
     setDifficulty(difficulty);
     registerRoad<Railways>(Road::Railways);
@@ -121,9 +129,9 @@ void RoadList::updateCurrent(sf::Time dt)
         road->setPosition(0, lastRoad->getPosition().y - lastRoad->HEIGHT_SIZE);
         push_back(std::move(road));
         mPassedRoad++;
-    }
-    if (mPassedRoad % NUM_ROAD_LEVEL_UP == 0 && mPassedRoad != 0) {
-        setDifficulty(static_cast<Difficulty>(std::min(int(mDifficulty + 1), int(Difficulty::NumDifficulties) - 1)));
+        if (mPassedRoad % NUM_ROAD_LEVEL_UP == 0 && mPassedRoad != 0) {
+            setDifficulty(static_cast<Difficulty>(std::min(int(mDifficulty + 1), int(Difficulty::NumDifficulties) - 1)));
+        }
     }
     move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
 }

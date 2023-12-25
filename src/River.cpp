@@ -61,14 +61,27 @@ River::River(const TextureHolder& textures, Difficulty difficulty, int variant) 
     requestAttach(std::move(mediate));
     mTimeSinceLastSpawn = sf::Time::Zero;
     float minimumDistance = (WITDH_SIZE - maximumLog * 50) / (maximumLog - 1);
-    int numLog = movementSign == 0 ? 4 : 5;
-    float x = rand() % (int)minimumDistance, y = (HEIGHT_SIZE - 50) / 2;
-    for (int i = 0; i < numLog; i++) {
-        FloatingLog::Type logType = getRandLogType(movementSign);
-        float offsetToNextLog = rand() % (int)minimumDistance;
-        FloatingLog* log = addLog(logType, sf::Vector2f(x, y));
-        float newX = x + log->getHitbox().width + minimumDistance + offsetToNextLog;
-        x = newX;
+    if (movementSign == 0) {
+        int numLog = Rand(4, 8);
+        std::vector <int> index = randomIntSampling(NUM_ZONE, numLog);
+        for (int i = 0; i < numLog; i++) {
+            FloatingLog::Type logType = getRandLogType(movementSign);
+            sf::Vector2f position = mZones[index[i]]->getPosition();
+            position.y = (HEIGHT_SIZE - 50) / 2;
+            position.x -= WITDH_SIZE / NUM_ZONE / 2  + 60;
+            FloatingLog* log = addLog(logType, position);
+        }
+    }
+    else {
+        int numLog = movementSign == 0 ? 4 : 5;
+        float x = rand() % (int)minimumDistance, y = (HEIGHT_SIZE - 50) / 2;
+        for (int i = 0; i < numLog; i++) {
+            FloatingLog::Type logType = getRandLogType(movementSign);
+            float offsetToNextLog = rand() % (int)minimumDistance;
+            FloatingLog* log = addLog(logType, sf::Vector2f(x, y));
+            float newX = x + log->getHitbox().width + minimumDistance + offsetToNextLog;
+            x = newX;
+        }
     }
     attachChildren();
     mediateNode->attachChildren();
@@ -128,10 +141,10 @@ void River::updateCurrent(sf::Time dt)
         FloatingLog::Type type = getRandLogType(movementSign);
         sf::Vector2f position;
         if (movementSign == 1) {
-            position = sf::Vector2f(-150 - (rand() % 50), (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
+            position = sf::Vector2f(-160 - (rand() % 50), (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
         }
         else {
-            position = sf::Vector2f(WITDH_SIZE + (rand() % 50), (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
+            position = sf::Vector2f(WITDH_SIZE + (rand() % 50) + 160, (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
 
         }
         addLog(type, position);

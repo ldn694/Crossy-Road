@@ -14,6 +14,7 @@
 #include "Command.hpp"
 #include "Player.hpp"
 #include "RoadList.hpp"
+#include "Rain.hpp"
 #include "Context.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
@@ -42,6 +43,7 @@ class World : private sf::NonCopyable
 		SceneNode&							getSceneGraph();
 
 		int									getCurrentScore();
+		void 								setRaining(bool raining);
 
 
 	private:
@@ -80,4 +82,8 @@ class World : private sf::NonCopyable
 		std::string							mPlayerName;
 		Animal::Type						mPlayerType;
 		int									mCurrentScore;
+		Rain								mRain;
+		bool								isRaining;
+		sf::Time 							mRainTimer;
+		const sf::Time 						mRainPeriod = sf::seconds(10.f);
 };
