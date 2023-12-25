@@ -135,6 +135,9 @@ bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offs
     if (pendingAnimation()) {
         return false;
     }
+    if (zone == mZone) {
+        return false;
+    }
     SceneNode* parent = this->getParent();
     assertThrow(this->getParent() != nullptr, "Animal has no parent");
     mNextZone = zone;
@@ -228,7 +231,9 @@ void Animal::move(Direction direction)
         }
     }
     else {
-        assertThrow(nextUnsafeZone != nullptr, "No unsafe zone");
+        if (nextUnsafeZone == nullptr) {
+            return;
+        }
         if (addAnimalAnimation(nextUnsafeZone, mDuration)) {
             changeDirection(direction);
         }
