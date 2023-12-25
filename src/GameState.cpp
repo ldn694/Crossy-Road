@@ -50,6 +50,8 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 	mCurrentScoreText.setCharacterSize(20);
 	mCurrentScoreText.setFillColor(sf::Color::White);
 	mCurrentScoreText.setPosition(10, 10);
+	update(sf::Time::Zero);
+	handleEvent(sf::Event());
 }
 
 void GameState::draw()

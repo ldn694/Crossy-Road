@@ -118,7 +118,10 @@ bool MenuState::handleEvent(const sf::Event& event)
 				}
 				case MenuState::ClickableID::Load: {
 					int Size = getStackSize();
-					if (Size != 1) requestStackPop();
+					if (Size != 1) {
+						requestStackPop();
+						requestStackPush(States::Loading);
+					}
 					break;
 				}
 				case MenuState::ClickableID::Score: {

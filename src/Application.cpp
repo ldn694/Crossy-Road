@@ -9,6 +9,7 @@
 #include "GameOverState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
+#include "LoadingState.hpp"
 #include "ScoreboardState.hpp"
 #include <iostream>
 
@@ -122,4 +123,5 @@ void Application::registerStates()
     mStateStack.registerState<SettingState>(States::Setting);
 	mStateStack.registerState<GameOverState>(States::GameOver);
 	mStateStack.registerState<ScoreboardState>(States::Scoreboard);
+	mStateStack.registerState<LoadingState>(States::Loading);
 }

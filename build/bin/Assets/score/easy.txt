@@ -1,6 +1,10 @@
 Player
-11
-ldn
-8
-khidoimoi
-4
+209
+Player
+44
+Player
+41
+Player
+28
+Player
+24

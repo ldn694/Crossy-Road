@@ -2,33 +2,32 @@
 #include "Utility.hpp"
 #include "ResourceHolder.hpp"
 
-#include <SFML/Graphics/RenderWindow.hpp"
-#include <SFML/Graphics/View.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 
 
-LoadingState::LoadingState(StateStack& stack, Context context)
-: State(stack, context)
+LoadingState::LoadingState(StateStack& stack, States::ID stateID, Context context, State::Info info)
+: State(stack, stateID, context)
 {
 	sf::RenderWindow& window = *getContext().window;
-	sf::Font& font = context.fonts->get(Fonts::Main);
+	sf::Font& font = context.fonts->get(Fonts::Bungee);
 	sf::Vector2f viewSize = window.getView().getSize();
+	
+	mClock.restart();
+	mCount = 0;
 
+	mString = "3";
 	mLoadingText.setFont(font);
-	mLoadingText.setString("Loading Resources");
+	mLoadingText.setCharacterSize(100);
+	mLoadingText.setString(mString);
 	centerOrigin(mLoadingText);
-	mLoadingText.setPosition(viewSize.x / 2.f, viewSize.y / 2.f + 50.f);
+	mLoadingText.setPosition(viewSize.x / 2.f, viewSize.y / 2.f);
 
-	mProgressBarBackground.setFillColor(sf::Color::White);
-	mProgressBarBackground.setSize(sf::Vector2f(viewSize.x - 20, 10));
-	mProgressBarBackground.setPosition(10, mLoadingText.getPosition().y + 40);
+	context.textures->load(Textures::PauseBackground, "Assets/Images/ForPause/background.png");
+	mBackgroundSprite.setTexture(context.textures->get(Textures::PauseBackground));
+	setSize(mBackgroundSprite, viewSize);
+	mBackgroundSprite.setColor(sf::Color(255, 255, 255, 0));
 
-	mProgressBar.setFillColor(sf::Color(100,100,100));
-	mProgressBar.setSize(sf::Vector2f(200, 10));
-	mProgressBar.setPosition(10, mLoadingText.getPosition().y + 40);
-
-	setCompletion(0.f);
-
-	mLoadingTask.execute();
 }
 
 void LoadingState::draw()
@@ -37,35 +36,26 @@ void LoadingState::draw()
 
 	window.setView(window.getDefaultView());
 
+	window.draw(mBackgroundSprite);
 	window.draw(mLoadingText);
-	window.draw(mProgressBarBackground);
-	window.draw(mProgressBar);
 }
 
 bool LoadingState::update(sf::Time)
 {
-	// Update the progress bar from the remote task or finish it
-	if (mLoadingTask.isFinished())
-	{
-		requestStackPop();
-		requestStackPush(States::Game);
+	if (mClock.getElapsedTime().asSeconds() >= 1.f) {
+		mCount++;
+		if (mCount == 3){
+			requestStackPop();
+		}
+		mString = std::to_string(3 - mCount);
+		mLoadingText.setString(mString);
+		mClock.restart();
 	}
-	else
-	{
-		setCompletion(mLoadingTask.getCompletion());
-	}
-	return true;
+	return false;
 }
 
 bool LoadingState::handleEvent(const sf::Event& event)
 {
-	return true;
+	return false;
 }
 
-void LoadingState::setCompletion(float percent)
-{
-	if (percent > 1.f) // clamp
-		percent = 1.f;
-
-	mProgressBar.setSize(sf::Vector2f(mProgressBarBackground.getSize().x * percent, mProgressBar.getSize().y));
-}

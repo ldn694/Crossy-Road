@@ -33,7 +33,7 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	mClickableList.registerClickable<Button>(Clickable::Type::Button);
 	Clickable::Info info;
 
-	info.floatList = { 260, 280, 130, 130, 10 };
+	info.floatList = { 525 - 65 - 250, 250, 130, 130, 10 };
 	info.stringList = { "" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
@@ -41,7 +41,7 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Home, info);
 
-	info.floatList = { 260 + 200, 280, 130, 130, 10 };
+	info.floatList = { 525 - 65, 250, 130, 130, 10 };
 	info.stringList = { "" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
@@ -49,7 +49,7 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Retry, info);
 
-	info.floatList = { 260 + 400, 280, 130, 130, 10 };
+	info.floatList = { 525 - 65 + 250, 250, 130, 130, 10 };
 	info.stringList = { "" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Main };
