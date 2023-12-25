@@ -26,7 +26,7 @@ LoadingState::LoadingState(StateStack& stack, States::ID stateID, Context contex
 	context.textures->load(Textures::PauseBackground, "Assets/Images/ForPause/background.png");
 	mBackgroundSprite.setTexture(context.textures->get(Textures::PauseBackground));
 	setSize(mBackgroundSprite, viewSize);
-	mBackgroundSprite.setColor(sf::Color(255, 255, 255, 200));
+	mBackgroundSprite.setColor(sf::Color(255, 255, 255, 0));
 
 }
 
