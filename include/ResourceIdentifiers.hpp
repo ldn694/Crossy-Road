@@ -65,8 +65,11 @@ namespace Textures
 		Fox,
 		Pig,
 		Lion,
-		//
-		Railways,
+		//Railways
+		Railways, Train,
+		TrafficLight,
+		TrafficLight1,
+		TrafficLight2,
 		//River
 		RiverLeftToRight, RiverRightToLeft,
 		Lily, SmallLog, BigLog,
@@ -78,7 +81,7 @@ namespace Textures
 		//SRoad
 		RedCarRight, RedCarLeft,
 		BlueCarRight, BlueCarLeft,
-		SRoad_Default, SRoad_Line, SRoad_Stripe,
+		SRoad_Default, SRoad_Line, SRoad_Stripe,		
 		//Cat
 		CatUp,
 		CatDown,

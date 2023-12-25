@@ -15,7 +15,7 @@ int getNumType(Road::Type type)
 {
     switch (type) {
     case Road::Railways:
-        return 1;
+        return Railways::NumRailwaysVariants;
     case Road::River:
         return River::NumRiverVariants;
     case Road::SRoad:
