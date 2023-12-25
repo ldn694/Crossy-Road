@@ -95,7 +95,7 @@ void Railways::updateCurrent(sf::Time dt)
         checkBegin = true;
     }   
     
-    if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn < sf::seconds(0.8f)) {
+    if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn + sf::seconds(300.0f / mSpeed) < sf::seconds(1.2f)) {
         isComing = true;
         mClock.restart();
         light->changeColor();
