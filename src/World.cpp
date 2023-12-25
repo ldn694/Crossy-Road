@@ -91,7 +91,11 @@ void World::loadTextures()
 	mTextures.load(Textures::Eagle, "Assets/Images/Eagle.png");
 	mTextures.load(Textures::Raptor, "Assets/Images/Raptor.png");
 	mTextures.load(Textures::Desert, "Assets/Images/Desert.png");
-	mTextures.load(Textures::Railways, "Assets/Images/Railways.png");
+	mTextures.load(Textures::Railways, "Assets/Images/ForGame/railway_train/railway.png");
+	mTextures.load(Textures::Train, "Assets/Images/ForGame/railway_train/train.png");
+	mTextures.load(Textures::TrafficLight, "Assets/Images/ForGame/railway_train/light0.png");
+	mTextures.load(Textures::TrafficLight1, "Assets/Images/ForGame/railway_train/light1.png");
+	mTextures.load(Textures::TrafficLight2, "Assets/Images/ForGame/railway_train/light2.png");
 	mTextures.load(Textures::RiverLeftToRight, "Assets/Images/ForGame/river_log/river0.png");
 	mTextures.load(Textures::RiverRightToLeft, "Assets/Images/ForGame/river_log/river1.png");
 	mTextures.load(Textures::SRoad_Default, "Assets/Images/ForGame/road_car/default.png");
@@ -110,6 +114,7 @@ void World::loadTextures()
 	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
 	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");
 	mTextures.load(Textures::Lily, "Assets/Images/ForGame/river_log/lily.png");
+
 }
 
 void World::buildScene()
