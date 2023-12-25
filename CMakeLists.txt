@@ -25,6 +25,7 @@ add_executable(CrossyRoad
     src/PauseState.cpp
     src/Player.cpp
     src/SceneNode.cpp
+    src/ScoreboardState.cpp
     src/SettingState.cpp
     src/SpriteNode.cpp
     src/State.cpp
@@ -56,6 +57,9 @@ add_executable(CrossyRoad
     src/Tree.cpp
     src/Car.cpp
     src/GameOverState.cpp
+    src/Scoreboard.cpp
+    src/LoadingState.cpp
+    src/Rain.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

@@ -18,6 +18,7 @@ private:
     sf::Time mTimeSinceLastSpawn;
     const TextureHolder& textures;
     std::vector <Car*> cars;
+    Car::Type carType;
 private:
     Car* addCar(Car::Type carType, sf::Vector2f position);
 public:

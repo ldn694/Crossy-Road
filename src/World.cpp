@@ -28,9 +28,12 @@ World::World(sf::RenderWindow& window, Context context, Animal::Type playerType,
 	, mPlayerName(playerName)
 	, mPlayerType(playerType)
 	, mCurrentScore(0)
+	, mRain(mWorldView.getSize().x, mWorldView.getSize().y, 3, 10, 500, sf::seconds(0.1f), sf::seconds(1.0f))
 {
 	loadTextures();
 	buildScene();
+
+	setRaining(false);
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
@@ -52,6 +55,17 @@ void World::update(sf::Time dt)
 	adaptPlayerVelocity();
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt);
+	if (isRaining) {
+		mRain.update(dt);
+	}
+	sf::Time intendedRainPeriod = isRaining ? mRainPeriod : mRainPeriod * 2.0f;
+	if (mRainTimer.asSeconds() >= intendedRainPeriod.asSeconds()) {
+		setRaining(!isRaining);
+		mRainTimer = sf::Time::Zero;
+	}
+	else {
+		mRainTimer += dt;
+	}
 	adaptPlayerPosition();
 }
 
@@ -59,6 +73,10 @@ void World::draw()
 {
 	mWindow.setView(mWorldView);
 	mWindow.draw(mSceneGraph);
+	if (isRaining) {
+		mWindow.setView(mWindow.getDefaultView());
+		mRain.draw(mWindow);
+	}
 }
 
 CommandQueue& World::getCommandQueue()
@@ -201,4 +219,15 @@ void World::adaptPlayerVelocity()
 
 int World::getCurrentScore() {
 	return mCurrentScore;
+}
+
+void World::setRaining(bool raining) {
+	isRaining = raining;
+	if (isRaining) {
+		mRain.reset();
+		mRoadList->setPlayerSpeedMultiplier(0.7f);
+	}
+	else {
+		mRoadList->setPlayerSpeedMultiplier(1.f);
+	}
 }

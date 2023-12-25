@@ -43,6 +43,4 @@ private:
 	std::size_t				mOptionIndex;
 	std::size_t				mChoiceIndex;
 
-		int						page;
-
 };
