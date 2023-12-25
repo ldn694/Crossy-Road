@@ -81,6 +81,8 @@ namespace Textures
 		//SRoad
 		RedCarRight, RedCarLeft,
 		BlueCarRight, BlueCarLeft,
+		TruckRight, TruckLeft,
+		VanRight, VanLeft,
 		SRoad_Default, SRoad_Line, SRoad_Stripe,		
 		StopLightRed, StopLightGreen, StopLightYellow,
 		//Cat

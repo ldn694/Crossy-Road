@@ -13,6 +13,10 @@ public:
         BlueCarLeft,
         RedCarRight,
         BlueCarRight,
+        TruckLeft,
+        TruckRight,
+        VanLeft,
+        VanRight,
         NumTypes
     };
                             Car(Type type, sf::Vector2f position, const TextureHolder& textures, Road* road);

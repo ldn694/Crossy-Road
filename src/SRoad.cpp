@@ -12,12 +12,12 @@ Textures::ID toTextureID()
 
 Car::Type getRandCarType(int movementSign) {
     if (movementSign == 1) {
-        int typeList[2] = {Car::RedCarRight, Car::BlueCarRight};
-        return static_cast<Car::Type>(typeList[rand() % 2]);
+        int typeList[4] = {Car::RedCarRight, Car::BlueCarRight, Car::VanRight, Car::TruckRight};
+        return static_cast<Car::Type>(typeList[rand() % 4]);
     } 
     else {
-        int typeList[2] = {Car::RedCarLeft, Car::BlueCarLeft};
-        return static_cast<Car::Type>(typeList[rand() % 2]);
+        int typeList[4] = {Car::RedCarLeft, Car::BlueCarLeft, Car::VanLeft, Car::TruckLeft};
+        return static_cast<Car::Type>(typeList[rand() % 4]);
     }
 
 }
@@ -62,8 +62,8 @@ SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty, int variant) 
     int numCar = movementSign == 0 ? 7 : 3;
     float x = rand() % (int)minimumDistance, y = (HEIGHT_SIZE - 50) / 2;
 
-    carType = getRandCarType(movementSign);
     for (int i = 0; i < numCar; i++) {
+        Car::Type carType = getRandCarType(movementSign);
         float offsetToNextCar = rand() % (int)minimumDistance;
         Car* car = addCar(carType, sf::Vector2f(x, y));
         float newX = x + car->getHitbox().width + minimumDistance + offsetToNextCar;
@@ -165,6 +165,7 @@ void SRoad::updateCurrent(sf::Time dt)
             position = sf::Vector2f(WITDH_SIZE + (rand() % 50), (HEIGHT_SIZE - 50) / 2) - mediateNode->getPosition();
 
         }
+        Car::Type carType = getRandCarType(movementSign);
         addCar(carType, position);
         mediateNode->attachChildren();
     }
