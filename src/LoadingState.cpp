@@ -18,7 +18,7 @@ LoadingState::LoadingState(StateStack& stack, States::ID stateID, Context contex
 
 	mString = "3";
 	mLoadingText.setFont(font);
-	mLoadingText.setCharacterSize(70);
+	mLoadingText.setCharacterSize(100);
 	mLoadingText.setString(mString);
 	centerOrigin(mLoadingText);
 	mLoadingText.setPosition(viewSize.x / 2.f, viewSize.y / 2.f);
