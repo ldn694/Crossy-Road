@@ -19,7 +19,7 @@ private:
     sf::Time mTimeSinceLastSpawn;
     const TextureHolder& textures;
     std::vector <Car*> cars;
-    Car::Type carType;
+    // Car::Type carType;
     StopLight* stopLight;
     sf::Time mStopLightTimer;;
     const sf::Time mStopLightPeriod[StopLight::State::NumStopLightState] = {sf::seconds(2.0f), sf::seconds(1.0f), sf::seconds(2.5f)};

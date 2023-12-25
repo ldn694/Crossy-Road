@@ -19,6 +19,14 @@ Textures::ID toTextureID(Car::Type type)
         return Textures::BlueCarLeft;
     case Car::BlueCarRight:
         return Textures::BlueCarRight;
+    case Car::TruckLeft:
+        return Textures::TruckLeft;
+    case Car::TruckRight:
+        return Textures::TruckRight;
+    case Car::VanLeft:
+        return Textures::VanLeft;
+    case Car::VanRight:
+        return Textures::VanRight;
     }
 }
 
