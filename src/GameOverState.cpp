@@ -113,9 +113,11 @@ bool GameOverState::handleEvent(const sf::Event& event)
 				//requestNotifyState(States::Menu, info);
 			}
 			else if (announcement.id == ButtonNames::Retry) {
-				requestStateClear();
-                requestStackPush(States::Menu);
-                requestStackPush(States::GameStart);
+				// requestStateClear();
+                // requestStackPush(States::Menu);
+                // requestStackPush(States::GameStart);
+				requestStackPop();
+				requestStackPop();
 				//State::Info info;
 				//requestNotifyState(States::Game, info);
 			}
