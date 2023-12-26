@@ -67,6 +67,7 @@ class World : private sf::NonCopyable
 		sf::RenderWindow&					mWindow;
 		sf::View							mWorldView;
 		TextureHolder						mTextures;
+		Context								mContext;
 
 		SceneNode							mSceneGraph;
 		std::array<SceneNode*, LayerCount>	mSceneLayers;

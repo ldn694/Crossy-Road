@@ -7,19 +7,26 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-Animal::Animal(Type type, TextureHolder& textures, SceneNode* tmpNode, int& passedRoad)
+Animal::Animal(Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SceneNode* tmpNode, int& passedRoad)
     : mType(type)
     , mTextures(textures)
     , mDirection(Down)
     , tmpNode(tmpNode)
     , passedRoad(passedRoad)
 {
+    mPlayerNameText.setFont(fonts.get(Fonts::Bungee));
+    mPlayerNameText.setString(playerName);
+    mPlayerNameText.setCharacterSize(15);
+    mPlayerNameText.setFillColor(sf::Color::White);
+    centerOrigin(mPlayerNameText);
+    mPlayerNameText.setPosition(0, -40);
     changeDirection(Down);
 }
 
 void Animal::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);
+    target.draw(mPlayerNameText, states);
     //draw hitbox
     sf::FloatRect rect = getHitbox();
     sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));

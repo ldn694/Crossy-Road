@@ -5,6 +5,7 @@
 #include "ResourceIdentifiers.hpp"
 #include "Road.hpp"
 
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 class Animal: public Entity {
@@ -26,7 +27,7 @@ class Animal: public Entity {
         };
 
     public:
-                                Animal(Type type, TextureHolder& textures, SceneNode* tmpNode, int& passedRoad);
+                                Animal(Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SceneNode* tmpNode, int& passedRoad);
         virtual unsigned int	getCategory() const;
         sf::FloatRect			getHitbox() const;
         void                    move(Direction direction);
@@ -49,6 +50,7 @@ class Animal: public Entity {
     private:
         TextureHolder&          mTextures;
         Type					mType;
+        sf::Text                mPlayerNameText;
         Direction               mDirection;
         sf::Sprite				mSprite;
         sf::Time                mDuration;

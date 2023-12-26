@@ -116,6 +116,7 @@ RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, 
     Zone* firstZone = curRoad->randomZone(Zone::Safe);
     switchParent(player, firstZone);
     setZone(player, firstZone);
+    mPassedRoad = 0;
 }
 
 void RoadList::updateCurrent(sf::Time dt)
@@ -130,6 +131,7 @@ void RoadList::updateCurrent(sf::Time dt)
         push_back(std::move(road));
         mPassedRoad++;
         if (mPassedRoad % NUM_ROAD_LEVEL_UP == 0 && mPassedRoad != 0) {
+            std::cout << mPassedRoad << "\n";
             setDifficulty(static_cast<Difficulty>(std::min(int(mDifficulty + 1), int(Difficulty::NumDifficulties) - 1)));
         }
     }
