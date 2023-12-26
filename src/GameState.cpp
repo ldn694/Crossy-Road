@@ -19,6 +19,14 @@ Animal::Type toAnimalType(std::string animalType) {
 	}
 }
 
+std::vector <Animal::Type> toAnimalTypes(std::vector <std::string> animalTypes) {
+	std::vector <Animal::Type> result;
+	for (int i = 0; i < animalTypes.size(); i++) {
+		result.push_back(toAnimalType(animalTypes[i]));
+	}
+	return result;
+}
+
 Difficulty toDifficulty(std::string difficulty) {
 	if (difficulty == "Easy") {
 		return Easy;
@@ -33,7 +41,9 @@ Difficulty toDifficulty(std::string difficulty) {
 
 GameState::GameState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 : State(stack, stateID, context)
-, mWorld(*context.window, context, toAnimalType(stateInfo.stringList[2]), stateInfo.stringList[0], toDifficulty(stateInfo.stringList[1]))
+, mWorld(*context.window, context, stateInfo.floatList[0], 
+		std::vector <Animal::Type>(stateInfo.floatList[0], toAnimalType(stateInfo.stringList[2])), 
+		std::vector <std::string>(stateInfo.floatList[0], stateInfo.stringList[0]), toDifficulty(stateInfo.stringList[1]))
 , mContext(context)
 , mPlayerName(stateInfo.stringList[0])
 , mStartDifficulty(toDifficulty(stateInfo.stringList[1]))

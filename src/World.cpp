@@ -13,7 +13,7 @@ SceneNode& World::getSceneGraph()
 	return mSceneGraph;
 }
 
-World::World(sf::RenderWindow& window, Context context, Animal::Type playerType, std::string playerName, Difficulty difficulty)
+World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vector <Animal::Type> playerTypes, std::vector <std::string> playerNames, Difficulty difficulty)
 	: mWindow(window)
 	, mWorldView(window.getDefaultView())
 	, mTextures()
@@ -23,14 +23,22 @@ World::World(sf::RenderWindow& window, Context context, Animal::Type playerType,
 	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
 	//, mScrollSpeed(-50.f)
 	, mScrollSpeed(0.f)
-	, mPlayerAnimal(nullptr)
 	, mDifficulty(difficulty)
-	, mPlayerName(playerName)
-	, mPlayerType(playerType)
+	, mPlayerTypes(playerTypes)
+	, mPlayerNames(playerNames)
+	, mNumPlayer(numPlayer)
 	, mCurrentScore(0)
 	, mRain(mWorldView.getSize().x, mWorldView.getSize().y, 3, 10, 500, sf::seconds(0.1f), sf::seconds(1.0f))
 	, mContext(context)
 {
+	assertThrow(numPlayer == 1 || numPlayer == 2, "numPlayer must be 1 or 2");
+	assertThrow(playerTypes.size() == numPlayer, "playerTypes.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerTypes.size()));
+	assertThrow(playerNames.size() == numPlayer, "playerNames.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerNames.size()));
+	mPlayers.resize(numPlayer);
+	for (int i = 0; i < numPlayer; i++) {
+		mPlayers[i] = nullptr;
+	}
+
 	loadTextures();
 	buildScene();
 
@@ -48,12 +56,16 @@ void World::update(sf::Time dt)
 	//std::cerr << (mSceneGraph.findChildrenByCategory<Entity>(Category::Player)).size();
 	// Scroll the world, reset player velocity
 	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
-	mPlayerAnimal->setVelocity(0.f, 0.f);
+	for (int i = 0; i < mNumPlayer; i++) {
+		if (mPlayers[i] != nullptr) {
+			mPlayers[i]->setVelocity(0.f, 0.f);
+		}
+	}
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);
-	adaptPlayerVelocity();
+	//adaptPlayerVelocity();
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt);
 	if (isRaining) {
@@ -170,10 +182,17 @@ void World::buildScene()
 	SceneNode* airNode = airEntity.get();
 	mSceneLayers[Air]->requestAttach(std::move(airEntity));
 
-	mPlayerAnimal = new Animal(mPlayerType, mPlayerName, mTextures, *mContext.fonts, airNode, mCurrentScore);
-	mPlayerAnimal->setPosition(0, 0);
+	if (mNumPlayer == 2 && mPlayerNames[0] == mPlayerNames[1]) {
+		mPlayerNames[0] += " 1";
+		mPlayerNames[1] += " 2";
+	}
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayerAnimal, mDifficulty));
+	for (int i = 0; i < mNumPlayer; i++) {
+		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, airNode, mCurrentScore);
+		mPlayers[i]->setPosition(0, 0);
+	}
+
+	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayers, mDifficulty, airNode));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mRoadList = roadList.get();
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
@@ -203,12 +222,16 @@ void World::adaptPlayerPosition()
 	sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
 	const float borderDistance = 40.f;
 
-	if (mPlayerAnimal->getWorldPosition().y < viewBounds.top + viewBounds.height * 0.3f) {
-		mWorldView.move(0.f, mPlayerAnimal->getWorldPosition().y - (viewBounds.top + viewBounds.height * 0.3f));
+	for (int i = 0; i < mNumPlayer; i++) {
+		if (mPlayers[i]->getWorldPosition().y < viewBounds.top + viewBounds.height * 0.3f) {
+			mWorldView.move(0.f, mPlayers[i]->getWorldPosition().y - (viewBounds.top + viewBounds.height * 0.3f));
+		}
 	}
 
-	if (intersection(mPlayerAnimal->getHitbox(), viewBounds) < 1) {
-		throw GameStatus::GAME_LOST;
+	for (int i = 0; i < mNumPlayer; i++) {
+		if (intersection(mPlayers[i]->getHitbox(), viewBounds) < 1) {
+			throw GameStatus::GAME_LOST;
+		}
 	}
 	// position.x = std::max(position.x, viewBounds.left + borderDistance);
 	// position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
@@ -219,14 +242,14 @@ void World::adaptPlayerPosition()
 
 void World::adaptPlayerVelocity()
 {
-	sf::Vector2f velocity = mPlayerAnimal->getVelocity();
+	// sf::Vector2f velocity = mPlayerAnimal->getVelocity();
 
-	// If moving diagonally, reduce velocity (to have always same velocity)
-	if (velocity.x != 0.f && velocity.y != 0.f)
-		mPlayerAnimal->setVelocity(velocity / std::sqrt(2.f));
+	// // If moving diagonally, reduce velocity (to have always same velocity)
+	// if (velocity.x != 0.f && velocity.y != 0.f)
+	// 	mPlayerAnimal->setVelocity(velocity / std::sqrt(2.f));
 
-	// Add scrolling velocity
-	mPlayerAnimal->accelerate(0.f, mScrollSpeed);
+	// // Add scrolling velocity
+	// mPlayerAnimal->accelerate(0.f, mScrollSpeed);
 }
 
 

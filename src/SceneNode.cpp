@@ -22,7 +22,13 @@ SceneNode::~SceneNode()
 void SceneNode::filterEmptyChildren()
 {
 	while (true) {
-		auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](Ptr& p) { return p.get() == nullptr; });
+		std::vector <Ptr>::iterator found = mChildren.end();
+		for (int i = 0; i < mChildren.size(); i++) {
+			if (mChildren[i].get() == nullptr) {
+				found = mChildren.begin() + i;
+				break;
+			}
+		}
 		if (found != mChildren.end()) {
 			mChildren.erase(found);
 		}

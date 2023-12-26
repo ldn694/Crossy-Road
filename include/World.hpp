@@ -35,7 +35,7 @@ namespace sf
 class World : private sf::NonCopyable
 {
 	public:
-		explicit							World(sf::RenderWindow& window, Context context, Animal::Type playerType, std::string playerName, Difficulty difficulty);
+		explicit							World(sf::RenderWindow& window, Context context, int numPlayer, std::vector <Animal::Type> playerTypes, std::vector <std::string> playerNames, Difficulty difficulty);
 		void								update(sf::Time dt);
 		void								draw();
 		
@@ -77,11 +77,12 @@ class World : private sf::NonCopyable
 		sf::Vector2f						mSpawnPosition;
 		float								mScrollSpeed;
 		//Aircraft*							mPlayerAircraft;
-		Animal*								mPlayerAnimal;
 		RoadList*							mRoadList;
 		Difficulty							mDifficulty;
-		std::string							mPlayerName;
-		Animal::Type						mPlayerType;
+		int 								mNumPlayer;
+		std::vector <Animal*>				mPlayers;
+		std::vector <std::string>			mPlayerNames;
+		std::vector <Animal::Type>			mPlayerTypes;
 		int									mCurrentScore;
 		Rain								mRain;
 		bool								isRaining;

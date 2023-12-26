@@ -33,25 +33,33 @@ void RoadList::setDifficulty(Difficulty difficulty)
     switch (mDifficulty) {
         case Easy:
             mPeriod = sf::seconds(1.0f);
-            mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+            for (int i = 0; i < mPlayers.size(); i++) {
+                mPlayers[i]->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+            }
             break;
         case Medium:
             mPeriod = sf::seconds(0.7f);
-            mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+            for (int i = 0; i < mPlayers.size(); i++) {
+                mPlayers[i]->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+            }
             break;
         case Hard:
             mPeriod = sf::seconds(0.5f);
-            mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+            for (int i = 0; i < mPlayers.size(); i++) {
+                mPlayers[i]->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+            }
             break;
         default:
-            mPlayer->setMovementDuration(sf::seconds(0.5f) / mPlayerSpeedMultiplier);
+            for (int i = 0; i < mPlayers.size(); i++) {
+                mPlayers[i]->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+            }
     }
 }
 
 void RoadList::setPlayerSpeedMultiplier(float multiplier)
 {
     mPlayerSpeedMultiplier = multiplier;
-    mPlayer->setMovementDuration(sf::seconds(0.15f) / mPlayerSpeedMultiplier);
+    setDifficulty(mDifficulty);
 }
 
 std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
@@ -77,12 +85,13 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     return std::make_pair(type, variant);
 }
 
-RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, Animal* player, Difficulty difficulty)
+RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode)
     : mView(view)
     , mTextures(textures)
-    , mPlayer(player)
+    , mPlayers(players)
     , mDifficulty(difficulty)
     , mPlayerSpeedMultiplier(1.0f)
+    , mTmpNode(tmpNode)
 {
     setDifficulty(difficulty);
     registerRoad<Railways>(Road::Railways);
@@ -113,9 +122,15 @@ RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, 
         curRoad = curRoad->mNextRoad;
     }
     curRoad->visit();
-    Zone* firstZone = curRoad->randomZone(Zone::Safe);
-    switchParent(player, firstZone);
-    setZone(player, firstZone);
+    Zone* startZoneList[2];
+    startZoneList[0] = curRoad->randomZone(Zone::Safe);
+    do {
+        startZoneList[1] = curRoad->randomZone(Zone::Safe);
+    } while (startZoneList[0] == startZoneList[1]);
+    for (int i = 0; i < players.size(); i++) {
+        switchParent(players[i], startZoneList[i % 2]);
+        setZone(players[i], startZoneList[i % 2]);
+    }
     mPassedRoad = 0;
 }
 
@@ -131,11 +146,11 @@ void RoadList::updateCurrent(sf::Time dt)
         push_back(std::move(road));
         mPassedRoad++;
         if (mPassedRoad % NUM_ROAD_LEVEL_UP == 0 && mPassedRoad != 0) {
-            std::cout << mPassedRoad << "\n";
             setDifficulty(static_cast<Difficulty>(std::min(int(mDifficulty + 1), int(Difficulty::NumDifficulties) - 1)));
         }
     }
     move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
+    mTmpNode->move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
 }
 
 void RoadList::pop_front()

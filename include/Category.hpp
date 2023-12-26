@@ -10,14 +10,16 @@ namespace Category
 		None				= 0,
 		Scene				= 1 << 0,
 		Player				= 1 << 1,
-		FakeEntity			= 1 << 2,
-		Obstacle			= 1 << 3,
-		Hostile				= 1 << 4,
-		SafeZone			= 1 << 5,
-		DeadZone			= 1 << 6,
-		AlliedAircraft		= 1 << 7,
-		EnemyAircraft		= 1 << 8,
-		NumCategory			= 9	// Number of categories
+		PlayerOne			= 1 << 2,
+		PlayerTwo			= 1 << 3,
+		FakeEntity			= 1 << 4,
+		Obstacle			= 1 << 5,
+		Hostile				= 1 << 6,
+		SafeZone			= 1 << 7,
+		DeadZone			= 1 << 8,
+		AlliedAircraft		= 1 << 9,
+		EnemyAircraft		= 1 << 10,
+		NumCategory			= 11,
 	};
 }
 

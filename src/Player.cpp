@@ -85,19 +85,29 @@ struct AirCraftTeleport {
 Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 {
 	// Set initial key bindings
-	mKeyBinding[sf::Keyboard::Left] = MoveLeft;
-	mKeyBinding[sf::Keyboard::Right] = MoveRight;
-	mKeyBinding[sf::Keyboard::Up] = MoveUp;
-	mKeyBinding[sf::Keyboard::Down] = MoveDown;
+	mKeyBinding[sf::Keyboard::A] = PlayerOneMoveLeft;
+	mKeyBinding[sf::Keyboard::D] = PlayerOneMoveRight;
+	mKeyBinding[sf::Keyboard::W] = PlayerOneMoveUp;
+	mKeyBinding[sf::Keyboard::S] = PlayerOneMoveDown;
+
+	mKeyBinding[sf::Keyboard::Left] = PlayerTwoMoveLeft;
+	mKeyBinding[sf::Keyboard::Right] = PlayerTwoMoveRight;
+	mKeyBinding[sf::Keyboard::Up] = PlayerTwoMoveUp;
+	mKeyBinding[sf::Keyboard::Down] = PlayerTwoMoveDown;
 	mKeyBinding[sf::Keyboard::U] = TeleAlly;
 	mKeyBinding[sf::Keyboard::I] = TeleEnemy;
 	mKeyBinding[sf::Keyboard::O] = TeleToAlly;
 	mKeyBinding[sf::Keyboard::P] = TeleToEnemy;
 
-	mActionBinding[MoveLeft].category = Category::Player;
-	mActionBinding[MoveRight].category = Category::Player;
-	mActionBinding[MoveUp].category = Category::Player;
-	mActionBinding[MoveDown].category = Category::Player;
+	// Set initial action bindings
+	mActionBinding[PlayerOneMoveLeft].category = Category::PlayerOne;
+	mActionBinding[PlayerOneMoveRight].category = Category::PlayerOne;
+	mActionBinding[PlayerOneMoveUp].category = Category::PlayerOne;
+	mActionBinding[PlayerOneMoveDown].category = Category::PlayerOne;
+	mActionBinding[PlayerTwoMoveLeft].category = Category::PlayerTwo;
+	mActionBinding[PlayerTwoMoveRight].category = Category::PlayerTwo;
+	mActionBinding[PlayerTwoMoveUp].category = Category::PlayerTwo;
+	mActionBinding[PlayerTwoMoveDown].category = Category::PlayerTwo;
 	mActionBinding[TeleAlly].category = Category::AlliedAircraft;
 	mActionBinding[TeleEnemy].category = Category::EnemyAircraft;
 	mActionBinding[TeleToAlly].category = Category::Player;
@@ -169,10 +179,14 @@ void Player::initializeActions()
 	// mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
 	// mActionBinding[MoveUp].action    = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
 	// mActionBinding[MoveDown].action  = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
-	mActionBinding[MoveLeft].action	 = derivedAction<Animal>(AnimalMove(Animal::Direction::Left));
-	mActionBinding[MoveRight].action = derivedAction<Animal>(AnimalMove(Animal::Direction::Right));
-	mActionBinding[MoveUp].action    = derivedAction<Animal>(AnimalMove(Animal::Direction::Up));
-	mActionBinding[MoveDown].action  = derivedAction<Animal>(AnimalMove(Animal::Direction::Down));
+	mActionBinding[PlayerOneMoveLeft].action	= derivedAction<Animal>(AnimalMove(Animal::Direction::Left));
+	mActionBinding[PlayerOneMoveRight].action 	= derivedAction<Animal>(AnimalMove(Animal::Direction::Right));
+	mActionBinding[PlayerOneMoveUp].action    	= derivedAction<Animal>(AnimalMove(Animal::Direction::Up));
+	mActionBinding[PlayerOneMoveDown].action  	= derivedAction<Animal>(AnimalMove(Animal::Direction::Down));
+	mActionBinding[PlayerTwoMoveLeft].action	= derivedAction<Animal>(AnimalMove(Animal::Direction::Left));
+	mActionBinding[PlayerTwoMoveRight].action 	= derivedAction<Animal>(AnimalMove(Animal::Direction::Right));
+	mActionBinding[PlayerTwoMoveUp].action    	= derivedAction<Animal>(AnimalMove(Animal::Direction::Up));
+	mActionBinding[PlayerTwoMoveDown].action  	= derivedAction<Animal>(AnimalMove(Animal::Direction::Down));
 	mActionBinding[TeleAlly].action  = derivedAction<Aircraft>(TeleportToAircraft(sf::seconds(1.f)));
 	mActionBinding[TeleEnemy].action = derivedAction<Aircraft>(TeleportToAircraft(sf::seconds(1.f)));
 	mActionBinding[TeleToAlly].action  = derivedAction<Aircraft>(AirCraftTeleport(sf::seconds(1.f), sf::Vector2f(0.f, 0.f), true));

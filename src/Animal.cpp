@@ -7,12 +7,13 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-Animal::Animal(Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SceneNode* tmpNode, int& passedRoad)
+Animal::Animal(int playerID, Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SceneNode* tmpNode, int& passedRoad)
     : mType(type)
     , mTextures(textures)
     , mDirection(Down)
     , tmpNode(tmpNode)
     , passedRoad(passedRoad)
+    , mPlayerID(playerID)
 {
     mPlayerNameText.setFont(fonts.get(Fonts::Bungee));
     mPlayerNameText.setString(playerName);
@@ -44,7 +45,7 @@ sf::FloatRect Animal::getHitbox() const
 
 unsigned int Animal::getCategory() const
 {
-    return Category::Player;
+    return Category::Player | (mPlayerID == 0 ? Category::PlayerOne : Category::PlayerTwo);
 }
 
 Textures::ID Animal::toTextureID(Type type, Direction direction) 
@@ -151,10 +152,11 @@ bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offs
     Road* curRoad = mZone->getRoad();
     Road* nextRoad = mNextZone->getRoad();
     mOldPosition = getPosition();
-    SceneNode* tmpZone = mZone;
-    if (curRoad != nextRoad) {
-        tmpZone = tmpNode;
-    }
+    // SceneNode* tmpZone = mZone;
+    // if (curRoad != nextRoad) {
+    //     tmpZone = tmpNode;
+    // }
+    SceneNode* tmpZone = tmpNode;
     sf::Vector2f newTmpPosition = parent->getWorldPosition() - tmpZone->getWorldPosition() + getPosition();
     mTmpOldPosition = newTmpPosition;
     switchParent(this, tmpZone);
