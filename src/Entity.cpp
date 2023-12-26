@@ -59,6 +59,12 @@ Entity::CollisionType Entity::handleCollision()
 				return CollisionType::BlockedCollision;
 			}
 		}
+		auto players = root->findChildrenByCategory<Entity>(Category::Player);
+		for (auto player : players) {
+			if (intersection(getHitbox(), player->getHitbox()) > 0 && player != this) {
+				return CollisionType::BlockedCollision;
+			}
+		}
 		return CollisionType::NoCollision;
 	}
 	if (mCategory & Category::Hostile) {

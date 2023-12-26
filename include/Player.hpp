@@ -14,10 +14,16 @@ class Player
 	public:
 		enum Action
 		{
-			MoveLeft,
-			MoveRight,
-			MoveUp,
-			MoveDown,
+			PlayerOneMoveLeft,
+			PlayerOneMoveRight,
+			PlayerOneMoveUp,
+			PlayerOneMoveDown,
+			
+			PlayerTwoMoveLeft,
+			PlayerTwoMoveRight,
+			PlayerTwoMoveUp,
+			PlayerTwoMoveDown,
+
 			TeleAlly, 
 			TeleEnemy,
 			TeleToAlly,
