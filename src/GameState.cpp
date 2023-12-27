@@ -94,7 +94,7 @@ bool GameState::update(sf::Time dt) {
 			requestStackPush(States::GameOver, info);
 		}
 	}
-	return true;
+	return false;
 }
 
 bool GameState::handleEvent(const sf::Event& event)
@@ -123,7 +123,7 @@ bool GameState::handleEvent(const sf::Event& event)
 		info.stringList = mPlayerNames;
 		requestStackPush(States::GameOver, info);
 	}
-	return true;
+	return false;
 }
 
 void GameState::setCurrentScore() {
