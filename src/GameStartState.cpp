@@ -258,6 +258,8 @@ bool GameStartState::handleEvent(const sf::Event& event)
 				default:
 					break;
 				}
+				info.stringList.push_back("NghiaCuto");
+				info.stringList.push_back("Pig");
 				for (int i = 0; i < info.stringList.size(); i++) {
 					std::cout << info.stringList[i] << "\n";
 				}
