@@ -38,6 +38,18 @@ void Entity::accelerate(float vx, float vy)
 	mVelocity.y += vy;
 }
 
+void Entity::announceGameLost()
+{
+	if (isLost) return;
+	isLost = true;
+	throw GameStatus::GAME_LOST;
+}
+
+bool Entity::getIsLost()
+{
+	return isLost;
+}
+
 Entity::CollisionType Entity::handleCollision()
 {
 	auto mCategory = getCategory();
@@ -117,7 +129,7 @@ void Entity::updateCurrent(sf::Time dt)
 			collisionType = handleCollision();
 		}
 		if (collisionType == CollisionType::DeathCollision) {
-			throw GameStatus::GAME_LOST;
+			announceGameLost();
 		}
 		else if (collisionType == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds() - animationStep);
@@ -144,7 +156,7 @@ void Entity::updateCurrent(sf::Time dt)
 		move(mVelocity * dt.asSeconds());
 		auto collisionType = handleCollision();
 		if (collisionType == CollisionType::DeathCollision) {
-			throw GameStatus::GAME_LOST;
+			announceGameLost();
 		}
 		else if (collisionType == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds());

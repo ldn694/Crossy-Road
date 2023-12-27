@@ -21,10 +21,10 @@ private:
 
 
 private:
-	Player				mPlayer;
-	World				mWorld;
-	Context				mContext;
-	std::string 		mPlayerName;
-	sf::Text 			mCurrentScoreText;
-	Difficulty 			mStartDifficulty;
+	Player							mPlayer;
+	World							mWorld;
+	Context							mContext;
+	std::vector <std::string> 		mPlayerNames;
+	sf::Text 						mCurrentScoreText;
+	Difficulty 						mStartDifficulty;
 };

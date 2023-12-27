@@ -213,7 +213,6 @@ void World::buildScene()
 	// //mSceneLayers[Air]->attachChild(std::move(rightEscort));
 	// mSceneLayers[Air]->requestAttach(std::move(rightEscort));
 
-
 }
 
 void World::adaptPlayerPosition()
@@ -230,7 +229,7 @@ void World::adaptPlayerPosition()
 
 	for (int i = 0; i < mNumPlayer; i++) {
 		if (intersection(mPlayers[i]->getHitbox(), viewBounds) < 1) {
-			throw GameStatus::GAME_LOST;
+			mPlayers[i]->announceGameLost();
 		}
 	}
 	// position.x = std::max(position.x, viewBounds.left + borderDistance);
@@ -266,4 +265,13 @@ void World::setRaining(bool raining) {
 	else {
 		mRoadList->setPlayerSpeedMultiplier(1.f);
 	}
+}
+
+int World::getLostPlayerID() {
+	for (int i = 0; i < mNumPlayer; i++) {
+		if (mPlayers[i]->getIsLost()) {
+			return i;
+		}
+	}
+	return -1;
 }
