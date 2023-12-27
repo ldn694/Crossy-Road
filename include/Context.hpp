@@ -13,7 +13,7 @@ struct Context
     sf::RenderWindow*	window;
     TextureHolder*		textures;
     FontHolder*			fonts;
-    //Player*				player;
+    Player*				player;
     sf::Music*          backgroundmusic;
     float*               mVolume;
 };

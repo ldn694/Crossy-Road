@@ -9,6 +9,7 @@
 #include "ClickableList.hpp"
 #include "ScrollBar.hpp"
 #include "ScrollBarList.hpp"
+#include <SFML/Window/Keyboard.hpp>
 class SettingState : public State{
     public:
                                 SettingState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
@@ -17,10 +18,16 @@ class SettingState : public State{
 		virtual bool			handleEvent(const sf::Event& event);
 
 		void					updateOptionText();
+        std::string             keyCodeToString(sf::Keyboard::Key keyCode);
+        sf::Keyboard::Key       stringToSFMLKey(const std::string& keyString);
         enum ClickableID {
 			Sound,
 			Music,
-			Back
+			Back,
+            MoveLeft,
+            MoveRight,
+            MoveUp,
+            MoveDown,
 		};
     private:
     enum OptionNames
@@ -35,4 +42,6 @@ class SettingState : public State{
         std::size_t             mChoiceIndex;
         ScrollBarList           mScrollBarList;
         sf::Music               mMusic;
+        bool                    c[4];
+        
 };

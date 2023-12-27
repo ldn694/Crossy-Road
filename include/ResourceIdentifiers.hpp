@@ -49,7 +49,15 @@ namespace Textures
 		Music,
 		Music_,
 		Back,
-        Back_
+        Back_,
+		MoveLeft,
+		MoveLeft_,
+		MoveRight,
+		MoveRight_,
+		MoveUp,
+		MoveUp_,
+		MoveDown,
+		MoveDown_,
 	};
 }
 

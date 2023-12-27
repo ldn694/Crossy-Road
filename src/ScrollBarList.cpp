@@ -19,8 +19,8 @@ ScrollBarList::ScrollBarList()
 		
 		int a = std::stoi(sound_string);
 		int b = std::stoi(music_string);
-		ScrollBar mSB_Sound(600,270,200,a);
-		ScrollBar mSB_Music(600,370,200,b);
+		ScrollBar mSB_Sound(600,430,200,a);
+		ScrollBar mSB_Music(600,530,200,b);
         mScrollBars.push_back(mSB_Sound);
         mScrollBars.push_back(mSB_Music);
 }

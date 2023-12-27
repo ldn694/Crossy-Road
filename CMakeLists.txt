@@ -18,7 +18,7 @@ add_executable(CrossyRoad
     src/Application.cpp
     src/Aircraft.cpp
     src/Command.cpp
-    src/CommandQueue.cpp
+    src/CommandQueue.cpp 
     src/Entity.cpp
     src/GameState.cpp 
     src/MenuState.cpp
