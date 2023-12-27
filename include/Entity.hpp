@@ -31,12 +31,15 @@ class Entity : public SceneNode
 		CollisionType				handleCollision();
 		void 						removeAnimation();
 		virtual sf::FloatRect		getHitbox() const = 0;
+		void 						announceGameLost();
+		bool 						getIsLost();
 									~Entity();
 
 
 	private:
 		Animation*					curAnimation = nullptr;
 		bool						isMovingBack = false;
+		bool						isLost = false;
 		FakeEntity*					mOriginNode = nullptr;
 		void 						setOriginNode();
 		void						resetOriginNode();

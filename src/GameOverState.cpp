@@ -57,23 +57,46 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	info.colorList = { sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::Leaderboard, info);
 
-	assertThrow(stateInfo.floatList.size() == 2, "GameOverState: stateInfo.floatList.size() != 2");
-	assertThrow(stateInfo.stringList.size() == 1, "GameOverState: stateInfo.stringList.size() != 1");
+	assertThrow(stateInfo.stringList.size() == 1 || stateInfo.stringList.size() == 2, "GameOverState: stateInfo.stringList.size() != 1 or 2");
+	int numPlayer = stateInfo.stringList.size();
+	if (numPlayer == 1) {
+		assertThrow(stateInfo.floatList.size() == 2, "GameOverState: stateInfo.floatList.size() != 2");
+		assertThrow(stateInfo.stringList.size() == 1, "GameOverState: stateInfo.stringList.size() != 1");
+		int score = int(stateInfo.floatList[0]);
+		std::string name = stateInfo.stringList[0];
+		int difficulty = int(stateInfo.floatList[1]);
+
+		mResult.setFont(font);
+		mResult.setStyle(sf::Text::Bold);
+		mResult.setString("Your score: " + std::to_string(score));
+		mResult.setCharacterSize(90);
+		centerOrigin(mResult);
+		mResult.setPosition(0.5f * viewSize.x, 0.2f * viewSize.y);
+
+		context.scoreboard->addNewScore(Difficulty(difficulty), name, score);
+	}
+	else {
+		assertThrow(stateInfo.floatList.size() == 1, "GameOverState: stateInfo.floatList.size() != 1");
+		assertThrow(stateInfo.stringList.size() == 2, "GameOverState: stateInfo.stringList.size() != 2");
+		int lostPlayerID = int(stateInfo.floatList[0]);
+		int wonPlayerID = 1 - lostPlayerID;
+		std::string loserName = stateInfo.stringList[lostPlayerID];
+		std::string winnerName = stateInfo.stringList[wonPlayerID];
+		if (loserName == winnerName) {
+			loserName += " " + std::to_string(lostPlayerID + 1);
+			winnerName += " " + std::to_string(wonPlayerID + 1);
+		}
+
+		mResult.setFont(font);
+		mResult.setStyle(sf::Text::Bold);
+		mResult.setString(winnerName + " won!");
+		mResult.setCharacterSize(90);
+		centerOrigin(mResult);
+		mResult.setPosition(0.5f * viewSize.x, 0.2f * viewSize.y);
 	
-	int score = int(stateInfo.floatList[0]);
-	std::string name = stateInfo.stringList[0];
-	int difficulty = int(stateInfo.floatList[1]);
-
-    mResult.setFont(font);
-	mResult.setStyle(sf::Text::Bold);
-    mResult.setString("Your score: " + std::to_string(score));
-    mResult.setCharacterSize(90);
-    centerOrigin(mResult);
-    mResult.setPosition(0.5f * viewSize.x, 0.2f * viewSize.y);
-
-	context.scoreboard->addNewScore(Difficulty(difficulty), name, score);
+	}
 }
-void GameOverState::loadTextures(Context context)
+void GameOverState::loadTextures(Context  context)
 {
 	context.textures->load(Textures::GameOverToHome, "Assets/Images/ForGameOver/home_button.png");
 	context.textures->load(Textures::GameOverToHomeHovered, "Assets/Images/ForGameOver/home_button_hover.png");

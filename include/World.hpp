@@ -44,6 +44,7 @@ class World : private sf::NonCopyable
 
 		int									getCurrentScore();
 		void 								setRaining(bool raining);
+		int 								getLostPlayerID();
 
 
 	private:
@@ -81,6 +82,7 @@ class World : private sf::NonCopyable
 		Difficulty							mDifficulty;
 		int 								mNumPlayer;
 		std::vector <Animal*>				mPlayers;
+		Animal*								lostPlayer;
 		std::vector <std::string>			mPlayerNames;
 		std::vector <Animal::Type>			mPlayerTypes;
 		int									mCurrentScore;

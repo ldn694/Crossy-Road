@@ -45,7 +45,7 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 		std::vector <Animal::Type>(stateInfo.floatList[0], toAnimalType(stateInfo.stringList[2])), 
 		std::vector <std::string>(stateInfo.floatList[0], stateInfo.stringList[0]), toDifficulty(stateInfo.stringList[1]))
 , mContext(context)
-, mPlayerName(stateInfo.stringList[0])
+, mPlayerNames(std::vector <std::string>(stateInfo.floatList[0], stateInfo.stringList[0]))
 , mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
@@ -79,10 +79,20 @@ bool GameState::update(sf::Time dt) {
 		setCurrentScore();
 	}
 	catch (GameStatus status) {
-		State::Info info;
-		info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
-		info.stringList = {mPlayerName};
-		requestStackPush(States::GameOver, info);
+		int numPlayer = mPlayerNames.size();
+		if (numPlayer == 1) {
+			State::Info info;
+			info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
+			info.stringList = mPlayerNames;
+			requestStackPush(States::GameOver, info);
+		}
+		else {
+			int lostPlayerID = mWorld.getLostPlayerID();
+			State::Info info;
+			info.floatList = {float(lostPlayerID)};
+			info.stringList = {mPlayerNames};
+			requestStackPush(States::GameOver, info);
+		}
 	}
 	return false;
 }
@@ -109,7 +119,8 @@ bool GameState::handleEvent(const sf::Event& event)
 	}
 	catch (GameStatus status) {
 		State::Info info;
-		info.floatList = {float(mWorld.getCurrentScore())};
+		info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
+		info.stringList = mPlayerNames;
 		requestStackPush(States::GameOver, info);
 	}
 	return false;

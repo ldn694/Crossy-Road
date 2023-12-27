@@ -129,7 +129,7 @@ void Animal::updateCurrent(sf::Time dt)
             mZone = mNextZone;
             if (mZone->getSafety() == Zone::Unsafe) {
                 std::cerr << "unsafe zone\n";
-                throw GameStatus(GameStatus::GAME_LOST);
+                announceGameLost();
             }
         }
     }
@@ -234,7 +234,7 @@ void Animal::move(Direction direction)
     if (nextSafeZone != nullptr && nextSafeZone != mZone) {
         distanceToSafe = squaredDistance(nextSafeZone->getWorldPosition(), getWorldPosition() + offset);
     }
-    if (distanceToSafe <= step * step) {
+    if (distanceToSafe < step * step) {
         if (addAnimalAnimation(nextSafeZone, mDuration)) {
             changeDirection(direction);
         }
