@@ -118,10 +118,20 @@ bool GameState::handleEvent(const sf::Event& event)
 
 	}
 	catch (GameStatus status) {
-		State::Info info;
-		info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
-		info.stringList = mPlayerNames;
-		requestStackPush(States::GameOver, info);
+		int numPlayer = mPlayerNames.size();
+		if (numPlayer == 1) {
+			State::Info info;
+			info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
+			info.stringList = mPlayerNames;
+			requestStackPush(States::GameOver, info);
+		}
+		else {
+			int lostPlayerID = mWorld.getLostPlayerID();
+			State::Info info;
+			info.floatList = {float(lostPlayerID)};
+			info.stringList = {mPlayerNames};
+			requestStackPush(States::GameOver, info);
+		}
 	}
 	return false;
 }
