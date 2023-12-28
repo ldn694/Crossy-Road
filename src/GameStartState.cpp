@@ -208,7 +208,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			std::cerr << "Left Clicked " << announcement.id << "\n";
+			// std::cerr << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Play){
                 // requestStateClear();
                 State::Info info;
@@ -258,10 +258,10 @@ bool GameStartState::handleEvent(const sf::Event& event)
 				default:
 					break;
 				}
-				for (int i = 0; i < info.stringList.size(); i++) {
-					std::cout << info.stringList[i] << "\n";
-				}
-				std::cout << info.floatList[0] << "\n";
+				// for (int i = 0; i < info.stringList.size(); i++) {
+				// 	std::cout << info.stringList[i] << "\n";
+				// }
+				// std::cout << info.floatList[0] << "\n";
                 requestStackPush(States::Game, info);
 				requestStackPush(States::Loading);
             } else if (announcement.id == ButtonNames::Back){
@@ -293,12 +293,12 @@ bool GameStartState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			std::cerr << "Right Clicked " << announcement.id << "\n";
+			// std::cerr << "Right Clicked " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		std::cerr << info.stringList[0] << "\n";
+		// std::cerr << info.stringList[0] << "\n";
 	}
 	if (event.type == sf::Event::MouseButtonPressed) {
 

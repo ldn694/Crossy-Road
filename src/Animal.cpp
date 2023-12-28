@@ -128,8 +128,8 @@ void Animal::updateCurrent(sf::Time dt)
             setPosition(0, 0);
             mZone = mNextZone;
             if (mZone->getSafety() == Zone::Unsafe) {
-                std::cerr << "unsafe zone\n";
-                announceGameLost();
+                // std::cerr << "unsafe zone\n";
+                throw GameStatus(GameStatus::GameLost, this);
             }
         }
     }

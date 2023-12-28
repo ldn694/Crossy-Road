@@ -127,7 +127,7 @@ bool GameOverState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			std::cout << "Left Clicked " << announcement.id << "\n";
+			// std::cout << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Home) {
 				requestStateClear();
 				requestStackPush(States::Menu);
@@ -152,12 +152,12 @@ bool GameOverState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			std::cout << "Right Clicked " << announcement.id << "\n";
+			// std::cout << "Right Clicked " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		std::cout << info.stringList[0] << "\n";
+		// std::cout << info.stringList[0] << "\n";
 	}
 	return false;
 }
