@@ -129,7 +129,7 @@ bool GameState::handleEvent(const sf::Event& event)
 			int lostPlayerID = mWorld.getLostPlayerID(status.mEntity);
 			State::Info info;
 			info.floatList = {float(lostPlayerID)};
-			info.stringList = {mPlayerNames};
+			info.stringList = mPlayerNames;
 			requestStackPush(States::GameOver, info);
 		}
 	}
