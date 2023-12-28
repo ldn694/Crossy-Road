@@ -17,6 +17,12 @@ class Entity : public SceneNode
 			DeathCollision,
 			NumCollisionTypes
 		};
+		struct CollisionInfo {
+			CollisionType type;
+			Entity* mover;
+			Entity* blocker;
+			CollisionInfo(CollisionType type, Entity* mover, Entity* blocker);
+		};
 	public:
 									Entity();
 		void						setVelocity(sf::Vector2f velocity);
@@ -28,21 +34,19 @@ class Entity : public SceneNode
 		bool						isFakeAnimation(); //return true if current animation is a fake animation
 		bool						addStaticAnimation(sf::Vector2f goalGlobalPosition, sf::Time duration);
 		bool						addDynamicAnimation(Entity* goalEntity, sf::Time duration, sf::Vector2f offset = sf::Vector2f(0, 0));
-		CollisionType				handleCollision();
+		CollisionInfo				handleCollision();
 		void 						removeAnimation();
 		virtual sf::FloatRect		getHitbox() const = 0;
-		void 						announceGameLost();
-		bool 						getIsLost();
 									~Entity();
 
 
 	private:
 		Animation*					curAnimation = nullptr;
 		bool						isMovingBack = false;
-		bool						isLost = false;
 		FakeEntity*					mOriginNode = nullptr;
 		void 						setOriginNode();
 		void						resetOriginNode();
+		void 						announceGameLost(CollisionInfo info);
 		
 	protected:
 		virtual void				updateCurrent(sf::Time dt);

@@ -1,10 +1,13 @@
 #include "Entity.hpp"
+#include "Animal.hpp"
 #include "Utility.hpp"
 #include "Animation.hpp"
 #include "GameStatus.hpp"
 #include "FakeEntity.hpp"
 #include <iostream>
 #include <vector>
+
+Entity::CollisionInfo::CollisionInfo(CollisionType type, Entity* mover, Entity* blocker) : type(type), mover(mover), blocker(blocker) {}
 
 Entity::Entity() : mVelocity(0.f, 0.f)
 {
@@ -38,80 +41,68 @@ void Entity::accelerate(float vx, float vy)
 	mVelocity.y += vy;
 }
 
-void Entity::announceGameLost()
-{
-	if (isLost) return;
-	isLost = true;
-	throw GameStatus::GAME_LOST;
-}
-
-bool Entity::getIsLost()
-{
-	return isLost;
-}
-
-Entity::CollisionType Entity::handleCollision()
+Entity::CollisionInfo Entity::handleCollision()
 {
 	auto mCategory = getCategory();
 	if (!(mCategory & (Category::Hostile | Category::Obstacle | Category::Player))) {
-		return CollisionType::NoCollision;
+		return CollisionInfo(CollisionType::NoCollision, nullptr, nullptr);
 	}
 	if (mCategory & Category::Player) {
 		auto root = getRoot();
 		auto hostiles = root->findChildrenByCategory<Entity>(Category::Hostile);
 		for (auto hostile : hostiles) {
 			if (intersection(getHitbox(), hostile->getHitbox()) > 0 && hostile != this) {
-				return CollisionType::DeathCollision;
+				return CollisionInfo(CollisionType::DeathCollision, this, hostile);
 			}
 		}
 		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
 		for (auto obstacle : obstacles) {
 			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
 				// std::cerr << "blocked by " << fromCategoryToString(obstacle->getCategory()) << "\n";
-				return CollisionType::BlockedCollision;
+				return CollisionInfo(CollisionType::BlockedCollision, this, obstacle);
 			}
 		}
 		auto players = root->findChildrenByCategory<Entity>(Category::Player);
 		for (auto player : players) {
 			if (intersection(getHitbox(), player->getHitbox()) > 0 && player != this) {
-				return CollisionType::BlockedCollision;
+				return CollisionInfo(CollisionType::BlockedCollision, this, player);
 			}
 		}
-		return CollisionType::NoCollision;
+		return CollisionInfo(CollisionType::NoCollision, nullptr, nullptr);
 	}
 	if (mCategory & Category::Hostile) {
 		auto root = getRoot();
 		auto players = root->findChildrenByCategory<Entity>(Category::Player);
-		if (players.empty()) return CollisionType::NoCollision;
+		if (players.empty()) return CollisionInfo(CollisionType::NoCollision, nullptr, nullptr);
 		auto player = players[0];
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
-			return CollisionType::DeathCollision;
+			return CollisionInfo(CollisionType::DeathCollision, this, player);
 		}
 		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
 		for (auto obstacle : obstacles) {
 			if (intersection(getHitbox(), obstacle->getHitbox()) > 0 && obstacle != this) {
-				return CollisionType::BlockedCollision;
+				return CollisionInfo(CollisionType::BlockedCollision, this, obstacle);
 			}
 		}
-		return CollisionType::NoCollision;
+		auto hostiles = root->findChildrenByCategory<Entity>(Category::Hostile);
 	}
 	if (mCategory & Category::Obstacle) {
 		auto root = getRoot();
 		auto players = root->findChildrenByCategory<Entity>(Category::Player);
-		if (players.empty()) return CollisionType::NoCollision;
+		if (players.empty()) return CollisionInfo(CollisionType::NoCollision, nullptr, nullptr);
 		auto player = players[0];
 		if (intersection(getHitbox(), player->getHitbox()) > 0) {
-			return CollisionType::BlockedCollision;
+			return CollisionInfo(CollisionType::DeathCollision, this, player);
 		}
 		auto hostiles = root->findChildrenByCategory<Entity>(Category::Hostile);
 		for (auto hostile : hostiles) {
 			if (intersection(getHitbox(), hostile->getHitbox()) > 0 && hostile != this) {
-				return CollisionType::BlockedCollision;
+				return CollisionInfo(CollisionType::BlockedCollision, this, hostile);
 			}
 		}
-		return CollisionType::NoCollision;
+		auto obstacles = root->findChildrenByCategory<Entity>(Category::Obstacle);
 	}
-	return CollisionType::NoCollision;
+	return CollisionInfo(CollisionType::NoCollision, nullptr, nullptr);
 }
 
 bool Entity::isFakeAnimation()
@@ -119,19 +110,31 @@ bool Entity::isFakeAnimation()
 	return mOriginNode != nullptr;
 }
 
+void Entity::announceGameLost(CollisionInfo collisionInfo) {
+	if (dynamic_cast<Animal*>(collisionInfo.mover) != nullptr) {
+		throw GameStatus(GameStatus::GameLost, collisionInfo.mover);
+	}
+	else if (dynamic_cast<Animal*>(collisionInfo.blocker) != nullptr) {
+		throw GameStatus(GameStatus::GameLost, collisionInfo.blocker);
+	}
+	else {
+		throw GameStatus(GameStatus::GameLost, this);
+	}
+}
+
 void Entity::updateCurrent(sf::Time dt)
 {
 	if (pendingAnimation()) {
 		auto animationStep = curAnimation->getAnimationStep(this, dt);
 		move(mVelocity * dt.asSeconds() + animationStep);
-		CollisionType collisionType = CollisionType::NoCollision;
+		CollisionInfo collisionInfo = CollisionInfo(CollisionType::NoCollision, nullptr, nullptr);
 		if (!isMovingBack) {
-			collisionType = handleCollision();
+			collisionInfo = handleCollision();
 		}
-		if (collisionType == CollisionType::DeathCollision) {
-			announceGameLost();
+		if (collisionInfo.type == CollisionType::DeathCollision) {
+			announceGameLost(collisionInfo);
 		}
-		else if (collisionType == CollisionType::BlockedCollision) {
+		else if (collisionInfo.type == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds() - animationStep);
 			sf::Time duration = curAnimation->elapsedTime;
 			removeAnimation();
@@ -154,11 +157,11 @@ void Entity::updateCurrent(sf::Time dt)
 	}
 	else {
 		move(mVelocity * dt.asSeconds());
-		auto collisionType = handleCollision();
-		if (collisionType == CollisionType::DeathCollision) {
-			announceGameLost();
+		CollisionInfo collisionInfo = handleCollision();
+		if (collisionInfo.type == CollisionType::DeathCollision) {
+			announceGameLost(collisionInfo);
 		}
-		else if (collisionType == CollisionType::BlockedCollision) {
+		else if (collisionInfo.type == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds());
 		}
 	}

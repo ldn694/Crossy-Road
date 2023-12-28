@@ -42,7 +42,7 @@ public:
 				v[i].push_back(tmp);
 			}
 
-			std::cout << "File " << path <<  mode[i] << " read\n";
+			// std::cout << "File " << path <<  mode[i] << " read\n";
 			fin.close();
 		}
 	}
@@ -60,13 +60,13 @@ public:
 		v[i].push_back(tmp);
 		sort(v[i].begin(), v[i].end(), cmp);*/
 
-		std::cout << "File " << mode[i] << path << " updated\n";
+		// std::cout << "File " << mode[i] << path << " updated\n";
 	}
 
 	void showScoreBoard() {
-		for (int i = 0; i < 3; i++) {
-			for (auto t : v[i]) std::cout << t.first << " " << t.second << std::endl;
-		}
+		// for (int i = 0; i < 3; i++) {
+		// 	for (auto t : v[i]) std::cout << t.first << " " << t.second << std::endl;
+		// }
 	}
 
 	std::vector<std::pair<std::string,int> > getTop5(short i) {
@@ -227,7 +227,7 @@ bool ScoreboardState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			std::cout << "Left Clicked " << announcement.id << "\n";
+			// std::cout << "Left Clicked " << announcement.id << "\n";
 			switch (announcement.id) {
 				case ScoreboardState::ClickableID::quit: {
 					requestStackPop();
@@ -250,12 +250,12 @@ bool ScoreboardState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			std::cout << "Right Clicked " << announcement.id << "\n";
+			// std::cout << "Right Clicked " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		std::cout << info.stringList[0] << "\n";
+		// std::cout << info.stringList[0] << "\n";
 	}
 	if (event.type == sf::Event::MouseButtonPressed) {
 
