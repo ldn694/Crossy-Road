@@ -2,6 +2,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include "Context.hpp"
+#include <string>
+#include <vector>
 
 class ClickableList;
 
@@ -62,5 +64,7 @@ public:
     void            setDrawable(bool drawable);
     void            setClickable(bool clickable);
     void            setHoverable(bool hoverable);
-    void            requestPushAnnouncement(Clickable::Action action);
+    void            requestPushAnnouncement(Clickable::Action action); 
+    virtual void    setText(const std::string &newString) {}
+    virtual std::string    getText();
 };

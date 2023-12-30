@@ -20,6 +20,7 @@ class SettingState : public State{
 		void					updateOptionText();
         std::string             keyCodeToString(sf::Keyboard::Key keyCode);
         sf::Keyboard::Key       stringToSFMLKey(const std::string& keyString);
+                                ~SettingState();
         enum ClickableID {
 			Sound,
 			Music,
@@ -28,6 +29,16 @@ class SettingState : public State{
             MoveRight,
             MoveUp,
             MoveDown,
+            P11,
+            P12,
+            P13,
+            P14,
+            P21,
+            P22,
+            P23,
+            P24,
+            SetPlayer1,
+            SetPlayer2,
 		};
     private:
     enum OptionNames
@@ -42,6 +53,7 @@ class SettingState : public State{
         std::size_t             mChoiceIndex;
         ScrollBarList           mScrollBarList;
         sf::Music               mMusic;
-        bool                    c[4];
+        bool                    c[8];
+
         
 };

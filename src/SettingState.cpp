@@ -30,14 +30,27 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	context.textures->load(Textures::Back, "Assets/Images/back.png");
 	context.textures->load(Textures::Back_, "Assets/Images/back_hover.png");
 	
-	context.textures->load(Textures::MoveLeft, "Assets/Images/Play.PNG");
-	context.textures->load(Textures::MoveLeft_, "Assets/Images/Play_.PNG");
-	context.textures->load(Textures::MoveRight, "Assets/Images/Load.PNG");
-	context.textures->load(Textures::MoveRight_, "Assets/Images/Load_.PNG");
-	context.textures->load(Textures::MoveUp, "Assets/Images/Score.PNG");
-	context.textures->load(Textures::MoveUp_, "Assets/Images/Score_.PNG");
-	context.textures->load(Textures::MoveDown_, "Assets/Images/Setting.PNG");
-	context.textures->load(Textures::MoveDown, "Assets/Images/Setting_.PNG");
+	context.textures->load(Textures::MoveLeft, "Assets/Images/MoveLeft_.png");
+	context.textures->load(Textures::MoveLeft_, "Assets/Images/MoveLeft.png");
+	context.textures->load(Textures::MoveRight, "Assets/Images/MoveRight_.png");
+	context.textures->load(Textures::MoveRight_, "Assets/Images/MoveRight.png");
+	context.textures->load(Textures::MoveUp, "Assets/Images/MoveUp_.png");
+	context.textures->load(Textures::MoveUp_, "Assets/Images/MoveUp.png");
+	context.textures->load(Textures::MoveDown_, "Assets/Images/MoveDown.png");
+	context.textures->load(Textures::MoveDown, "Assets/Images/MoveDown_.png");
+
+	context.textures->load(Textures::P11,"Assets/Images/keybinding.png");
+	context.textures->load(Textures::P12,"Assets/Images/keybinding.png");
+	context.textures->load(Textures::P13,"Assets/Images/keybinding.png");
+	context.textures->load(Textures::P14,"Assets/Images/keybinding.png");
+
+	context.textures->load(Textures::P21,"Assets/Images/keybinding.png");
+	context.textures->load(Textures::P22,"Assets/Images/keybinding.png");
+	context.textures->load(Textures::P23,"Assets/Images/keybinding.png");
+	context.textures->load(Textures::P24,"Assets/Images/keybinding.png");
+
+    context.textures->load(Textures::SetPlayer1,"Assets/Images/P1.png");
+	context.textures->load(Textures::SetPlayer2,"Assets/Images/P2.png");
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(1050.0f / mBackgroundSprite.getGlobalBounds().width, 600.0f / mBackgroundSprite.getGlobalBounds().height);
     
@@ -68,7 +81,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Back, info);
 
-	info.floatList = { 295, 130, 110, 45, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.floatList = { 295, 180, 110, 45, 15 };				//toa do (x,y, +x, +y, scale/10)
 	info.status = Clickable::Status(true, true, true);      //cac trang thai duoc cho phep cua button					
 	info.textureIDList = { Textures::MoveLeft_, Textures::MoveLeft};	//cac nut
 	info.stringList = { "" };
@@ -76,7 +89,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::MoveLeft, info);
 
-	info.floatList = {300, 200, 110, 45, 15};
+	info.floatList = {300, 235, 110, 45, 15};
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::MoveRight_, Textures::MoveRight };
 	info.stringList = { "" };
@@ -84,7 +97,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::MoveRight, info);
 
-	info.floatList = {295, 270, 110, 45, 15};
+	info.floatList = {295, 285, 110, 45, 15};
 	info.status = Clickable::Status(true, true, true);
 	info.textureIDList = { Textures::MoveUp_, Textures::MoveUp };
 	info.stringList = { "" };
@@ -99,38 +112,104 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::MoveDown, info);
+	 
+	 //load date from text file
+	 std::ifstream fin("Assets/Files/Settings.txt");
+	 std::vector<std::string> data;
+	 if(fin.is_open())
+	 {
+		while(!fin.eof())
+		{
+			std::string word;
+			fin>>word;
+			data.push_back(word);
+		}
+	 }
+	 fin.close();
 
-    sf::Text moveLeft;
-	moveLeft.setFont(font);
-	moveLeft.setString(">");
-	moveLeft.setCharacterSize(25);
-	//centerOrigin(moveLeft);
-	moveLeft.setPosition(600,130);
-	mOptions.push_back(moveLeft);
+	 info.floatList = { 680, 130, 110, 45, 15 };				
+	info.status = Clickable::Status(true, true, true);      					
+	info.textureIDList = { Textures::SetPlayer1, Textures::SetPlayer1};	
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::SetPlayer1, info);
 
-	sf::Text moveRight;
-	moveRight.setFont(font);
-	moveRight.setString("<");
-	moveRight.setCharacterSize(25);
-	//centerOrigin(moveRight);
-	moveRight.setPosition(600,200);
-	mOptions.push_back(moveRight);
+    info.floatList = { 850, 130, 110, 45, 15 };			
+	info.status = Clickable::Status(true, true, true);      				
+	info.textureIDList = { Textures::SetPlayer2, Textures::SetPlayer2};	
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::SetPlayer2, info);
 
-	sf::Text moveUp;
-	moveUp.setFont(font);
-	moveUp.setString("^");
-	moveUp.setCharacterSize(25);
-	//centerOrigin(moveUp);
-	moveUp.setPosition(600,270);
-	mOptions.push_back(moveUp);
 
-	sf::Text moveDown;
-	moveDown.setFont(font);
-	moveDown.setString("v");
-	//centerOrigin(moveDown);
-	moveDown.setPosition(600,340);
-	moveDown.setCharacterSize(25);
-	mOptions.push_back(moveDown);
+
+	info.floatList = { 680, 180, 110, 45, 15 };				
+	info.status = Clickable::Status(true, true, true);      					
+	info.textureIDList = { Textures::P11, Textures::P11};	
+	info.stringList = { data[7] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P11, info);
+
+	info.floatList = {680, 235, 110, 45, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::P12, Textures::P12 };
+	info.stringList = { data[9] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P12, info);
+
+	info.floatList = {680, 285, 110, 45, 15};//270
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::P13, Textures::P13 };
+	info.stringList = { data[11] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P13, info);
+
+	info.floatList = {680, 340, 110, 45, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::P14, Textures::P14};
+	info.stringList = { data[13] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P14, info);
+
+	info.floatList = { 850, 180, 110, 45, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.status = Clickable::Status(true, true, true);      //cac trang thai duoc cho phep cua button					
+	info.textureIDList = { Textures::P21, Textures::P21};	//cac nut
+	info.stringList = { data[16] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P21, info);
+
+	info.floatList = {850, 235, 110, 45, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::P22, Textures::P22 };
+	info.stringList = { data[18] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P22, info);
+
+	info.floatList = {850, 285, 110, 45, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::P23, Textures::P23 };
+	info.stringList = { data[20] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P23, info);
+
+	info.floatList = {850, 340, 110, 45, 15};
+	info.status = Clickable::Status(true, true, true);
+	info.textureIDList = { Textures::P24, Textures::P24};
+	info.stringList = { data[22] };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ClickableID::P24, info);
+
+    c[0] = c[1] = c[2] = c[3] = c[4] = c[5] = c[6] = c[7] = false;
 
 }
 
@@ -152,9 +231,6 @@ bool SettingState::update(sf::Time dt)
 	mClickableList.update(dt);
 	float x = mScrollBarList.getVolumeMusic();
 	getContext().backgroundmusic->setVolume(100.f*x);
-	float y = mScrollBarList.getVolumeSound();
-	*getContext().mVolume = y;
-	//std::cout<<y<<std::endl;
 	return true;
 }
 
@@ -167,13 +243,15 @@ bool SettingState::handleEvent(const sf::Event &event)
 	//mSB_Music.update(window);
      if(event.type == sf::Event::KeyPressed)
 	{
-		for(int i =0;i<4;i++)
+		for(int i =0;i<8;i++)
 		{
 			if(c[i])
 			{
 				std::string key_string = keyCodeToString(event.key.code);
 				std::cout<<key_string<<std::endl;
-				mOptions[i].setString(key_string);
+				mClickableList.setTextByID(i+7,key_string);
+				//std::string test = mClickableList.getTextByID(i+7);
+				//std::cout<<test<<std::endl;
 			}
 		}
 	}       
@@ -195,90 +273,52 @@ bool SettingState::handleEvent(const sf::Event &event)
 					requestStackPop();
 					break;
 				}
-				case SettingState::ClickableID::MoveLeft:{
-					for(int i =0;i<4;i++)
-					{
-						if (i == 0)
-						{
-							c[i] = true;
-						}
-						else
-						{
-							c[i] = false;
-						}
-					}
-                    break;
+				case SettingState::ClickableID::P11:
+				{
+                    c[0] = true; c[1] = c[2] = c[3] = c[4] = c[5] = c[6] = c[7] = false;
+				    break;
 				}
-				case SettingState::ClickableID::MoveRight:{
-					for(int i =0;i<4;i++)
-					{
-						if (i == 1)
-						{
-							c[i] = true;
-						}
-						else
-						{
-							c[i] = false;// set all false
-						}
-					}
-                    break;
+				case SettingState::ClickableID::P12:
+				{
+                    c[1] = true; c[0] = c[2] = c[3] = c[4] = c[5] = c[6] = c[7] = false;
+					break;
 				}
-				case SettingState::ClickableID::MoveUp:{
-					for(int i =0;i<4;i++)
-					{
-						if (i == 2)
-						{
-							c[i] = true;
-						}
-						else
-						{
-							c[i] = false;// set all false
-						}
-					}
-                    break;
+				case SettingState::ClickableID::P13:
+				{
+                    c[2] = true; c[1] = c[0] = c[3] = c[4] = c[5] = c[6] = c[7] = false;
+					break;
 				}
-				case SettingState::ClickableID::MoveDown:{
-					for(int i =0;i<4;i++)
-					{
-						if (i == 3)
-						{
-							c[i] = true;
-						}
-						else
-						{
-							c[i] = false;// set all false
-						}
-					}
-                    break;
+				case SettingState::ClickableID::P14:
+				{
+                    c[3] = true; c[1] = c[2] = c[0] = c[4] = c[5] = c[6] = c[7] = false;
+					break;
 				}
+				case SettingState::ClickableID::P21:
+				{
+                    c[4] = true; c[1] = c[2] = c[3] = c[0] = c[5] = c[6] = c[7] = false;
+					break;
+				}
+				case SettingState::ClickableID::P22:
+				{
+                    c[5] = true; c[1] = c[2] = c[3] = c[4] = c[0] = c[6] = c[7] = false;
+					break;
+				}
+				case SettingState::ClickableID::P23:
+				{
+                    c[6] = true; c[1] = c[2] = c[3] = c[4] = c[5] = c[0] = c[7] = false;
+					break;
+				}
+				case SettingState::ClickableID::P24:
+				{
+                    c[7] = true; c[1] = c[2] = c[3] = c[4] = c[5] = c[6] = c[0] = false;
+					break;
+				}
+				
 			}
 		}
-		if(event.type == sf::Event::KeyPressed)
-	{
-		for(int i =0;i<4;i++)
-		{
-			if(c[i])
-			{
-				std::string key_string = keyCodeToString(event.key.code);
-				std::cout<<key_string<<std::endl;
-				mOptions[i].setString(key_string);
-			}
-		}
-	}
 	
 		else if (announcement.action == Clickable::RightPressed) {
 			std::cout << "Right Clicked " << announcement.id << "\n";
-		}
-	}
-	if(event.type == sf::Event::KeyPressed)
-	{
-		for(int i =0;i<4;i++)
-		{
-			if(c[i])
-			{
-				std::string key_string = keyCodeToString(event.key.code);
-				mOptions[i].setString(key_string);
-			}
 		}
 	}
 	while (pendingNotification()) {
@@ -511,4 +551,20 @@ sf::Keyboard::Key SettingState::stringToSFMLKey(const std::string& keyString) {
         
         return sf::Keyboard::Unknown;
     }
+}
+
+SettingState::~SettingState()
+{
+	// save to text file
+	std::ofstream fout("Assets/Files/Settings.txt",std::ios::trunc);
+	if(fout.is_open())
+	{
+		fout<<"Sound: "<<mScrollBarList.getVolumeSound()<<" "<<"Music: "<<mScrollBarList.getVolumeMusic()<<"\n";
+		fout<<"Player 1\n ";
+		fout<<"MoveLeft: "<<mClickableList.getTextByID(7)<<" MoveRight: "<<mClickableList.getTextByID(8)<<" MoveUp: "<<mClickableList.getTextByID(9)<<" MoveDown: "<<mClickableList.getTextByID(10)<<"\n";
+		fout<<"Player2\n";
+		fout<<"MoveLeft: "<<mClickableList.getTextByID(11)<<" MoveRight: "<<mClickableList.getTextByID(12)<<" MoveUp: "<<mClickableList.getTextByID(13)<<" MoveDown: "<<mClickableList.getTextByID(14)<<"\n";
+	}
+	fout.close();
+
 }

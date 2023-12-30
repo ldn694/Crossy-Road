@@ -58,6 +58,16 @@ namespace Textures
 		MoveUp_,
 		MoveDown,
 		MoveDown_,
+		P11,
+		P12,
+		P13,
+		P14,
+		P21,
+		P22,
+		P23,
+		P24,
+		SetPlayer1,
+		SetPlayer2,
 	};
 }
 

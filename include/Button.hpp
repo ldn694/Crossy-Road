@@ -2,7 +2,8 @@
 #include "Clickable.hpp"
 #include <SFML/Graphics.hpp>
 #include "ResourceIdentifiers.hpp"
-
+#include <iostream>
+#include <string>
 class ClickableList;
 
 class Button: public Clickable {
@@ -18,4 +19,6 @@ public:
     void handleEvent(const sf::Event& event);
     void update(sf::Time dt);
     bool isInside(sf::Vector2f position);
+    void setText(const std::string &newString);
+    std::string getText();
 };

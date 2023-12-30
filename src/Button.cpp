@@ -28,6 +28,17 @@ bool Button::isInside(sf::Vector2f position) {
     return mRect.contains(position);
 }
 
+void Button::setText(const std::string &newString)
+{
+    mText.setString(newString);
+}
+
+std::string Button::getText()
+{
+    std::string result = mText.getString();
+    return result;
+}
+
 void Button::draw() {
     if (mStatus.isHoverable()) {
         mSprite.setTexture(mContext.textures->get(isHovering ? mTextureID[1] : mTextureID[0]));
