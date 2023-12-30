@@ -31,6 +31,7 @@ bool Button::isInside(sf::Vector2f position) {
 void Button::setText(const std::string &newString)
 {
     mText.setString(newString);
+    centerOrigin(mText);
 }
 
 std::string Button::getText()
