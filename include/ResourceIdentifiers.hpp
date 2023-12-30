@@ -68,6 +68,14 @@ namespace Textures
 		P24,
 		SetPlayer1,
 		SetPlayer2,
+		P11_,
+		P12_,
+		P13_,
+		P14_,
+		P21_,
+		P22_,
+		P23_,
+		P24_,
 	};
 }
 

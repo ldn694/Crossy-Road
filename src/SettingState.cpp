@@ -49,6 +49,16 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	context.textures->load(Textures::P23,"Assets/Images/keybinding.png");
 	context.textures->load(Textures::P24,"Assets/Images/keybinding.png");
 
+	context.textures->load(Textures::P11_,"Assets/Images/keybinding_.png");
+	context.textures->load(Textures::P12_,"Assets/Images/keybinding_.png");
+	context.textures->load(Textures::P13_,"Assets/Images/keybinding_.png");
+	context.textures->load(Textures::P14_,"Assets/Images/keybinding_.png");
+
+	context.textures->load(Textures::P21_,"Assets/Images/keybinding_.png");
+	context.textures->load(Textures::P22_,"Assets/Images/keybinding_.png");
+	context.textures->load(Textures::P23_,"Assets/Images/keybinding_.png");
+	context.textures->load(Textures::P24_,"Assets/Images/keybinding_.png");
+
     context.textures->load(Textures::SetPlayer1,"Assets/Images/P1.png");
 	context.textures->load(Textures::SetPlayer2,"Assets/Images/P2.png");
 	mBackgroundSprite.setTexture(texture);
@@ -147,7 +157,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = { 680, 180, 110, 45, 15 };				
 	info.status = Clickable::Status(true, true, true);      					
-	info.textureIDList = { Textures::P11, Textures::P11};	
+	info.textureIDList = { Textures::P11, Textures::P11_};	
 	info.stringList = { data[7] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -155,7 +165,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = {680, 235, 110, 45, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::P12, Textures::P12 };
+	info.textureIDList = { Textures::P12, Textures::P12_ };
 	info.stringList = { data[9] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -163,7 +173,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = {680, 285, 110, 45, 15};//270
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::P13, Textures::P13 };
+	info.textureIDList = { Textures::P13, Textures::P13_ };
 	info.stringList = { data[11] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -171,7 +181,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = {680, 340, 110, 45, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::P14, Textures::P14};
+	info.textureIDList = { Textures::P14, Textures::P14_};
 	info.stringList = { data[13] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -179,7 +189,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = { 850, 180, 110, 45, 15 };				//toa do (x,y, +x, +y, scale/10)
 	info.status = Clickable::Status(true, true, true);      //cac trang thai duoc cho phep cua button					
-	info.textureIDList = { Textures::P21, Textures::P21};	//cac nut
+	info.textureIDList = { Textures::P21, Textures::P21_};	//cac nut
 	info.stringList = { data[16] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -187,7 +197,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = {850, 235, 110, 45, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::P22, Textures::P22 };
+	info.textureIDList = { Textures::P22, Textures::P22_ };
 	info.stringList = { data[18] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -195,7 +205,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = {850, 285, 110, 45, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::P23, Textures::P23 };
+	info.textureIDList = { Textures::P23, Textures::P23_ };
 	info.stringList = { data[20] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
@@ -203,7 +213,7 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 
 	info.floatList = {850, 340, 110, 45, 15};
 	info.status = Clickable::Status(true, true, true);
-	info.textureIDList = { Textures::P24, Textures::P24};
+	info.textureIDList = { Textures::P24, Textures::P24_};
 	info.stringList = { data[22] };
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
