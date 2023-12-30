@@ -49,6 +49,7 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 , mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
+	context.settings->setPlayer(&mPlayer);
 	// std::cerr << "GameState::GameState()\n";
 	//floatList[0] = 1 if 1 player, 2 if 2 players
 	//stringList[0] = player1 name

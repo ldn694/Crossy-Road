@@ -7,14 +7,21 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 
-Train::Train(sf::Vector2f position, const TextureHolder& textures, Road* road):
-    mSprite(textures.get(Textures::Train))
+Train::Train(sf::Vector2f position, SoundPlayer& sounds, const TextureHolder& textures, Road* road):
+    mSprite(textures.get(Textures::Train)),
+    mSound(sounds.play(SoundEffect::Train_Passing, getWorldPosition()))
 {
+    mSound.setMinDistance(1.f);
     float width, height;
     width = WIDTH_SIZE;
     height = HEIGHT_SIZE;
     setSize(mSprite, sf::Vector2f(width, height));
     mSprite.setPosition(-12, 0);
+}
+
+Train::~Train()
+{
+    mSound.stop();
 }
 
 void Train::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -28,6 +35,12 @@ void Train::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
     shape.setOutlineThickness(1);
     shape.setPosition(rect.left, rect.top);
     target.draw(shape);
+}
+
+void Train::updateCurrent(sf::Time dt)
+{
+    Entity::updateCurrent(dt);
+    mSound.setPosition(sf::Vector3f(getWorldPosition().x, getWorldPosition().y, 0));
 }
 
 sf::FloatRect Train::getHitbox() const

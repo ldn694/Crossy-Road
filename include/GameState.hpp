@@ -3,6 +3,7 @@
 #include "State.hpp"
 #include "World.hpp"
 #include "Player.hpp"
+#include "Settings.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

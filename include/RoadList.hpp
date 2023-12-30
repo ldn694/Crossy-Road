@@ -3,13 +3,14 @@
 #include <SFML/Graphics/View.hpp>
 
 #include "Difficulty.hpp"
+#include "Context.hpp"
 #include "Animal.hpp"
 #include "Road.hpp"
 #include "ResourceIdentifiers.hpp"
 
 class RoadList: public SceneNode{
 public:
-                            RoadList(const TextureHolder& textures, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode);
+                            RoadList(Context context, const TextureHolder& textures, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode);
     // Road*                   getFirstRoad();
     // Road*                   getLastRoad();
     virtual void            updateCurrent(sf::Time dt);
@@ -37,6 +38,7 @@ private:
     sf::Time                                                                mPeriod;
     std::vector <Animal*>                                                   mPlayers;
     Difficulty                                                              mDifficulty;
+    Context                                                                 mContext;    
     int                                                                     mPassedRoad;
     float                                                                   mPlayerSpeedMultiplier;
 };
@@ -61,7 +63,7 @@ void RoadList::registerRoad(Road::Type roadType)
 {
    // Create a lambda function that returns a new instance of T
     auto factoryFunction = [this](int variant) -> std::unique_ptr<Road> {
-        return std::make_unique<T>(mTextures, mDifficulty, variant);
+        return std::make_unique<T>(mContext, mTextures, mDifficulty, variant);
     };
 
     // Register the factory function for the specified road type

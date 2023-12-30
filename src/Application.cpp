@@ -17,9 +17,10 @@
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Application::Application(sf::ContextSettings settings)
-	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, settings), mTextures(), mFonts(), mScoreboard(), mStateStack(Context(mWindow, mTextures, mFonts, mScoreboard)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+Application::Application(sf::ContextSettings contextSettings)
+	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, contextSettings), mTextures(), mFonts(), mSounds(), mScoreboard(), mStateStack(Context(mWindow, mTextures, mFonts, mSounds, mScoreboard, mSettings)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
+	mSettings.setSoundPlayer(&mSounds);
 	mWindow.setKeyRepeatEnabled(false);
 	srand(time(NULL));
 	mFonts.load(Fonts::Main, "Assets/Fonts/Sansation.ttf");

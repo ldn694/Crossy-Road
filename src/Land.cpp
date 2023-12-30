@@ -32,7 +32,7 @@ Textures::ID toTextureID(Land::Variant variant){
     return Textures::NormalLand;
 }
 
-Land::Land(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(static_cast<Land::Variant>(variant)), textures, Road::Type::Land, Zone::Safety::Safe, difficulty){
+Land::Land(Context context, const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(static_cast<Land::Variant>(variant)), textures, Road::Type::Land, Zone::Safety::Safe, difficulty){
     int numberRocks = getNumberObstacles(static_cast<Variant>(variant));
     std::vector <int> index = randomIntSampling(NUM_ZONE, numberRocks);
     for (int i = 0; i < numberRocks; i++){

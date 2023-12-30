@@ -3,6 +3,7 @@
 #include "Entity.hpp"
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "SoundPlayer.hpp"
 #include "Road.hpp"
 
 #include <SFML/Graphics/Text.hpp>
@@ -27,7 +28,7 @@ class Animal: public Entity {
         };
 
     public:
-                                Animal(int playerID, Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SceneNode* tmpNode, int& passedRoad);
+                                Animal(int playerID, Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SoundPlayer& soundPlayer,  SceneNode* tmpNode, int& passedRoad);
         virtual unsigned int	getCategory() const;
         sf::FloatRect			getHitbox() const;
         void                    move(Direction direction);
@@ -36,7 +37,7 @@ class Animal: public Entity {
     
     private:
         virtual void            updateCurrent(sf::Time dt);
-        void                    changeDirection(Direction direction);
+        void                    changeDirection(Direction direction, bool isMoving = true);
         virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
         Textures::ID            toTextureID(Type type, Direction direction);
         bool                    addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offset = sf::Vector2f(0, 0));
@@ -49,10 +50,12 @@ class Animal: public Entity {
     
     private:
         TextureHolder&          mTextures;
+        SoundPlayer&            mSoundPlayer;
         Type					mType;
         sf::Text                mPlayerNameText;
         Direction               mDirection;
         sf::Sprite				mSprite;
+        sf::Sound               mSound;
         sf::Time                mDuration;
         int&                    passedRoad;
         int                     mPlayerID;

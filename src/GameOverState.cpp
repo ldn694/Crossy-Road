@@ -12,6 +12,9 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	: State(stack, stateID, context),
 	mClickableList(context)
 {
+	context.sounds->stopAllSounds();
+	// context.sounds->removeStoppedSounds();
+
 	loadTextures(context);
 	sf::Font& font = context.fonts->get(Fonts::Bungee);
 	sf::Vector2f viewSize = context.window->getView().getSize();

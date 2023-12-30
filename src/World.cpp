@@ -62,6 +62,10 @@ void World::update(sf::Time dt)
 		}
 	}
 
+	mContext.sounds->removeStoppedSounds();
+	mContext.sounds->setListenerPosition(mPlayers[0]->getWorldPosition());
+
+
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);
@@ -188,11 +192,11 @@ void World::buildScene()
 	}
 
 	for (int i = 0; i < mNumPlayer; i++) {
-		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, airNode, mCurrentScore);
+		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, *mContext.sounds, airNode, mCurrentScore);
 		mPlayers[i]->setPosition(0, 0);
 	}
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayers, mDifficulty, airNode));
+	std::unique_ptr<RoadList> roadList(new RoadList(mContext, mTextures, mWorldView, 12, mPlayers, mDifficulty, airNode));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mRoadList = roadList.get();
 	mSceneLayers[Road]->requestAttach(std::move(roadList));

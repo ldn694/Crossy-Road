@@ -7,9 +7,11 @@
 Railways::~Railways(){
 
 }
-Railways::Railways(const TextureHolder& textures, Difficulty difficulty, int variant) : 
+Railways::Railways(Context context, const TextureHolder& textures, Difficulty difficulty, int variant) : 
     Road(Textures::Railways, textures, Road::Type::Railways, Zone::Safety::Safe, difficulty),
-    textures(textures)
+    textures(textures),
+    soundPlayer(*context.sounds),
+    mTrainIncomingSound(nullptr)
 {
     sf::Time basePeriodTime = sf::seconds(5.f);
     float baseSpeed = 2000;
@@ -76,7 +78,7 @@ TrafficLight* Railways::addLight(sf::Vector2f position)
 }
 Train* Railways::addTrain(sf::Vector2f position)
 {
-    std::unique_ptr<Train> curTrain(new Train(position, textures, this));
+    std::unique_ptr<Train> curTrain(new Train(position, soundPlayer, textures, this));
     train = curTrain.get();
     curTrain->setPosition(position);
     Train* trainPtr = curTrain.get();
@@ -96,6 +98,8 @@ void Railways::updateCurrent(sf::Time dt)
     }   
     
     if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn + sf::seconds(300.0f / mSpeed) < sf::seconds(1.0f)) {
+        mTrainIncomingSound = &soundPlayer.play(SoundEffect::Train_Incoming);
+        mTrainIncomingSound->setPitch(1.5f);
         isComing = true;
         mClock.restart();
         light->changeColor();
@@ -106,7 +110,7 @@ void Railways::updateCurrent(sf::Time dt)
         light->changeColor();
     }
 
-    if (train != nullptr && ((train->getWorldPosition().x + train->getHitbox().width < 0 && movementSign == -1) || (train->getWorldPosition().x > WITDH_SIZE && movementSign == 1))){
+    if (train != nullptr && ((train->getWorldPosition().x + train->getHitbox().width < -1000.f && movementSign == -1) || (train->getWorldPosition().x > WITDH_SIZE + 1000.f && movementSign == 1))){
         mediateNode->requestDetach(train);
         train = nullptr;
     }
@@ -124,6 +128,10 @@ void Railways::updateCurrent(sf::Time dt)
         mediateNode->attachChildren();
         isComing = false;
         light->setDefaultColor();
+        if (mTrainIncomingSound) {
+            mTrainIncomingSound->stop();
+            mTrainIncomingSound = nullptr;
+        }
     }
     
     mediateNode->move(dt.asSeconds() * mSpeed * movementSign, 0);

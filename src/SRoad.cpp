@@ -22,7 +22,7 @@ Car::Type getRandCarType(int movementSign) {
 
 }
 
-SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(), textures, Road::Type::SRoad, Zone::Safety::Safe, difficulty), textures(textures) {
+SRoad::SRoad(Context context, const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(), textures, Road::Type::SRoad, Zone::Safety::Safe, difficulty), textures(textures) {
     sf::Time basePeriodTime = sf::seconds(2.5f);
     int numPartionPeriod;
     switch (difficulty) {

@@ -7,13 +7,14 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-Animal::Animal(int playerID, Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SceneNode* tmpNode, int& passedRoad)
+Animal::Animal(int playerID, Type type, std::string playerName, TextureHolder& textures,  FontHolder& fonts, SoundPlayer& sounds, SceneNode* tmpNode, int& passedRoad)
     : mType(type)
     , mTextures(textures)
     , mDirection(Down)
     , tmpNode(tmpNode)
     , passedRoad(passedRoad)
     , mPlayerID(playerID)
+    , mSoundPlayer(sounds)
 {
     mPlayerNameText.setFont(fonts.get(Fonts::Bungee));
     mPlayerNameText.setString(playerName);
@@ -171,7 +172,7 @@ void Animal::setMovementDuration(sf::Time duration)
     mDuration = duration;
 }
 
-void Animal::changeDirection(Direction direction)
+void Animal::changeDirection(Direction direction, bool isMoving)
 {
     mDirection = direction;
     mSprite.setTexture(mTextures.get(toTextureID(mType, direction)));

@@ -1,4 +1,5 @@
 #pragma once
+#include "Context.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "Road.hpp"
 #include "FloatingLog.hpp"
@@ -23,7 +24,7 @@ private:
     FloatingLog* addLog(FloatingLog::Type logType, sf::Vector2f position);
 public:
     ~River();
-    River(const TextureHolder& textures, Difficulty difficulty, int variant);
+    River(Context context, const TextureHolder& textures, Difficulty difficulty, int variant);
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
 };

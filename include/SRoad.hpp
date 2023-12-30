@@ -1,4 +1,5 @@
 #pragma once
+#include "Context.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "Road.hpp"
 #include "Car.hpp"
@@ -27,7 +28,7 @@ private:
     Car* addCar(Car::Type carType, sf::Vector2f position);
 public:
     ~SRoad();
-    SRoad(const TextureHolder& textures, Difficulty difficulty, int variant);
+    SRoad(Context context, const TextureHolder& textures, Difficulty difficulty, int variant);
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
 };
