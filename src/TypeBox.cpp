@@ -104,7 +104,7 @@ void TypeBox::handleEvent(const sf::Event& event) {
         }
         else if ((event.text.unicode >= 65 && event.text.unicode <= 90) || (event.text.unicode >= 48 && event.text.unicode <= 57) || (event.text.unicode >= 97 && event.text.unicode <= 122) && mString.getSize() < LimitOfName) {
             mString += event.text.unicode;
-            std::cerr << "TypeBox: " << mID << " input: " << mString.toAnsiString() << std::endl;
+            // std::cerr << "TypeBox: " << mID << " input: " << mString.toAnsiString() << std::endl;
             isShowCursor = true;
             mClock.restart();
             mCursor.setFillColor(sf::Color::White);

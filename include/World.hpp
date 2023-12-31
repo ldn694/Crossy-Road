@@ -44,7 +44,7 @@ class World : private sf::NonCopyable
 
 		int									getCurrentScore();
 		void 								setRaining(bool raining);
-		int 								getLostPlayerID();
+		int 								getLostPlayerID(Entity* lostPlayer);
 
 
 	private:

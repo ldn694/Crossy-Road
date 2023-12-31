@@ -49,12 +49,12 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 , mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
-	std::cerr << "GameState::GameState()\n";
+	// std::cerr << "GameState::GameState()\n";
 	//floatList[0] = 1 if 1 player, 2 if 2 players
 	//stringList[0] = player1 name
-	for (int i = 0; i < stateInfo.floatList.size(); i++) {
-		std::cerr << stateInfo.floatList[i] << " ";
-	}
+	// for (int i = 0; i < stateInfo.floatList.size(); i++) {
+	// 	std::cerr << stateInfo.floatList[i] << " ";
+	// }
 	mCurrentScoreText.setFont(context.fonts->get(Fonts::Bungee));
 	setCurrentScore();
 	mCurrentScoreText.setCharacterSize(20);
@@ -87,10 +87,10 @@ bool GameState::update(sf::Time dt) {
 			requestStackPush(States::GameOver, info);
 		}
 		else {
-			int lostPlayerID = mWorld.getLostPlayerID();
+			int lostPlayerID = mWorld.getLostPlayerID(status.mEntity);
 			State::Info info;
 			info.floatList = {float(lostPlayerID)};
-			info.stringList = {mPlayerNames};
+			info.stringList = mPlayerNames;
 			requestStackPush(States::GameOver, info);
 		}
 	}
@@ -118,10 +118,20 @@ bool GameState::handleEvent(const sf::Event& event)
 
 	}
 	catch (GameStatus status) {
-		State::Info info;
-		info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
-		info.stringList = mPlayerNames;
-		requestStackPush(States::GameOver, info);
+		int numPlayer = mPlayerNames.size();
+		if (numPlayer == 1) {
+			State::Info info;
+			info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
+			info.stringList = mPlayerNames;
+			requestStackPush(States::GameOver, info);
+		}
+		else {
+			int lostPlayerID = mWorld.getLostPlayerID(status.mEntity);
+			State::Info info;
+			info.floatList = {float(lostPlayerID)};
+			info.stringList = mPlayerNames;
+			requestStackPush(States::GameOver, info);
+		}
 	}
 	return false;
 }

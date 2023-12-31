@@ -228,7 +228,7 @@ void World::adaptPlayerPosition()
 
 	for (int i = 0; i < mNumPlayer; i++) {
 		if (intersection(mPlayers[i]->getHitbox(), viewBounds) < 1) {
-			mPlayers[i]->announceGameLost();
+			throw GameStatus(GameStatus::GameLost, mPlayers[i]);
 		}
 	}
 	// position.x = std::max(position.x, viewBounds.left + borderDistance);
@@ -266,11 +266,11 @@ void World::setRaining(bool raining) {
 	}
 }
 
-int World::getLostPlayerID() {
+int World::getLostPlayerID(Entity* lostPlayer) {
 	for (int i = 0; i < mNumPlayer; i++) {
-		if (mPlayers[i]->getIsLost()) {
+		if (mPlayers[i] == lostPlayer) {
 			return i;
 		}
 	}
-	return -1;
+	assertThrow(false, "lostPlayer is not in mPlayers");
 }
