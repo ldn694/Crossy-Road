@@ -5,7 +5,7 @@
 
 TypeBox::TypeBox(ClickableList* mList, int id, Context context, Clickable::Info info): Clickable(mList, context, id, info.status) {
     isHovering = false;
-    assertThrow(info.floatList.size() == 7, "TypeBox: floatList size must be 7");
+    assertThrow(info.floatList.size() == 8, "TypeBox: floatList size must be 8");
     assertThrow(info.stringList.size() == 1, "TypeBox: stringList size must be 1");
     assertThrow(info.textureIDList.size() == 3, "TypeBox: textureIDList size must be 3");
     assertThrow(info.fontIDList.size() == 2, "TypeBox: fontIDList size must be 2");
@@ -19,6 +19,8 @@ TypeBox::TypeBox(ClickableList* mList, int id, Context context, Clickable::Info 
     mCursor.setSize(sf::Vector2f(2, info.floatList[6]));
     mCursor.setFillColor(sf::Color::White);
     mCursor.setOrigin(mCursor.getSize().x / 2.f, mCursor.getSize().y / 2.f);
+
+    LimitOfName = info.floatList[7];
 
     mTextureID[0] = info.textureIDList[0];
     mTextureID[1] = info.textureIDList[1];
@@ -81,6 +83,7 @@ void TypeBox::draw() {
 }
 
 void TypeBox::handleEvent(const sf::Event& event) {
+    if (!mStatus.isDrawable()) return;
     if (event.type == sf::Event::MouseMoved) {
         isHovering = isInside(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
     }
@@ -112,6 +115,7 @@ void TypeBox::handleEvent(const sf::Event& event) {
         if (isInside(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 requestPushAnnouncement(Clickable::LeftPressed);
+                mString.clear();
             }
             else if (event.mouseButton.button == sf::Mouse::Right) {
                 requestPushAnnouncement(Clickable::RightPressed);

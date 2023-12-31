@@ -36,11 +36,23 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	mCharacterList[3] = Textures::Lion;
 	mCharacterList[4] = Textures::Pig;
 
-	mCharacterIndex = 0;
+	mCharacterIndex1P = 0;
+	mCharacterIndex2P_First = 0;
+	mCharacterIndex2P_Second = 0;
 	for (int i=0; i<mCharacterCount; i++){
 		mCharacterListSprite[i].setTexture(context.textures->get(mCharacterList[i]));
 		setSize(mCharacterListSprite[i], sf::Vector2f(330, 330));
 		mCharacterListSprite[i].setPosition(194, 135);
+	}
+	for (int i=0; i<mCharacterCount; i++){
+		mCharacterListSprite2P_First[i].setTexture(context.textures->get(mCharacterList[i]));
+		setSize(mCharacterListSprite2P_First[i], sf::Vector2f(250, 250));
+		mCharacterListSprite2P_First[i].setPosition(85, 165);
+	}
+	for (int i=0; i<mCharacterCount; i++){
+		mCharacterListSprite2P_Second[i].setTexture(context.textures->get(mCharacterList[i]));
+		setSize(mCharacterListSprite2P_Second[i], sf::Vector2f(250, 250));
+		mCharacterListSprite2P_Second[i].setPosition(400, 165);
 	}
 
     
@@ -75,6 +87,22 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::RightArrow, info);
 
+	info.floatList = { 300, 280, 40, 40, 10 };
+	info.status = Clickable::Status(false, false, true);
+	info.textureIDList = { Textures::SelectRight, Textures::SelectRightHovered };
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::RightArrow2P_First, info);
+
+	info.floatList = { 615, 280, 40, 40, 10 };
+	info.status = Clickable::Status(false, false, true);
+	info.textureIDList = { Textures::SelectRight, Textures::SelectRightHovered };
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::RightArrow2P_Second, info);
+
 	//Left arrow button
 	info.floatList = { 150, 280, 50, 50, 10 };
 	info.status = Clickable::Status(true, true, true);
@@ -83,6 +111,22 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 	info.fontIDList = { Fonts::Main };
 	info.colorList = { sf::Color::Black };
 	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::LeftArrow, info);
+
+	info.floatList = { 70, 280, 40, 40, 10 };
+	info.status = Clickable::Status(false, false, true);
+	info.textureIDList = { Textures::SelectLeft, Textures::SelectLeftHovered };
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::LeftArrow2P_First, info);
+
+	info.floatList = { 385, 280, 40, 40, 10 };
+	info.status = Clickable::Status(false, false, true);
+	info.textureIDList = { Textures::SelectLeft, Textures::SelectLeftHovered };
+	info.stringList = { "" };
+	info.fontIDList = { Fonts::Main };
+	info.colorList = { sf::Color::Black };
+	mClickableList.addClickable(Clickable::Type::Button, ButtonNames::LeftArrow2P_Second, info);
 
     //Choice setting
 	mClickableList.registerClickable<Choice>(Clickable::Type::Choice);
@@ -139,13 +183,31 @@ GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context co
 
 	//TypeBox setting
 	mClickableList.registerClickable<TypeBox>(Clickable::Type::TypeBox);
-	info.floatList = { 190, 465, 350, 100, 1.0/6, 50, 30 };
+	info.floatList = { 190, 465, 350, 100, 1.0/6, 50, 30, 9};
 	info.stringList = { "Player" };
 	info.status = Clickable::Status(true, true, true);
 	info.fontIDList = { Fonts::Bungee, Fonts::Bungee };
 	info.textureIDList = { Textures::TypeBox, Textures::TypeBoxHovered, Textures::TypeBoxInput };	
 	info.colorList = { sf::Color::Black, sf::Color::White };
 	mClickableList.addClickable(Clickable::Type::TypeBox, ButtonNames::TypingBox, info);
+
+	mClickableList.registerClickable<TypeBox>(Clickable::Type::TypeBox);
+	info.floatList = { 100, 450, 200, 100, 1.0/6, 35, 20, 7 };
+	info.stringList = { "Player1" };
+	info.status = Clickable::Status(false, false, true);
+	info.fontIDList = { Fonts::Bungee, Fonts::Bungee };
+	info.textureIDList = { Textures::TypeBox, Textures::TypeBoxHovered, Textures::TypeBoxInput };	
+	info.colorList = { sf::Color::Black, sf::Color::White };
+	mClickableList.addClickable(Clickable::Type::TypeBox, ButtonNames::TypingBox2P_First, info);
+
+	mClickableList.registerClickable<TypeBox>(Clickable::Type::TypeBox);
+	info.floatList = { 430, 450, 200, 100, 1.0/6, 35, 20, 7 };
+	info.stringList = { "Player2" };
+	info.status = Clickable::Status(false, false, true);
+	info.fontIDList = { Fonts::Bungee, Fonts::Bungee };
+	info.textureIDList = { Textures::TypeBox, Textures::TypeBoxHovered, Textures::TypeBoxInput };	
+	info.colorList = { sf::Color::Black, sf::Color::White };
+	mClickableList.addClickable(Clickable::Type::TypeBox, ButtonNames::TypingBox2P_Second, info);
 }
 
 void GameStartState::draw()
@@ -156,7 +218,12 @@ void GameStartState::draw()
 	window.draw(mBackground);
 	/*FOREACH(const sf::Text & text, mTexts)
 		window.draw(text);*/
-	window.draw(mCharacterListSprite[mCharacterIndex]);
+	if (mChoicePlayerIndex == ButtonNames::OnePlayer){
+		window.draw(mCharacterListSprite[mCharacterIndex1P]);
+	} else {
+		window.draw(mCharacterListSprite2P_First[mCharacterIndex2P_First]);
+		window.draw(mCharacterListSprite2P_Second[mCharacterIndex2P_Second]);
+	}
 	mClickableList.draw();
 }
 void GameStartState::loadTextures(Context context){
@@ -212,7 +279,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
             if (announcement.id == ButtonNames::Play){
                 // requestStateClear();
                 State::Info info;
-				info.stringList.push_back(mClickableList.getString(ButtonNames::TypingBox));
+				info.stringList.push_back( mChoicePlayerIndex == ButtonNames::OnePlayer ? mClickableList.getString(ButtonNames::TypingBox) : mClickableList.getString(ButtonNames::TypingBox2P_First));
 				switch (mChoiceDifficultyIndex)
 				{
 				case ButtonNames::Easy:
@@ -238,7 +305,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 				default:
 					break;
 				}
-				switch (mCharacterIndex)
+				switch (mChoicePlayerIndex == ButtonNames::OnePlayer ? mCharacterIndex1P : mCharacterIndex2P_First)
 				{
 				case 0:
 					info.stringList.push_back("Cat");
@@ -258,8 +325,27 @@ bool GameStartState::handleEvent(const sf::Event& event)
 				default:
 					break;
 				}
-				info.stringList.push_back("NghiaCuto");
-				info.stringList.push_back("Pig");
+				info.stringList.push_back(mClickableList.getString(ButtonNames::TypingBox2P_Second));
+				switch (mCharacterIndex2P_Second)
+				{
+				case 0:
+					info.stringList.push_back("Cat");
+					break;
+				case 1:
+					info.stringList.push_back("Chicken");
+					break;
+				case 2:
+					info.stringList.push_back("Fox");
+					break;
+				case 3:
+					info.stringList.push_back("Lion");
+					break;
+				case 4:
+					info.stringList.push_back("Pig");
+					break;
+				default:
+					break;
+				}
 				for (int i = 0; i < info.stringList.size(); i++) {
 					std::cout << info.stringList[i] << "\n";
 				}
@@ -270,24 +356,95 @@ bool GameStartState::handleEvent(const sf::Event& event)
                 requestStackPop();
                 State::Info info;
                 requestStackPush(States::Menu, info);
-            } else if (announcement.id == ButtonNames::OnePlayer || announcement.id == ButtonNames::TwoPlayer){
+            } else if (announcement.id == ButtonNames::OnePlayer){
+				mClickableList.setClickable(mChoicePlayerIndex, true);
+                mClickableList.setClickable(announcement.id, false);
+                mChoicePlayerIndex = announcement.id;
+				mClickableList.setClickable(ButtonNames::LeftArrow2P_First, false);
+				mClickableList.setClickable(ButtonNames::RightArrow2P_First, false);
+				mClickableList.setClickable(ButtonNames::LeftArrow2P_Second, false);
+				mClickableList.setClickable(ButtonNames::RightArrow2P_Second, false);
+				mClickableList.setClickable(ButtonNames::TypingBox2P_First, false);
+				mClickableList.setClickable(ButtonNames::TypingBox2P_Second, false);
+				mClickableList.setClickable(ButtonNames::LeftArrow, true);
+				mClickableList.setClickable(ButtonNames::RightArrow, true);
+				mClickableList.setClickable(ButtonNames::TypingBox, true);
+				mClickableList.setDrawable(ButtonNames::LeftArrow2P_First, false);
+				mClickableList.setDrawable(ButtonNames::RightArrow2P_First, false);
+				mClickableList.setDrawable(ButtonNames::LeftArrow2P_Second, false);
+				mClickableList.setDrawable(ButtonNames::RightArrow2P_Second, false);	
+				mClickableList.setDrawable(ButtonNames::TypingBox2P_First, false);
+				mClickableList.setDrawable(ButtonNames::TypingBox2P_Second, false);
+				mClickableList.setDrawable(ButtonNames::LeftArrow, true);
+				mClickableList.setDrawable(ButtonNames::RightArrow, true);
+				mClickableList.setDrawable(ButtonNames::TypingBox, true);
+			} else if (announcement.id == ButtonNames::TwoPlayer){
                 mClickableList.setClickable(mChoicePlayerIndex, true);
                 mClickableList.setClickable(announcement.id, false);
                 mChoicePlayerIndex = announcement.id;
+				mClickableList.setClickable(ButtonNames::LeftArrow2P_First, true);
+				mClickableList.setClickable(ButtonNames::RightArrow2P_First, true);
+				mClickableList.setClickable(ButtonNames::LeftArrow2P_Second, true);
+				mClickableList.setClickable(ButtonNames::RightArrow2P_Second, true);
+				mClickableList.setClickable(ButtonNames::TypingBox2P_First, true);
+				mClickableList.setClickable(ButtonNames::TypingBox2P_Second, true);
+				mClickableList.setClickable(ButtonNames::LeftArrow, false);
+				mClickableList.setClickable(ButtonNames::RightArrow, false);
+				mClickableList.setClickable(ButtonNames::TypingBox, false);
+				mClickableList.setDrawable(ButtonNames::LeftArrow2P_First, true);
+				mClickableList.setDrawable(ButtonNames::RightArrow2P_First, true);
+				mClickableList.setDrawable(ButtonNames::LeftArrow2P_Second, true);
+				mClickableList.setDrawable(ButtonNames::RightArrow2P_Second, true);
+				mClickableList.setDrawable(ButtonNames::TypingBox2P_First, true);
+				mClickableList.setDrawable(ButtonNames::TypingBox2P_Second, true);
+				mClickableList.setDrawable(ButtonNames::LeftArrow, false);
+				mClickableList.setDrawable(ButtonNames::RightArrow, false);
+				mClickableList.setDrawable(ButtonNames::TypingBox, false);
             } else if (announcement.id == ButtonNames::LeftArrow){
-				if (mCharacterIndex == 0){
-					mCharacterIndex = mCharacterCount - 1;
+				if (mCharacterIndex1P == 0){
+					mCharacterIndex1P = mCharacterCount - 1;
 				} else {
-					mCharacterIndex--;
+					mCharacterIndex1P--;
 				}
 			} else if ( announcement.id == ButtonNames::RightArrow){
-				if (mCharacterIndex == mCharacterCount - 1){
-					mCharacterIndex = 0;
+				if (mCharacterIndex1P == mCharacterCount - 1){
+					mCharacterIndex1P = 0;
 				} else {
-					mCharacterIndex++;
+					mCharacterIndex1P++;
 				}
-			} else if (announcement.id == ButtonNames::TypingBox){
+			} else if ( announcement.id == ButtonNames::RightArrow2P_First){
+				if (mCharacterIndex2P_First == mCharacterCount - 1){
+					mCharacterIndex2P_First = 0;
+				} else {
+					mCharacterIndex2P_First++;
+				}
+			} else if (announcement.id == ButtonNames::LeftArrow2P_First){
+				if (mCharacterIndex2P_First == 0){
+					mCharacterIndex2P_First = mCharacterCount - 1;
+				} else {
+					mCharacterIndex2P_First--;
+				}
+			} else if ( announcement.id == ButtonNames::RightArrow2P_Second){
+				if (mCharacterIndex2P_Second == mCharacterCount - 1){
+					mCharacterIndex2P_Second = 0;
+				} else {
+					mCharacterIndex2P_Second++;
+				}
+			} else if (announcement.id == ButtonNames::LeftArrow2P_Second){
+				if (mCharacterIndex2P_Second == 0){
+					mCharacterIndex2P_Second = mCharacterCount - 1;
+				} else {
+					mCharacterIndex2P_Second--;
+				}
+			}
+			else if (announcement.id == ButtonNames::TypingBox){
 				mClickableList.setClickable(announcement.id, false);
+			} else if (announcement.id == ButtonNames::TypingBox2P_First){
+				mClickableList.setClickable(announcement.id, false);
+				mClickableList.setClickable(ButtonNames::TypingBox2P_Second, true);
+			} else if (announcement.id == ButtonNames::TypingBox2P_Second){
+				mClickableList.setClickable(announcement.id, false);
+				mClickableList.setClickable(ButtonNames::TypingBox2P_First, true);
 			} else {
 				mClickableList.setClickable(mChoiceDifficultyIndex, true);
 				mClickableList.setClickable(announcement.id, false);

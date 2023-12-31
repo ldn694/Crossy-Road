@@ -32,13 +32,12 @@ World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vect
 	, mContext(context)
 {
 	assertThrow(numPlayer == 1 || numPlayer == 2, "numPlayer must be 1 or 2");
-	assertThrow(playerTypes.size() == numPlayer, "playerTypes.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerTypes.size()));
-	assertThrow(playerNames.size() == numPlayer, "playerNames.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerNames.size()));
+	//assertThrow(playerTypes.size() == numPlayer, "playerTypes.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerTypes.size()));
+	//assertThrow(playerNames.size() == numPlayer, "playerNames.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerNames.size()));
 	mPlayers.resize(numPlayer);
 	for (int i = 0; i < numPlayer; i++) {
 		mPlayers[i] = nullptr;
 	}
-
 	loadTextures();
 	buildScene();
 
