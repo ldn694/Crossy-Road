@@ -49,9 +49,7 @@ bool TitleState::handleEvent(const sf::Event& event)
 	// If any key is pressed, trigger the next screen
 	if (event.type == sf::Event::KeyPressed)
 	{	
-		std::cout << "WTF~~\n";
 		requestStackPop();
-		std::cout << "WTF!!\n";
 		requestStackPush(States::Menu);
 	}
 

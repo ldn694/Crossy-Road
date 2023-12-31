@@ -27,6 +27,7 @@ add_executable(CrossyRoad
     src/SceneNode.cpp
     src/ScrollBar.cpp
     src/ScrollBarList.cpp 
+    src/ScoreboardState.cpp
     src/SettingState.cpp
     src/SpriteNode.cpp
     src/State.cpp
@@ -46,6 +47,24 @@ add_executable(CrossyRoad
     src/River.cpp
     src/SRoad.cpp
     src/Land.cpp
+    src/FakeEntity.cpp
+    src/Animal.cpp
+    src/Zone.cpp
+    src/RoadList.cpp
+    src/Rock.cpp
+    src/TypeBox.cpp
+    src/Category.cpp
+    src/FloatingLog.cpp
+    src/AirEntity.cpp
+    src/Tree.cpp
+    src/Car.cpp
+    src/GameOverState.cpp
+    src/Scoreboard.cpp
+    src/LoadingState.cpp
+    src/Train.cpp
+    src/TrafficLight.cpp
+    src/Rain.cpp
+    src/StopLight.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics sfml-audio)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

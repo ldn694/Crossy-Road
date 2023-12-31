@@ -1,6 +1,7 @@
 #include "SceneNode.hpp"
 #include "Command.hpp"
 #include "Foreach.hpp"
+#include "Utility.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -8,9 +9,33 @@
 
 
 SceneNode::SceneNode()
-: mChildren()
-, mParent(nullptr)
+	: mChildren()
+	, mParent(nullptr)
 {
+}
+
+SceneNode::~SceneNode()
+{
+	//std::cerr << "SceneNode destructor " << this << " " << fromCategoryToString(getCategory()) << "\n";
+}
+
+void SceneNode::filterEmptyChildren()
+{
+	while (true) {
+		std::vector <Ptr>::iterator found = mChildren.end();
+		for (int i = 0; i < mChildren.size(); i++) {
+			if (mChildren[i].get() == nullptr) {
+				found = mChildren.begin() + i;
+				break;
+			}
+		}
+		if (found != mChildren.end()) {
+			mChildren.erase(found);
+		}
+		else {
+			break;
+		}
+	}
 }
 
 void SceneNode::attachChild(Ptr child)
@@ -19,9 +44,15 @@ void SceneNode::attachChild(Ptr child)
 	mChildren.push_back(std::move(child));
 }
 
+void SceneNode::attachChildAtFront(Ptr child)
+{
+	child->mParent = this;
+	mChildren.insert(mChildren.begin(), std::move(child));
+}
+
 SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 {
-	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&] (Ptr& p) { return p.get() == &node; });
+	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](Ptr& p) { return p.get() == &node; });
 	assert(found != mChildren.end());
 
 	Ptr result = std::move(*found);
@@ -32,6 +63,9 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 
 void SceneNode::update(sf::Time dt)
 {
+	filterEmptyChildren();
+	detachChildren();
+	attachChildren();
 	updateCurrent(dt);
 	updateChildren(dt);
 }
@@ -43,8 +77,11 @@ void SceneNode::updateCurrent(sf::Time)
 
 void SceneNode::updateChildren(sf::Time dt)
 {
-	FOREACH(Ptr& child, mChildren)
-		child->update(dt);
+	FOREACH(Ptr & child, mChildren) {
+		if (child.get()) {
+			child->update(dt);
+		}
+	}
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -64,8 +101,10 @@ void SceneNode::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
 
 void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	FOREACH(const Ptr& child, mChildren)
-		child->draw(target, states);
+	FOREACH(const Ptr & child, mChildren)
+		if (child.get()) {
+			child->draw(target, states);
+		}
 }
 
 sf::Vector2f SceneNode::getWorldPosition() const
@@ -77,8 +116,9 @@ sf::Transform SceneNode::getWorldTransform() const
 {
 	sf::Transform transform = sf::Transform::Identity;
 
-	for (const SceneNode* node = this; node != nullptr; node = node->mParent)
+	for (const SceneNode* node = this; node != nullptr; node = node->mParent) {
 		transform = node->getTransform() * transform;
+	}
 
 	return transform;
 }
@@ -89,11 +129,94 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 	if (command.category & getCategory()) {
 		command.action(*this, dt);
 	}
-	//std::cout << this->getCategory() << "\n";
-
+	filterEmptyChildren();
 	// Command children
-	FOREACH(Ptr& child, mChildren)
-		child->onCommand(command, dt);
+	FOREACH(Ptr & child, mChildren) {
+		if (child.get()) {
+			child->onCommand(command, dt);
+		}
+	}
+}
+
+void SceneNode::requestDetach(SceneNode* node)
+{
+	// std::cerr << "request detach " << node << "\n";
+	mDetachQueue.push(node);
+}
+
+void SceneNode::requestAttachAtFront(Ptr child)
+{
+	mAttachQueueAtFront.push(std::move(child));
+}
+
+void SceneNode::detachChildren()
+{
+	filterEmptyChildren();
+	// if (!mDetachQueue.empty()) {
+	// 	std::cerr << "--------\n";
+	// 	std::cerr << "deleting " << this << " " << fromCategoryToString(getCategory()) << "\n";
+	// 	for (int i = 0; i < mChildren.size(); i++) {
+	// 		std::cerr << mChildren[i].get() << " ";
+	// 	}
+	// 	std::cerr << "\n";
+	// }
+	while (!mDetachQueue.empty()) {
+		SceneNode* child = mDetachQueue.front();
+		mDetachQueue.pop();
+		// std::cerr << "detaching " << child << "\n";
+		detachChild(*child);
+	}
+}
+
+void SceneNode::requestAttach(Ptr child)
+{
+	mAttachQueue.push(std::move(child));
+}
+
+void SceneNode::attachChildren()
+{
+	while (!mAttachQueue.empty()) {
+		Ptr child = std::move(mAttachQueue.front());
+		mAttachQueue.pop();
+		attachChild(std::move(child));
+	}
+	while (!mAttachQueueAtFront.empty()) {
+		Ptr child = std::move(mAttachQueueAtFront.front());
+		mAttachQueueAtFront.pop();
+		attachChildAtFront(std::move(child));
+	}
+}
+
+std::unique_ptr<SceneNode>& SceneNode::findDirectChild(SceneNode* child)
+{
+	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](Ptr& p) { return p.get() == child; });
+	assert(found != mChildren.end());
+	return *found;
+}
+
+void switchParent(SceneNode* child, SceneNode* newParent)
+{
+	SceneNode* oldParent = child->getParent();
+	assertThrow(newParent != nullptr, "newParent is nullptr");
+	if (oldParent == newParent)
+		return;
+	if (oldParent == nullptr) {
+		SceneNode::Ptr childPtr(child);
+		newParent->requestAttach(std::move(childPtr));
+		newParent->attachChildren();
+		return;
+	}
+	std::unique_ptr<SceneNode>& childPtr = oldParent->findDirectChild(child);
+	childPtr.release();
+	std::unique_ptr<SceneNode> childPtrCopy(child);
+	// oldParent->requestDetach(child);
+	newParent->requestAttach(std::move(childPtrCopy));
+	newParent->attachChildren();
+}
+
+SceneNode* SceneNode::getParent()
+{
+	return mParent;
 }
 
 unsigned int SceneNode::getCategory() const
@@ -107,4 +230,15 @@ SceneNode* SceneNode::getRoot()
 		return this;
 	else
 		return mParent->getRoot();
+}
+
+int SceneNode::countChildren() const
+{
+	int res = mChildren.size();
+	FOREACH(const Ptr & child, mChildren) {
+		if (child.get()) {
+			res += child->countChildren();
+		}
+	}
+	return res;
 }

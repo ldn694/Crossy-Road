@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cassert>
 
-Button::Button(ClickableList* mList, int id, Context context, Clickable::Info info): Clickable(mList, context, id, info.status) {
+Button::Button(ClickableList* mList, int id, Context context, Clickable::Info info) : Clickable(mList, context, id, info.status) {
     isHovering = false;
     assertThrow(info.floatList.size() == 5, "Button: floatList size must be 5");
     assertThrow(info.stringList.size() == 1, "Button: stringList size must be 1");
@@ -21,7 +21,7 @@ Button::Button(ClickableList* mList, int id, Context context, Clickable::Info in
     mText.setPosition(mRect.left + mRect.width / 2.f, mRect.top + mRect.height / 2.f);
     mSprite.setTexture(mContext.textures->get(mTextureID[0]));
     mSprite.setPosition(info.floatList[0], info.floatList[1]);
-    mSprite.setScale(mRect.width / mSprite.getLocalBounds().width, mRect.height / mSprite.getLocalBounds().height);
+    setSize(mSprite, sf::Vector2f(mRect.width, mRect.height));
 }
 
 bool Button::isInside(sf::Vector2f position) {
@@ -47,6 +47,8 @@ void Button::draw() {
     else {
         mSprite.setTexture(mContext.textures->get(mTextureID[0]));
     }
+    setSize(mSprite, sf::Vector2f(mRect.width, mRect.height));
+    mSprite.setPosition(mRect.left, mRect.top);
     mContext.window->draw(mSprite);
     mContext.window->draw(mText);
 }
@@ -69,5 +71,8 @@ void Button::handleEvent(const sf::Event& event) {
 }
 
 void Button::update(sf::Time dt) {
-   
+
+}
+sf::String Button::getString() {
+    return mText.getString();
 }

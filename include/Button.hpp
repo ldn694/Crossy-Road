@@ -21,4 +21,5 @@ public:
     bool isInside(sf::Vector2f position);
     void setText(const std::string &newString);
     std::string getText();
+    sf::String getString();
 };

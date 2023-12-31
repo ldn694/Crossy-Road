@@ -12,7 +12,8 @@ public:
     enum Type {
         Button,
         Slide,
-        Choice
+        Choice,
+        TypeBox,
     };
     enum Action {
         LeftPressed,
@@ -61,6 +62,7 @@ public:
     virtual void    handleEvent(const sf::Event& event) = 0;
     virtual void    update(sf::Time dt) = 0;
     virtual bool    isInside(sf::Vector2f position) = 0;
+    virtual sf::String getString() = 0;
     void            setDrawable(bool drawable);
     void            setClickable(bool clickable);
     void            setHoverable(bool hoverable);

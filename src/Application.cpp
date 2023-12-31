@@ -6,32 +6,42 @@
 #include "TitleState.hpp"
 #include "GameState.hpp"
 #include "GameStartState.hpp"
+#include "GameOverState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
+#include "LoadingState.hpp"
+#include "ScoreboardState.hpp"
 #include <iostream>
 
 #include<iostream>
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Application::Application()
-	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close), mTextures(), mFonts(), mStateStack(Context(mWindow, mTextures, mFonts,backgroundmusic)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+Application::Application(sf::ContextSettings settings)
+	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, settings), mTextures(), mFonts(), mScoreboard(), mStateStack(Context(mWindow, mTextures, mFonts,backgroundmusic, mScoreboard)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
-
+	srand(time(NULL));
 	mFonts.load(Fonts::Main, "Assets/Fonts/Sansation.ttf");
+	mFonts.load(Fonts::T1, "Assets/Fonts/Colo-Pro.otf");
+	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
+	mFonts.load(Fonts::Bungee,"Assets/Fonts/Bungee-Regular.otf");
+
 	mTextures.load(Textures::TitleScreen, "Assets/Images/TitleScreen.png");
     mTextures.load(Textures::SettingBackground, "Assets/Images/SettingBackground.png");
 	mFonts.load(Fonts::T1, "Assets/Fonts/Colo-Pro.otf");
 	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
+	mFonts.load(Fonts::Bungee, "Assets/Fonts/Bungee-Regular.otf");
 	mTextures.load(Textures::M1, "Assets/Images/M1.PNG");
-	mTextures.load(Textures::M2, "Assets/Images/M2.PNG");
+	mTextures.load(Textures::M2, "Assets/Images/ForMenu/M2.PNG");
     backgroundmusic.openFromFile("Assets/Music/CROSSY.wav");
 	backgroundmusic.setLoop(true);
 	backgroundmusic.setVolume(50.f);
+	mTextures.load(Textures::ScoreBoard_Background, "Assets/Images/ForScore/scoreboard.png");
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
-	mStatisticsText.setPosition(5.f, 5.f);
+	//top right
+	mStatisticsText.setPosition(1045, 5);
 	mStatisticsText.setCharacterSize(10u);
 
 	registerStates();
@@ -100,6 +110,7 @@ void Application::updateStatistics(sf::Time dt)
 	if (mStatisticsUpdateTime >= sf::seconds(1.0f))
 	{
 		mStatisticsText.setString("FPS: " + toString(mStatisticsNumFrames));
+		mStatisticsText.setOrigin(mStatisticsText.getLocalBounds().width + mStatisticsText.getLocalBounds().left, 0);
 
 		mStatisticsUpdateTime -= sf::seconds(1.0f);
 		mStatisticsNumFrames = 0;
@@ -114,4 +125,7 @@ void Application::registerStates()
 	mStateStack.registerState<GameStartState>(States::GameStart);
 	mStateStack.registerState<PauseState>(States::Pause);
     mStateStack.registerState<SettingState>(States::Setting);
+	mStateStack.registerState<GameOverState>(States::GameOver);
+	mStateStack.registerState<ScoreboardState>(States::Scoreboard);
+	mStateStack.registerState<LoadingState>(States::Loading);
 }

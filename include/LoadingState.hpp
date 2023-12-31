@@ -4,25 +4,25 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
-#include "ParallelTask.hpp"
 
 
 class LoadingState : public State
 {
 public:
-	LoadingState(StateStack& stack, Context context);
+	LoadingState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
 
 	virtual void			draw();
 	virtual bool			update(sf::Time dt);
 	virtual bool			handleEvent(const sf::Event& event);
 
-	void					setCompletion(float percent);
 
 private:
 	sf::Text				mLoadingText;
-	sf::RectangleShape		mProgressBarBackground;
-	sf::RectangleShape		mProgressBar;
+	sf::Clock				mClock;
+	sf::String				mString;
+	int 				    mCount;
+	sf::Sprite				mBackgroundSprite;
 
-	ParallelTask			mLoadingTask;
 };

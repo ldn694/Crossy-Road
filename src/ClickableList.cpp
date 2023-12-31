@@ -111,3 +111,8 @@ Clickable::Ptr ClickableList::createClickable(Clickable::Type clickableType, int
 
     return found->second(id, info);
 }
+sf::String ClickableList::getString(int id) {
+    auto found = mClickables.find(id);
+    assert(found != mClickables.end());
+    return found->second->getString();
+}
