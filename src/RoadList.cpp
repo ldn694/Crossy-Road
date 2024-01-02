@@ -3,6 +3,7 @@
 #include "River.hpp"
 #include "SRoad.hpp"
 #include "Land.hpp"
+#include "LandWithAnimal.hpp"
 
 
 Road::Type RoadList::getNextType()
@@ -22,6 +23,8 @@ int getNumType(Road::Type type)
         return SRoad::NumSRoadVariants;
     case Road::Land:
         return Land::NumLandVariants;
+    case Road::LandWithAnimal:
+        return LandWithAnimal::NumLandWithAnimalVariants;
     }
     return 0;
 }
@@ -98,6 +101,7 @@ RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, 
 	registerRoad<River>(Road::River);
 	registerRoad<SRoad>(Road::SRoad);
 	registerRoad<Land>(Road::Land);
+    registerRoad<LandWithAnimal>(Road::LandWithAnimal);
     pre = Road::Land;
     if (numRoads < 1) return;
     firstRoad = nullptr;

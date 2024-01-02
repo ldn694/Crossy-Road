@@ -63,6 +63,8 @@ add_executable(CrossyRoad
     src/TrafficLight.cpp
     src/Rain.cpp
     src/StopLight.cpp
+    src/LandWithAnimal.cpp
+    src/WalkingAnimal.cpp
     )
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)

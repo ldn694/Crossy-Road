@@ -151,6 +151,18 @@ void World::loadTextures()
 	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
 	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");
 	mTextures.load(Textures::Lily, "Assets/Images/ForGame/river_log/lily.png");
+	mTextures.load(Textures::Pig1, "Assets/Images/ForGame/animal/pig_move/left_1.png");
+	mTextures.load(Textures::Pig2, "Assets/Images/ForGame/animal/pig_move/left_2.png");
+	mTextures.load(Textures::Pig3, "Assets/Images/ForGame/animal/pig_move/right_1.png");
+	mTextures.load(Textures::Pig4, "Assets/Images/ForGame/animal/pig_move/right_2.png");
+	mTextures.load(Textures::Lion1, "Assets/Images/ForGame/animal/lion_move/left_1.png");
+	mTextures.load(Textures::Lion2, "Assets/Images/ForGame/animal/lion_move/left_2.png");
+	mTextures.load(Textures::Lion3, "Assets/Images/ForGame/animal/lion_move/right_1.png");
+	mTextures.load(Textures::Lion4, "Assets/Images/ForGame/animal/lion_move/right_2.png");
+	mTextures.load(Textures::Fox1, "Assets/Images/ForGame/animal/fox_move/left_1.png");
+	mTextures.load(Textures::Fox2, "Assets/Images/ForGame/animal/fox_move/left_2.png");
+	mTextures.load(Textures::Fox3, "Assets/Images/ForGame/animal/fox_move/right_1.png");
+	mTextures.load(Textures::Fox4, "Assets/Images/ForGame/animal/fox_move/right_2.png");
 
 }
 
