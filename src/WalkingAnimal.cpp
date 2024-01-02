@@ -10,26 +10,21 @@
 WalkingAnimal::WalkingAnimal(Type type, sf::Vector2f position, const TextureHolder& textures, Road* road):
     textures(textures)
 {
-    std::cout << "Hello\n";
-    std::cout << type << "\n";
     switch (type)
     {
     case WalkingAnimal::Pig:
-        std::cout << "Pig\n";
         mSprite[0].setTexture(textures.get(Textures::Pig1));
         mSprite[1].setTexture(textures.get(Textures::Pig2));
         mSprite[2].setTexture(textures.get(Textures::Pig3));
         mSprite[3].setTexture(textures.get(Textures::Pig4));
         break;
     case WalkingAnimal::Lion:
-        std::cout << "Lion\n";
         mSprite[0].setTexture(textures.get(Textures::Lion1));
         mSprite[1].setTexture(textures.get(Textures::Lion2));
         mSprite[2].setTexture(textures.get(Textures::Lion3));
         mSprite[3].setTexture(textures.get(Textures::Lion4));
         break;
     case WalkingAnimal::Fox:   
-        std::cout << "Fox\n";
         mSprite[0].setTexture(textures.get(Textures::Fox1));
         mSprite[1].setTexture(textures.get(Textures::Fox2));
         mSprite[2].setTexture(textures.get(Textures::Fox3));
@@ -77,6 +72,6 @@ sf::FloatRect WalkingAnimal::getHitbox() const
 
 unsigned int WalkingAnimal::getCategory() const
 {
-    return Category::None;
+    return Category::Hostile;
 }
 

@@ -72,12 +72,15 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
         // type = Road::Land;
     }
     int variant = rand() % getNumType(type);
-    if (type == Road::Land) {
-        if (pre != Road::Land) {
+    if (type == Road::Land || type == Road::LandWithAnimal) {
+        if (pre != Road::Land && pre != Road::LandWithAnimal) {
+            type = Road::Land;
             variant = Land::Start;
         }
         else {
-            variant = Land::Normal;
+            if (type == Road::Land) {
+                variant = Land::Normal;
+            }
         }
     }
     if (i <= 5) {
