@@ -45,9 +45,17 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 		std::vector <Animal::Type>({toAnimalType(stateInfo.stringList[2]),toAnimalType(stateInfo.stringList[4])}), 
 		std::vector <std::string>({stateInfo.stringList[0], stateInfo.stringList[3]}), toDifficulty(stateInfo.stringList[1]))
 , mContext(context)
-, mPlayerNames(std::vector <std::string>({stateInfo.stringList[0], stateInfo.stringList[3]}))
+, mPlayerNames(stateInfo.floatList[0] == 1 ? std::vector <std::string>({stateInfo.stringList[0]}) : std::vector <std::string>({stateInfo.stringList[0], stateInfo.stringList[3]}))
 , mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
+	for (int x : stateInfo.floatList) {
+		std::cerr << x << " ";
+	}
+	std::cerr << "\n";
+	for (std::string x : stateInfo.stringList) {
+		std::cerr << x << " ";
+	}
+	std::cerr << "\n";
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	// std::cerr << "GameState::GameState()\n";
 	//floatList[0] = 1 if 1 player, 2 if 2 players
