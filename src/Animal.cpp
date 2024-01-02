@@ -133,6 +133,7 @@ void Animal::updateCurrent(sf::Time dt)
                 throw GameStatus(GameStatus::GameLost, this);
             }
         }
+        mSoundPlayer.setListenerPosition(getWorldPosition());
     }
     passedRoad += mZone->getRoad()->visit();
 }

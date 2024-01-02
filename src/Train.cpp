@@ -5,18 +5,20 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Audio/Listener.hpp>
 
 
 Train::Train(sf::Vector2f position, SoundPlayer& sounds, const TextureHolder& textures, Road* road):
     mSprite(textures.get(Textures::Train)),
-    mSound(sounds.play(SoundEffect::Train_Passing, getWorldPosition()))
+    mSound(sounds.play(SoundEffect::Train_Passing, getWorldPosition())),
+    sounds(sounds)
 {
-    mSound.setMinDistance(1.f);
     float width, height;
     width = WIDTH_SIZE;
     height = HEIGHT_SIZE;
     setSize(mSprite, sf::Vector2f(width, height));
     mSprite.setPosition(-12, 0);
+    mTimeSinceLastUpdate = sf::Time::Zero;
 }
 
 Train::~Train()
@@ -40,7 +42,11 @@ void Train::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 void Train::updateCurrent(sf::Time dt)
 {
     Entity::updateCurrent(dt);
-    mSound.setPosition(sf::Vector3f(getWorldPosition().x, getWorldPosition().y, 0));
+    mTimeSinceLastUpdate += dt;
+    if (mTimeSinceLastUpdate >= FULL_VOLUME_TIME && mTimeSinceLastUpdate < FULL_VOLUME_TIME + FADE_OUT_TIME) {
+        float initialVolume = sounds.getVolume();
+        mSound.setVolume(initialVolume * (1.f - (mTimeSinceLastUpdate - FULL_VOLUME_TIME).asSeconds() / FADE_OUT_TIME.asSeconds()));
+    }
 }
 
 sf::FloatRect Train::getHitbox() const

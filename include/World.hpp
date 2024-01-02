@@ -51,6 +51,7 @@ class World : private sf::NonCopyable
 
 	private:
 		void								loadTextures();
+		void								loadSounds();
 		void								buildScene();
 		void								adaptPlayerPosition();
 		void								adaptPlayerVelocity();
@@ -70,6 +71,7 @@ class World : private sf::NonCopyable
 		sf::RenderWindow&					mWindow;
 		sf::View							mWorldView;
 		TextureHolder						mTextures;
+		SoundPlayer 						mSounds;
 		Context								mContext;
 
 		SceneNode							mSceneGraph;

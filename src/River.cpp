@@ -27,7 +27,7 @@ FloatingLog::Type getRandLogType(int movementSign) {
 
 }
 
-River::River(Context context, const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(static_cast<River::Variant>(variant)), textures, Road::Type::River, Zone::Safety::Unsafe, difficulty), textures(textures) {
+River::River(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant) : Road(toTextureID(static_cast<River::Variant>(variant)), textures, Road::Type::River, Zone::Safety::Unsafe, difficulty), textures(textures) {
     sf::Time basePeriodTime = sf::seconds(2.5f);
     int numPartionPeriod;
     switch (difficulty) {

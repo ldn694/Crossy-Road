@@ -10,7 +10,7 @@
 
 class RoadList: public SceneNode{
 public:
-                            RoadList(Context context, const TextureHolder& textures, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode);
+                            RoadList(Context context, const TextureHolder& textures, SoundPlayer& sounds, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode);
     // Road*                   getFirstRoad();
     // Road*                   getLastRoad();
     virtual void            updateCurrent(sf::Time dt);
@@ -35,10 +35,11 @@ private:
     sf::View&                                                               mView;
     std::map<Road::Type, std::function<std::unique_ptr<Road>(int)>>	        mFactories;
     const TextureHolder&                                                    mTextures;
+    SoundPlayer&                                                            mSounds;
     sf::Time                                                                mPeriod;
     std::vector <Animal*>                                                   mPlayers;
     Difficulty                                                              mDifficulty;
-    Context                                                                 mContext;    
+    Context                                                                 mContext;
     int                                                                     mPassedRoad;
     float                                                                   mPlayerSpeedMultiplier;
 };
@@ -63,7 +64,7 @@ void RoadList::registerRoad(Road::Type roadType)
 {
    // Create a lambda function that returns a new instance of T
     auto factoryFunction = [this](int variant) -> std::unique_ptr<Road> {
-        return std::make_unique<T>(mContext, mTextures, mDifficulty, variant);
+        return std::make_unique<T>(mContext, mTextures, mSounds, mDifficulty, variant);
     };
 
     // Register the factory function for the specified road type

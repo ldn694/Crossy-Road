@@ -31,7 +31,7 @@ private:
     TrafficLight* addLight(sf::Vector2f position);
 public:
     ~Railways();
-    Railways(Context context, const TextureHolder& textures, Difficulty difficulty, int variant);
+    Railways(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant);
     void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
 };

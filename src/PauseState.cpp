@@ -12,9 +12,12 @@ PauseState::PauseState(StateStack& stack, States::ID stateID, Context context, S
 	: State(stack, stateID, context),
 	mClickableList(context)
 {
+	context.sounds->pauseAllSounds();
+
 	loadTextures(context);
 	sf::Font& font = context.fonts->get(Fonts::Main);
 	sf::Vector2f viewSize = context.window->getView().getSize();
+
 	
 	mBackgroundSprite.setTexture(context.textures->get(Textures::PauseBackground));
 	setSize(mBackgroundSprite, viewSize);

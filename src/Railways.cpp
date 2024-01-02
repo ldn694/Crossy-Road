@@ -2,15 +2,16 @@
 #include "Utility.hpp"
 #include "ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Audio/Listener.hpp>
 
 
 Railways::~Railways(){
 
 }
-Railways::Railways(Context context, const TextureHolder& textures, Difficulty difficulty, int variant) : 
+Railways::Railways(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant) : 
     Road(Textures::Railways, textures, Road::Type::Railways, Zone::Safety::Safe, difficulty),
     textures(textures),
-    soundPlayer(*context.sounds),
+    soundPlayer(sounds),
     mTrainIncomingSound(nullptr)
 {
     sf::Time basePeriodTime = sf::seconds(5.f);
@@ -98,8 +99,10 @@ void Railways::updateCurrent(sf::Time dt)
     }   
     
     if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn + sf::seconds(300.0f / mSpeed) < sf::seconds(1.0f)) {
-        mTrainIncomingSound = &soundPlayer.play(SoundEffect::Train_Incoming);
+        mTrainIncomingSound = &soundPlayer.play(SoundEffect::Train_Incoming, light->getWorldPosition());
         mTrainIncomingSound->setPitch(1.5f);
+        std::cout << mTrainIncomingSound->getPosition().x << " " << mTrainIncomingSound->getPosition().y << "\n";
+        std::cout << sf::Listener::getPosition().x << " " << sf::Listener::getPosition().y << "\n";
         isComing = true;
         mClock.restart();
         light->changeColor();
