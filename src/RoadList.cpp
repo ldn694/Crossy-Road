@@ -65,8 +65,8 @@ void RoadList::setPlayerSpeedMultiplier(float multiplier)
 std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     Road::Type type = Road::Land;
     if (i > 5) {
-        // type = getNextType();
-        type = Road::Railways;
+        type = getNextType();
+        // type = Road::Railways;
     }
     int variant = rand() % getNumType(type);
     if (type == Road::Land) {
@@ -151,8 +151,8 @@ void RoadList::updateCurrent(sf::Time dt)
             setDifficulty(static_cast<Difficulty>(std::min(int(mDifficulty + 1), int(Difficulty::NumDifficulties) - 1)));
         }
     }
-    // move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
-    // mTmpNode->move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
+    move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
+    mTmpNode->move(0, dt / mPeriod * firstRoad->HEIGHT_SIZE);
 }
 
 void RoadList::pop_front()

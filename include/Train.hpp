@@ -21,8 +21,8 @@ public:
 
 
 private:
-        sf::Sound&                          mSound;
-        SoundPlayer&                        sounds;
+        SoundPlayer&                        mSounds;
+        sf::Sound&                          mTrainSound;
 		sf::Sprite				            mSprite;
         int                                 HEIGHT_SIZE = 60;
         int                                 WIDTH_SIZE = 1050 + 200;

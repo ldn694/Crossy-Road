@@ -43,6 +43,7 @@ class World : private sf::NonCopyable
 		
 		CommandQueue&						getCommandQueue();
 		SceneNode&							getSceneGraph();
+		SoundPlayer&						getSoundPlayer();
 
 		int									getCurrentScore();
 		void 								setRaining(bool raining);

@@ -10,8 +10,8 @@
 
 Train::Train(sf::Vector2f position, SoundPlayer& sounds, const TextureHolder& textures, Road* road):
     mSprite(textures.get(Textures::Train)),
-    mSound(sounds.play(SoundEffect::Train_Passing, getWorldPosition())),
-    sounds(sounds)
+    mSounds(sounds),
+    mTrainSound(sounds.play(SoundEffect::Train_Passing, getWorldPosition(), 0.5f))
 {
     float width, height;
     width = WIDTH_SIZE;
@@ -19,11 +19,13 @@ Train::Train(sf::Vector2f position, SoundPlayer& sounds, const TextureHolder& te
     setSize(mSprite, sf::Vector2f(width, height));
     mSprite.setPosition(-12, 0);
     mTimeSinceLastUpdate = sf::Time::Zero;
+    mTrainSound.setAttenuation(100.f);
 }
 
 Train::~Train()
 {
-    mSound.stop();
+    mTrainSound.stop();
+    mSounds.removeStoppedSounds();
 }
 
 void Train::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -42,11 +44,7 @@ void Train::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 void Train::updateCurrent(sf::Time dt)
 {
     Entity::updateCurrent(dt);
-    mTimeSinceLastUpdate += dt;
-    if (mTimeSinceLastUpdate >= FULL_VOLUME_TIME && mTimeSinceLastUpdate < FULL_VOLUME_TIME + FADE_OUT_TIME) {
-        float initialVolume = sounds.getVolume();
-        mSound.setVolume(initialVolume * (1.f - (mTimeSinceLastUpdate - FULL_VOLUME_TIME).asSeconds() / FADE_OUT_TIME.asSeconds()));
-    }
+    mSounds.setPosition(mTrainSound, getWorldPosition());
 }
 
 sf::FloatRect Train::getHitbox() const

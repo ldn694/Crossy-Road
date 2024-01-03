@@ -6,13 +6,19 @@
 
 
 Railways::~Railways(){
-
+    std::cout << "Railways destructor called\n";
+    if (!mTrainIncomingSounds.empty()) {
+        for (int i = 0; i < mTrainIncomingSounds.size(); i++) {
+            mTrainIncomingSounds[i]->stop();
+        }
+        mTrainIncomingSounds.clear();
+        soundPlayer.removeStoppedSounds();
+    }
 }
 Railways::Railways(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant) : 
     Road(Textures::Railways, textures, Road::Type::Railways, Zone::Safety::Safe, difficulty),
     textures(textures),
-    soundPlayer(sounds),
-    mTrainIncomingSound(nullptr)
+    soundPlayer(sounds)
 {
     sf::Time basePeriodTime = sf::seconds(5.f);
     float baseSpeed = 2000;
@@ -99,10 +105,11 @@ void Railways::updateCurrent(sf::Time dt)
     }   
     
     if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn + sf::seconds(300.0f / mSpeed) < sf::seconds(1.0f)) {
-        mTrainIncomingSound = &soundPlayer.play(SoundEffect::Train_Incoming, light->getWorldPosition());
-        mTrainIncomingSound->setPitch(1.5f);
-        std::cout << mTrainIncomingSound->getPosition().x << " " << mTrainIncomingSound->getPosition().y << "\n";
-        std::cout << sf::Listener::getPosition().x << " " << sf::Listener::getPosition().y << "\n";
+        for (int i = 0; i < NUM_ZONE; i++) {
+            mTrainIncomingSounds.push_back(&soundPlayer.play(SoundEffect::Train_Incoming, mZones[i]->getWorldPosition(), 0.8f));
+            mTrainIncomingSounds.back()->setPitch(1.5f);
+            mTrainIncomingSounds.back()->setAttenuation(20.f);
+        }
         isComing = true;
         mClock.restart();
         light->changeColor();
@@ -131,9 +138,11 @@ void Railways::updateCurrent(sf::Time dt)
         mediateNode->attachChildren();
         isComing = false;
         light->setDefaultColor();
-        if (mTrainIncomingSound) {
-            mTrainIncomingSound->stop();
-            mTrainIncomingSound = nullptr;
+        if (!mTrainIncomingSounds.empty()) {
+            for (int i = 0; i < mTrainIncomingSounds.size(); i++) {
+                mTrainIncomingSounds[i]->stop();
+            }
+            mTrainIncomingSounds.clear();
         }
     }
     

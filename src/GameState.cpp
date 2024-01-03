@@ -72,28 +72,34 @@ void GameState::draw()
 	mContext.window->draw(mCurrentScoreText);
 }
 
+void GameState::endGame(GameStatus status) {
+	mWorld.getSoundPlayer().pauseAllSounds();
+	int numPlayer = mPlayerNames.size();
+	if (numPlayer == 1) {
+		State::Info info;
+		info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
+		info.stringList = mPlayerNames;
+		requestStackPush(States::GameOver, info);
+	}
+	else {
+		int lostPlayerID = mWorld.getLostPlayerID(status.mEntity);
+		State::Info info;
+		info.floatList = {float(lostPlayerID)};
+		info.stringList = mPlayerNames;
+		requestStackPush(States::GameOver, info);
+	}
+}
+
 bool GameState::update(sf::Time dt) {
 	try {
+		mWorld.getSoundPlayer().playAllSounds();
 		mWorld.update(dt);
 		CommandQueue& commands = mWorld.getCommandQueue();
 		mPlayer.handleRealtimeInput(commands);
 		setCurrentScore();
 	}
 	catch (GameStatus status) {
-		int numPlayer = mPlayerNames.size();
-		if (numPlayer == 1) {
-			State::Info info;
-			info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
-			info.stringList = mPlayerNames;
-			requestStackPush(States::GameOver, info);
-		}
-		else {
-			int lostPlayerID = mWorld.getLostPlayerID(status.mEntity);
-			State::Info info;
-			info.floatList = {float(lostPlayerID)};
-			info.stringList = mPlayerNames;
-			requestStackPush(States::GameOver, info);
-		}
+		endGame(status);
 	}
 	return false;
 }
@@ -114,25 +120,14 @@ bool GameState::handleEvent(const sf::Event& event)
 		// }
 
 		// Escape pressed, trigger the pause screen
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+			mWorld.getSoundPlayer().pauseAllSounds();
 			requestStackPush(States::Pause);
+		}
 
 	}
 	catch (GameStatus status) {
-		int numPlayer = mPlayerNames.size();
-		if (numPlayer == 1) {
-			State::Info info;
-			info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
-			info.stringList = mPlayerNames;
-			requestStackPush(States::GameOver, info);
-		}
-		else {
-			int lostPlayerID = mWorld.getLostPlayerID(status.mEntity);
-			State::Info info;
-			info.floatList = {float(lostPlayerID)};
-			info.stringList = mPlayerNames;
-			requestStackPush(States::GameOver, info);
-		}
+		endGame(status);
 	}
 	return false;
 }

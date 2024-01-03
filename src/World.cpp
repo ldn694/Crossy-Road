@@ -53,7 +53,6 @@ World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vect
 
 void World::update(sf::Time dt)
 {
-	mContext.sounds->pauseAllSounds();
 	// std::cerr << "num scenenode: " << mSceneGraph.countChildren() << "\n";
 	//std::cerr << (mSceneGraph.findChildrenByCategory<Entity>(Category::Player)).size();
 	// Scroll the world, reset player velocity
@@ -86,7 +85,6 @@ void World::update(sf::Time dt)
 		mRainTimer += dt;
 	}
 	adaptPlayerPosition();
-	mContext.sounds->playAllSounds();
 }
 
 void World::draw()
@@ -102,6 +100,11 @@ void World::draw()
 CommandQueue& World::getCommandQueue()
 {
 	return mCommandQueue;
+}
+
+SoundPlayer& World::getSoundPlayer()
+{
+	return mSounds;
 }
 
 void World::loadSounds() {
@@ -206,7 +209,7 @@ void World::buildScene()
 		mPlayers[i]->setPosition(0, 0);
 	}
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mContext, mTextures, mSounds, mWorldView, 7, mPlayers, mDifficulty, airNode));
+	std::unique_ptr<RoadList> roadList(new RoadList(mContext, mTextures, mSounds, mWorldView, 12, mPlayers, mDifficulty, airNode));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mRoadList = roadList.get();
 	mSceneLayers[Road]->requestAttach(std::move(roadList));

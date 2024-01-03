@@ -24,7 +24,7 @@ private:
     Train*  train;
     TrafficLight* light;
     bool checkBegin, isComing;
-    sf::Sound *mTrainIncomingSound;
+    std::vector <sf::Sound*> mTrainIncomingSounds;
 
 private:
     Train* addTrain(sf::Vector2f position);

@@ -19,8 +19,8 @@ class SoundPlayer : private sf::NonCopyable
 
 		void 						load(SoundEffect::ID effect, const std::string& filename);
 
-		sf::Sound&					play(SoundEffect::ID effect);
-		sf::Sound&					play(SoundEffect::ID effect, sf::Vector2f position);
+		sf::Sound&					play(SoundEffect::ID effect, float volumePercentage = 100.f); // play sound at listener position, volumePercentage is a value between 0 and 1
+		sf::Sound&					play(SoundEffect::ID effect, sf::Vector2f position, float volumePercentage = 100.f); // play sound at position, volumePercentage is a value between 0 and 1
 
 		void 						stopAllSounds();
 		void						pauseAllSounds();

@@ -4,23 +4,23 @@
 
 #include <cmath>
 
-
 namespace
 {
 	// Sound coordinate system, point of view of a player in front of the screen:
 	// X = left; Y = up; Z = back (out of the screen)
 	const float ListenerZ = 50.f;
-	const float Attenuation = 8.f;
-	const float MinDistance2D = 50.f;
-	const float MinDistance3D = std::sqrt(MinDistance2D*MinDistance2D + ListenerZ*ListenerZ);
+	const float Attenuation = 15.f;
+	const float MinDistance2D = 100.f;
+	const float MinDistance3D = std::sqrt(MinDistance2D * MinDistance2D + ListenerZ * ListenerZ);
 }
 
-SoundPlayer::SoundPlayer()
-: mSoundBuffers()
-, mSounds()
+SoundPlayer::SoundPlayer():
+	mSoundBuffers()
+	, mSounds()
+	, mVolume(100.f)
 {
 	// Listener points towards the screen (default in SFML)
-	sf::Listener::setDirection(0.f, 0.f, -1.f);
+	// sf::Listener::setDirection(0.f, 0.f, -1.f);
 }
 
 void SoundPlayer::load(SoundEffect::ID effect, const std::string& filename)
@@ -30,7 +30,8 @@ void SoundPlayer::load(SoundEffect::ID effect, const std::string& filename)
 
 void SoundPlayer::setVolume(float volume)
 {
-    mVolume = volume;
+	volume = std::max(0.f, std::min(100.f, volume));
+	mVolume = volume;
 }
 
 float SoundPlayer::getVolume() const
@@ -43,8 +44,8 @@ void SoundPlayer::stopAllSounds()
 	for (auto& sound : mSounds)
 	{
 		sound.stop();
-	}	
-	// removeStoppedSounds();
+	}
+	removeStoppedSounds();
 }
 
 void SoundPlayer::pauseAllSounds()
@@ -53,7 +54,7 @@ void SoundPlayer::pauseAllSounds()
 	{
 		if (sound.getStatus() == sf::Sound::Playing)
 			sound.pause();
-	}	
+	}
 }
 
 void SoundPlayer::playAllSounds()
@@ -62,15 +63,15 @@ void SoundPlayer::playAllSounds()
 	{
 		if (sound.getStatus() == sf::Sound::Paused)
 			sound.play();
-	}	
+	}
 }
 
-sf::Sound& SoundPlayer::play(SoundEffect::ID effect)
+sf::Sound& SoundPlayer::play(SoundEffect::ID effect, float volumePercentage)
 {
-	return play(effect, getListenerPosition());
+	return play(effect, getListenerPosition(), volumePercentage);
 }
 
-sf::Sound& SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position)
+sf::Sound& SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position, float volumePercentage)
 {
 	mSounds.push_back(sf::Sound());
 	// std::cout << "sounds size: " << mSounds.size() << "\n";
@@ -80,7 +81,7 @@ sf::Sound& SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position)
 	sound.setPosition(position.x, -position.y, 0.f);
 	sound.setAttenuation(Attenuation);
 	sound.setMinDistance(MinDistance3D);
-    sound.setVolume(mVolume);
+	sound.setVolume(mVolume * volumePercentage);
 
 	sound.play();
 	return sound;
@@ -88,10 +89,10 @@ sf::Sound& SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position)
 
 void SoundPlayer::removeStoppedSounds()
 {
-	mSounds.remove_if([] (const sf::Sound& s)
-	{
-		return s.getStatus() == sf::Sound::Stopped;
-	});
+	mSounds.remove_if([](const sf::Sound& s)
+		{
+			return s.getStatus() == sf::Sound::Stopped;
+		});
 }
 
 void SoundPlayer::setListenerPosition(sf::Vector2f position)
