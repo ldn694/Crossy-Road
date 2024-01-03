@@ -70,7 +70,7 @@ void FloatingLog::drawCurrent(sf::RenderTarget& target, sf::RenderStates states)
     shape.setOutlineColor(sf::Color::Red);
     shape.setOutlineThickness(1);
     shape.setPosition(rect.left, rect.top);
-    target.draw(shape);
+    //target.draw(shape);
 }
 
 sf::FloatRect FloatingLog::getHitbox() const

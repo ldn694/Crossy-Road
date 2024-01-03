@@ -11,23 +11,13 @@
 GameStartState::GameStartState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 	: State(stack, stateID, context), mTexts(), mClickableList(context)
 {   
+
     loadTextures(context);
 
 	sf::Font& font = context.fonts->get(Fonts::Main);
 	mBackground.setPosition(0, 0);
 	mBackground.setSize(sf::Vector2f(context.window->getView().getSize().x, context.window->getView().getSize().y));
 	mBackground.setFillColor(sf::Color(196,199,215));
-	
-
-	/*//Title
-	sf::Text TitleText;
-	TitleText.setFont(font);
-	TitleText.setString("CROSSING ROAD");
-    TitleText.setCharacterSize(50);
-	centerOrigin(TitleText);
-	TitleText.setPosition(context.window->getView().getSize().x / 2.f, 50.f);
-    
-	mTexts.push_back(TitleText);*/
 
 	//Character
 	mCharacterList[0] = Textures::Cat;
@@ -275,9 +265,7 @@ bool GameStartState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			// std::cerr << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Play){
-                // requestStateClear();
                 State::Info info;
 				info.stringList.push_back( mChoicePlayerIndex == ButtonNames::OnePlayer ? mClickableList.getString(ButtonNames::TypingBox) : mClickableList.getString(ButtonNames::TypingBox2P_First));
 				switch (mChoiceDifficultyIndex)
@@ -346,10 +334,6 @@ bool GameStartState::handleEvent(const sf::Event& event)
 				default:
 					break;
 				}
-				// for (int i = 0; i < info.stringList.size(); i++) {
-				// 	std::cout << info.stringList[i] << "\n";
-				// }
-				// std::cout << info.floatList[0] << "\n";
                 requestStackPush(States::Game, info);
 				requestStackPush(States::Loading);
             } else if (announcement.id == ButtonNames::Back){
@@ -452,20 +436,10 @@ bool GameStartState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			// std::cerr << "Right Clicked " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		// std::cerr << info.stringList[0] << "\n";
 	}
-	if (event.type == sf::Event::MouseButtonPressed) {
-
-	}
-	// The demonstration menu logic
-	if (event.type != sf::Event::KeyPressed)
-		return false;
-
-
 	return false;
 }

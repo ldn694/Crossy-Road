@@ -40,7 +40,7 @@ void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 	shape.setOutlineColor(sf::Color::Red);
 	shape.setOutlineThickness(1);
 	shape.setPosition(rect.left, rect.top);
-	target.draw(shape);
+	//target.draw(shape);
 }
 
 sf::FloatRect Aircraft::getHitbox() const

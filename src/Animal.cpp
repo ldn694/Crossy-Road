@@ -35,7 +35,7 @@ void Animal::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
     shape.setOutlineColor(sf::Color::Red);
     shape.setOutlineThickness(1);
     shape.setPosition(rect.left, rect.top);
-    target.draw(shape);
+    //target.draw(shape);
 }
 
 sf::FloatRect Animal::getHitbox() const
