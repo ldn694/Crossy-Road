@@ -65,6 +65,7 @@ add_executable(CrossyRoad
     src/StopLight.cpp
     src/Settings.cpp
     src/SoundPlayer.cpp
+    src/MusicPlayer.cpp
     )
 
 target_link_libraries(CrossyRoad PRIVATE sfml-audio)

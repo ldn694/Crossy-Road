@@ -8,10 +8,10 @@
 #include <SFML/Audio/Listener.hpp>
 
 
-Train::Train(sf::Vector2f position, SoundPlayer& sounds, const TextureHolder& textures, Road* road):
+Train::Train(sf::Vector2f position, SoundPlayer& sounds, const TextureHolder& textures, Road* road) :
     mSprite(textures.get(Textures::Train)),
     mSounds(sounds),
-    mTrainSound(sounds.play(SoundEffect::Train_Passing, getWorldPosition(), 0.5f))
+    mTrainSound(sounds.play(SoundEffect::Train_Passing, getWorldPosition()))
 {
     float width, height;
     width = WIDTH_SIZE;

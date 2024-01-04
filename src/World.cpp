@@ -109,9 +109,9 @@ SoundPlayer& World::getSoundPlayer()
 
 void World::loadSounds() {
 	mSounds.load(SoundEffect::Animal_Jump, "Assets/Sounds/animal_jump.wav");
-    mSounds.load(SoundEffect::Water_Splash, "Assets/Sounds/water_splash.wav");
 	mSounds.load(SoundEffect::Train_Incoming, "Assets/Sounds/train_incoming.wav");
 	mSounds.load(SoundEffect::Train_Passing, "Assets/Sounds/train_passing.wav");
+	mSounds.load(SoundEffect::Car_Honk, "Assets/Sounds/car_honk_1.wav");
 }
 
 void World::loadTextures()
@@ -205,7 +205,7 @@ void World::buildScene()
 	}
 
 	for (int i = 0; i < mNumPlayer; i++) {
-		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, *mContext.sounds, airNode, mCurrentScore);
+		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, mSounds, airNode, mCurrentScore);
 		mPlayers[i]->setPosition(0, 0);
 	}
 
@@ -246,7 +246,7 @@ void World::adaptPlayerPosition()
 
 	for (int i = 0; i < mNumPlayer; i++) {
 		if (intersection(mPlayers[i]->getHitbox(), viewBounds) < 1) {
-			throw GameStatus(GameStatus::GameLost, mPlayers[i]);
+			throw GameStatus(GameStatus::GameLost, GameStatus::OutOfMap, mPlayers[i]);
 		}
 	}
 	// position.x = std::max(position.x, viewBounds.left + borderDistance);

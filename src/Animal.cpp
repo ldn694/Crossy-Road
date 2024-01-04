@@ -14,7 +14,7 @@ Animal::Animal(int playerID, Type type, std::string playerName, TextureHolder& t
     , tmpNode(tmpNode)
     , passedRoad(passedRoad)
     , mPlayerID(playerID)
-    , mSoundPlayer(sounds)
+    , mSounds(sounds)
 {
     mPlayerNameText.setFont(fonts.get(Fonts::Bungee));
     mPlayerNameText.setString(playerName);
@@ -22,7 +22,7 @@ Animal::Animal(int playerID, Type type, std::string playerName, TextureHolder& t
     mPlayerNameText.setFillColor(sf::Color::White);
     centerOrigin(mPlayerNameText);
     mPlayerNameText.setPosition(0, -40);
-    changeDirection(Down);
+    changeDirection(Down, false);
 }
 
 void Animal::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -130,10 +130,10 @@ void Animal::updateCurrent(sf::Time dt)
             mZone = mNextZone;
             if (mZone->getSafety() == Zone::Unsafe) {
                 // std::cerr << "unsafe zone\n";
-                throw GameStatus(GameStatus::GameLost, this);
+                throw GameStatus(GameStatus::GameLost, GameStatus::Drowned, this);
             }
         }
-        mSoundPlayer.setListenerPosition(getWorldPosition());
+        mSounds.setListenerPosition(getWorldPosition());
     }
     passedRoad += mZone->getRoad()->visit();
 }
@@ -177,6 +177,9 @@ void Animal::changeDirection(Direction direction, bool isMoving)
 {
     mDirection = direction;
     mSprite.setTexture(mTextures.get(toTextureID(mType, direction)));
+    if (isMoving) {
+        mSounds.play(SoundEffect::Animal_Jump);
+    }
     float width, height;
     switch (direction) {
         case Left:

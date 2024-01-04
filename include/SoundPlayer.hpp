@@ -1,5 +1,4 @@
-#ifndef BOOK_SOUNDPLAYER_HPP
-#define BOOK_SOUNDPLAYER_HPP
+#pragma once
 
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
@@ -14,30 +13,28 @@
 
 class SoundPlayer : private sf::NonCopyable
 {
-	public:
-									SoundPlayer();
+public:
+	SoundPlayer();
 
-		void 						load(SoundEffect::ID effect, const std::string& filename);
+	void 						load(SoundEffect::ID effect, const std::string& filename);
 
-		sf::Sound&					play(SoundEffect::ID effect, float volumePercentage = 100.f); // play sound at listener position, volumePercentage is a value between 0 and 1
-		sf::Sound&					play(SoundEffect::ID effect, sf::Vector2f position, float volumePercentage = 100.f); // play sound at position, volumePercentage is a value between 0 and 1
+	sf::Sound& play(SoundEffect::ID effect, float volumePercentage = 1.f); // play sound at listener position, volumePercentage is a value between 0 and 1
+	sf::Sound& play(SoundEffect::ID effect, sf::Vector2f position, float volumePercentage = 1.f); // play sound at position, volumePercentage is a value between 0 and 1
 
-		void 						stopAllSounds();
-		void						pauseAllSounds();
-		void						playAllSounds();
+	void 						stopAllSounds();
+	void						pauseAllSounds();
+	void						playAllSounds();
 
-		void                        setVolume(float volume);
-		float					    getVolume() const;
-        void						removeStoppedSounds();
-		void						setListenerPosition(sf::Vector2f position);
-		sf::Vector2f				getListenerPosition() const;
-		void 						setPosition(sf::Sound& sound, sf::Vector2f position);
+	void                        setVolume(float volume);
+	float					    getVolume() const;
+	void						removeStoppedSounds();
+	void						setListenerPosition(sf::Vector2f position);
+	sf::Vector2f				getListenerPosition() const;
+	void 						setPosition(sf::Sound& sound, sf::Vector2f position);
 
 
-	private:
-        float                       mVolume;
-		SoundBufferHolder			mSoundBuffers;
-		std::list<sf::Sound>		mSounds;
+private:
+	float                       mVolume;
+	SoundBufferHolder			mSoundBuffers;
+	std::list<sf::Sound>		mSounds;
 };
-
-#endif // BOOK_SOUNDPLAYER_HPP

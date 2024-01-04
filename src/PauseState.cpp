@@ -12,8 +12,6 @@ PauseState::PauseState(StateStack& stack, States::ID stateID, Context context, S
 	: State(stack, stateID, context),
 	mClickableList(context)
 {
-	context.sounds->pauseAllSounds();
-
 	loadTextures(context);
 	sf::Font& font = context.fonts->get(Fonts::Main);
 	sf::Vector2f viewSize = context.window->getView().getSize();
@@ -92,6 +90,8 @@ bool PauseState::handleEvent(const sf::Event& event)
 		if (announcement.action == Clickable::LeftPressed) {
 			// std::cout << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Home) {
+				getContext().music->stopAllMusic();
+				getContext().music->play(Music::MenuTheme);
 				requestStackPop();
 				requestStackPush(States::Menu);
 				//State::Info info;

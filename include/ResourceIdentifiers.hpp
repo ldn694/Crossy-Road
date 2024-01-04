@@ -169,6 +169,18 @@ namespace SoundEffect
 		Water_Splash,
 		Train_Incoming,
 		Train_Passing,
+		Car_Honk,
+	};
+}
+
+namespace Music
+{
+	enum ID
+	{
+		MenuTheme,
+		IngameTheme,
+		GameOverTheme,
+		NumMusic,
 	};
 }
 

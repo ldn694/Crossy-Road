@@ -6,6 +6,7 @@
 #include "StateStack.hpp"
 #include "Scoreboard.hpp"
 #include "SoundPlayer.hpp"
+#include "MusicPlayer.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -35,6 +36,7 @@ class Application
 		TextureHolder			mTextures;
 	  	FontHolder				mFonts;
 		SoundPlayer				mSounds;
+		MusicPlayer				mMusic;
 		Scoreboard				mScoreboard;
 		Settings				mSettings;
 		// Player					mPlayer;

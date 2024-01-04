@@ -112,13 +112,13 @@ bool Entity::isFakeAnimation()
 
 void Entity::announceGameLost(CollisionInfo collisionInfo) {
 	if (dynamic_cast<Animal*>(collisionInfo.mover) != nullptr) {
-		throw GameStatus(GameStatus::GameLost, collisionInfo.mover);
+		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, collisionInfo.mover);
 	}
 	else if (dynamic_cast<Animal*>(collisionInfo.blocker) != nullptr) {
-		throw GameStatus(GameStatus::GameLost, collisionInfo.blocker);
+		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, collisionInfo.blocker);
 	}
 	else {
-		throw GameStatus(GameStatus::GameLost, this);
+		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, this);
 	}
 }
 

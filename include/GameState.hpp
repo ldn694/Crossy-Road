@@ -24,9 +24,9 @@ private:
 
 
 private:
+	bool 							firstTrueUpdate = false;
 	Player							mPlayer;
 	World							mWorld;
-	Context							mContext;
 	std::vector <std::string> 		mPlayerNames;
 	sf::Text 						mCurrentScoreText;
 	Difficulty 						mStartDifficulty;

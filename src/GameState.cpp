@@ -1,5 +1,7 @@
-#include "GameState.hpp"
 #include <iostream>
+#include <SFML/Audio/Listener.hpp>
+
+#include "GameState.hpp"
 #include "Animal.hpp"
 #include "GameStatus.hpp"
 
@@ -44,10 +46,10 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 , mWorld(*context.window, context, stateInfo.floatList[0], 
 		std::vector <Animal::Type>(stateInfo.floatList[0], toAnimalType(stateInfo.stringList[2])), 
 		std::vector <std::string>(stateInfo.floatList[0], stateInfo.stringList[0]), toDifficulty(stateInfo.stringList[1]))
-, mContext(context)
 , mPlayerNames(std::vector <std::string>(stateInfo.floatList[0], stateInfo.stringList[0]))
 , mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
+	context.music->stopAllMusic();
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	context.settings->setPlayer(&mPlayer);
 	// std::cerr << "GameState::GameState()\n";
@@ -62,18 +64,27 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 	mCurrentScoreText.setFillColor(sf::Color::White);
 	mCurrentScoreText.setPosition(10, 10);
 	update(sf::Time::Zero);
+	firstTrueUpdate = true;
 	handleEvent(sf::Event());
 }
 
 void GameState::draw()
 {
 	mWorld.draw();
-	mContext.window->setView(mContext.window->getDefaultView());
-	mContext.window->draw(mCurrentScoreText);
+	Context context = getContext();
+	context.window->setView(context.window->getDefaultView());
+	context.window->draw(mCurrentScoreText);
 }
 
 void GameState::endGame(GameStatus status) {
 	mWorld.getSoundPlayer().pauseAllSounds();
+	getContext().sounds->setListenerPosition(sf::Vector2f(0.f, 0.f));
+	if (status.mReason == GameStatus::Drowned) {
+		std::cout << "Drowned\n";
+		sf::Sound& sound = getContext().sounds->play(SoundEffect::Water_Splash, 1.f);
+		sound.setPosition(0.f, 0.f, 0.f);
+		sound.setRelativeToListener(true);
+	}
 	int numPlayer = mPlayerNames.size();
 	if (numPlayer == 1) {
 		State::Info info;
@@ -92,6 +103,11 @@ void GameState::endGame(GameStatus status) {
 
 bool GameState::update(sf::Time dt) {
 	try {
+		if (firstTrueUpdate) {
+			getContext().music->stopAllMusic();
+			getContext().music->play(Music::IngameTheme);
+			firstTrueUpdate = false;
+		}
 		mWorld.getSoundPlayer().playAllSounds();
 		mWorld.update(dt);
 		CommandQueue& commands = mWorld.getCommandQueue();
@@ -122,6 +138,7 @@ bool GameState::handleEvent(const sf::Event& event)
 		// Escape pressed, trigger the pause screen
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
 			mWorld.getSoundPlayer().pauseAllSounds();
+			firstTrueUpdate = true;
 			requestStackPush(States::Pause);
 		}
 

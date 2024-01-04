@@ -12,8 +12,8 @@ GameOverState::GameOverState(StateStack& stack, States::ID stateID, Context cont
 	: State(stack, stateID, context),
 	mClickableList(context)
 {
-	context.sounds->pauseAllSounds();
-
+	context.music->stopAllMusic();
+	context.music->play(Music::GameOverTheme, NO_LOOP);
 	loadTextures(context);
 	sf::Font& font = context.fonts->get(Fonts::Bungee);
 	sf::Vector2f viewSize = context.window->getView().getSize();
@@ -131,6 +131,10 @@ bool GameOverState::handleEvent(const sf::Event& event)
 		if (announcement.action == Clickable::LeftPressed) {
 			// std::cout << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Home) {
+				if (getContext().music->getStatus(Music::MenuTheme) != sf::Music::Playing) {
+					getContext().music->stopAllMusic();
+					getContext().music->play(Music::MenuTheme);
+				}
 				requestStateClear();
 				requestStackPush(States::Menu);
 				//State::Info info;
@@ -138,6 +142,10 @@ bool GameOverState::handleEvent(const sf::Event& event)
 				//requestNotifyState(States::Menu, info);
 			}
 			else if (announcement.id == ButtonNames::Retry) {
+				if (getContext().music->getStatus(Music::MenuTheme) != sf::Music::Playing) {
+					getContext().music->stopAllMusic();
+					getContext().music->play(Music::MenuTheme);
+				}
 				// requestStateClear();
                 // requestStackPush(States::Menu);
                 // requestStackPush(States::GameStart);
@@ -147,6 +155,10 @@ bool GameOverState::handleEvent(const sf::Event& event)
 				//requestNotifyState(States::Game, info);
 			}
 			else if (announcement.id == ButtonNames::Leaderboard) {
+				if (getContext().music->getStatus(Music::MenuTheme) != sf::Music::Playing) {
+					getContext().music->stopAllMusic();
+					getContext().music->play(Music::MenuTheme);
+				}
 				requestStackPush(States::Scoreboard);
 				//State::Info info;
 				//info.stringList = { "Hello from GameOverState to SettingState" };
@@ -161,5 +173,5 @@ bool GameOverState::handleEvent(const sf::Event& event)
 		State::Info info = popNotification();
 		// std::cout << info.stringList[0] << "\n";
 	}
-	return false;
+	return true;
 }

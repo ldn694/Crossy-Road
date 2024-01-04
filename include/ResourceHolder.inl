@@ -4,7 +4,7 @@ void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string
 {	
 	auto found = mResourceMap.find(id);
 	if (found != mResourceMap.end()) {
-		std::cerr << "ResourceHolder::load - Resource already loaded" << std::endl;
+		//std::cerr << "ResourceHolder::load - Resource already loaded" << std::endl;
 		return;
 	}
 	// Create and load resource

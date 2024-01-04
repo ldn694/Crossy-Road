@@ -50,7 +50,7 @@ class Animal: public Entity {
     
     private:
         TextureHolder&          mTextures;
-        SoundPlayer&            mSoundPlayer;
+        SoundPlayer&            mSounds;
         Type					mType;
         sf::Text                mPlayerNameText;
         Direction               mDirection;

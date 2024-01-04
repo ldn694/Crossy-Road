@@ -14,7 +14,7 @@ namespace
 	const float MinDistance3D = std::sqrt(MinDistance2D * MinDistance2D + ListenerZ * ListenerZ);
 }
 
-SoundPlayer::SoundPlayer():
+SoundPlayer::SoundPlayer() :
 	mSoundBuffers()
 	, mSounds()
 	, mVolume(100.f)

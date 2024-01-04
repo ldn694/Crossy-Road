@@ -11,14 +11,14 @@
 #include "PauseState.hpp"
 #include "LoadingState.hpp"
 #include "ScoreboardState.hpp"
-#include <iostream>
 
-#include<iostream>
+#include <SFML/Audio/Listener.hpp>
+#include <iostream>
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application(sf::ContextSettings contextSettings)
-	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, contextSettings), mTextures(), mFonts(), mSounds(), mScoreboard(), mStateStack(Context(mWindow, mTextures, mFonts, mSounds, mScoreboard, mSettings)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, contextSettings), mTextures(), mFonts(), mSounds(), mScoreboard(), mMusic(), mStateStack(Context(mWindow, mTextures, mFonts, mSounds, mMusic, mScoreboard, mSettings)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mSettings.setSoundPlayer(&mSounds);
 	mWindow.setKeyRepeatEnabled(false);
@@ -36,6 +36,11 @@ Application::Application(sf::ContextSettings contextSettings)
 	mTextures.load(Textures::M1, "Assets/Images/M1.PNG");
 	mTextures.load(Textures::M2, "Assets/Images/ForMenu/M2.PNG");
 	mTextures.load(Textures::ScoreBoard_Background, "Assets/Images/ForScore/scoreboard.png");
+	
+	mSounds.load(SoundEffect::Water_Splash, "Assets/Sounds/Water_Splash.wav");
+	mSounds.setListenerPosition(sf::Vector2f(0.f, 0.f));
+
+	mMusic.play(Music::MenuTheme);
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	//top right

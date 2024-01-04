@@ -6,7 +6,6 @@
 
 
 Railways::~Railways(){
-    std::cout << "Railways destructor called\n";
     if (!mTrainIncomingSounds.empty()) {
         for (int i = 0; i < mTrainIncomingSounds.size(); i++) {
             mTrainIncomingSounds[i]->stop();
