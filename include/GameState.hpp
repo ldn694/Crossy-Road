@@ -3,6 +3,8 @@
 #include "State.hpp"
 #include "World.hpp"
 #include "Player.hpp"
+#include "Settings.hpp"
+#include "GameStatus.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -18,12 +20,13 @@ public:
 	virtual bool		handleEvent(const sf::Event& event);
 private:
 	void				setCurrentScore();
+	void 				endGame(GameStatus status);
 
 
 private:
+	bool 							firstTrueUpdate = false;
 	Player							mPlayer;
 	World							mWorld;
-	Context							mContext;
 	std::vector <std::string> 		mPlayerNames;
 	sf::Text 						mCurrentScoreText;
 	Difficulty 						mStartDifficulty;

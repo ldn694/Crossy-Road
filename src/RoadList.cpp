@@ -69,7 +69,7 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     Road::Type type = Road::Land;
     if (i > 5) {
         type = getNextType();
-        // type = Road::Land;
+        // type = Road::Railways;
     }
     int variant = rand() % getNumType(type);
     if (type == Road::Land || type == Road::LandWithAnimal) {
@@ -91,13 +91,15 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     return std::make_pair(type, variant);
 }
 
-RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode)
+RoadList::RoadList(Context context, const TextureHolder& textures, SoundPlayer& sounds, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode)
     : mView(view)
     , mTextures(textures)
     , mPlayers(players)
     , mDifficulty(difficulty)
     , mPlayerSpeedMultiplier(1.0f)
     , mTmpNode(tmpNode)
+    , mContext(context)
+    , mSounds(sounds)
 {
     setDifficulty(difficulty);
     registerRoad<Railways>(Road::Railways);

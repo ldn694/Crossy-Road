@@ -6,6 +6,7 @@ namespace sf
 {
 	class Texture;
 	class Font;
+	class SoundBuffer;
 }
 
 namespace Textures
@@ -164,9 +165,35 @@ namespace Fonts
 	};
 }
 
+namespace SoundEffect
+{
+	enum ID
+	{
+		Animal_Jump,
+		Water_Splash,
+		Train_Incoming,
+		Train_Passing,
+		Car_Honk,
+		Mouse_Click,
+		Mouse_Hover,
+	};
+}
+
+namespace Music
+{
+	enum ID
+	{
+		MenuTheme,
+		IngameTheme,
+		GameOverTheme,
+		NumMusic,
+	};
+}
+
 // Forward declaration and a few type definitions
 template <typename Resource, typename Identifier>
 class ResourceHolder;
 
 typedef ResourceHolder<sf::Texture, Textures::ID>	TextureHolder;
 typedef ResourceHolder<sf::Font, Fonts::ID>			FontHolder;
+typedef ResourceHolder<sf::SoundBuffer, SoundEffect::ID>	SoundBufferHolder;

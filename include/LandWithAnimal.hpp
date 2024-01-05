@@ -1,5 +1,6 @@
 #pragma once
 #include "ResourceIdentifiers.hpp"
+#include "Context.hpp"
 #include "Road.hpp"
 #include "WalkingAnimal.hpp"
 //include clock of sfml
@@ -14,7 +15,7 @@ public:
         NumLandWithAnimalVariants
     };
 public:
-    LandWithAnimal(const TextureHolder& textures, Difficulty difficulty, int variant);
+    LandWithAnimal(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant);
     virtual void updateCurrent(sf::Time dt);
     void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 private:

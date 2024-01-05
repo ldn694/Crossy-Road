@@ -2,9 +2,11 @@
 
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
-#include "Player.hpp"
+#include "Settings.hpp"
 #include "StateStack.hpp"
 #include "Scoreboard.hpp"
+#include "SoundPlayer.hpp"
+#include "MusicPlayer.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -14,7 +16,7 @@
 class Application
 {
 	public:
-								Application(sf::ContextSettings settings);
+								Application(sf::ContextSettings contextSettings);
 		void					run();
 		
 
@@ -33,7 +35,10 @@ class Application
 		sf::RenderWindow		mWindow;
 		TextureHolder			mTextures;
 	  	FontHolder				mFonts;
+		SoundPlayer				mSounds;
+		MusicPlayer				mMusic;
 		Scoreboard				mScoreboard;
+		Settings				mSettings;
 		// Player					mPlayer;
 
 		StateStack				mStateStack;

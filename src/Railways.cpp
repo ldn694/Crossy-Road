@@ -2,14 +2,22 @@
 #include "Utility.hpp"
 #include "ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Audio/Listener.hpp>
 
 
 Railways::~Railways(){
-
+    if (!mTrainIncomingSounds.empty()) {
+        for (int i = 0; i < mTrainIncomingSounds.size(); i++) {
+            mTrainIncomingSounds[i]->stop();
+        }
+        mTrainIncomingSounds.clear();
+        soundPlayer.removeStoppedSounds();
+    }
 }
-Railways::Railways(const TextureHolder& textures, Difficulty difficulty, int variant) : 
+Railways::Railways(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant) : 
     Road(Textures::Railways, textures, Road::Type::Railways, Zone::Safety::Safe, difficulty),
-    textures(textures)
+    textures(textures),
+    soundPlayer(sounds)
 {
     sf::Time basePeriodTime = sf::seconds(5.f);
     float baseSpeed = 2000;
@@ -76,7 +84,7 @@ TrafficLight* Railways::addLight(sf::Vector2f position)
 }
 Train* Railways::addTrain(sf::Vector2f position)
 {
-    std::unique_ptr<Train> curTrain(new Train(position, textures, this));
+    std::unique_ptr<Train> curTrain(new Train(position, soundPlayer, textures, this));
     train = curTrain.get();
     curTrain->setPosition(position);
     Train* trainPtr = curTrain.get();
@@ -96,6 +104,11 @@ void Railways::updateCurrent(sf::Time dt)
     }   
     
     if (!isComing && checkBegin && mPeriod - mTimeSinceLastSpawn + sf::seconds(300.0f / mSpeed) < sf::seconds(1.0f)) {
+        for (int i = 0; i < NUM_ZONE; i++) {
+            mTrainIncomingSounds.push_back(&soundPlayer.play(SoundEffect::Train_Incoming, mZones[i]->getWorldPosition(), 0.8f));
+            mTrainIncomingSounds.back()->setPitch(1.5f);
+            mTrainIncomingSounds.back()->setAttenuation(20.f);
+        }
         isComing = true;
         mClock.restart();
         light->changeColor();
@@ -106,7 +119,7 @@ void Railways::updateCurrent(sf::Time dt)
         light->changeColor();
     }
 
-    if (train != nullptr && ((train->getWorldPosition().x + train->getHitbox().width < 0 && movementSign == -1) || (train->getWorldPosition().x > WITDH_SIZE && movementSign == 1))){
+    if (train != nullptr && ((train->getWorldPosition().x + train->getHitbox().width < -1000.f && movementSign == -1) || (train->getWorldPosition().x > WITDH_SIZE + 1000.f && movementSign == 1))){
         mediateNode->requestDetach(train);
         train = nullptr;
     }
@@ -124,6 +137,12 @@ void Railways::updateCurrent(sf::Time dt)
         mediateNode->attachChildren();
         isComing = false;
         light->setDefaultColor();
+        if (!mTrainIncomingSounds.empty()) {
+            for (int i = 0; i < mTrainIncomingSounds.size(); i++) {
+                mTrainIncomingSounds[i]->stop();
+            }
+            mTrainIncomingSounds.clear();
+        }
     }
     
     mediateNode->move(dt.asSeconds() * mSpeed * movementSign, 0);

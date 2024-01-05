@@ -39,6 +39,7 @@ World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vect
 		mPlayers[i] = nullptr;
 	}
 	loadTextures();
+	loadSounds();
 	buildScene();
 
 	setRaining(false);
@@ -60,6 +61,10 @@ void World::update(sf::Time dt)
 			mPlayers[i]->setVelocity(0.f, 0.f);
 		}
 	}
+
+	mContext.sounds->removeStoppedSounds();
+	mContext.sounds->setListenerPosition(mPlayers[0]->getWorldPosition());
+
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
@@ -94,6 +99,18 @@ void World::draw()
 CommandQueue& World::getCommandQueue()
 {
 	return mCommandQueue;
+}
+
+SoundPlayer& World::getSoundPlayer()
+{
+	return mSounds;
+}
+
+void World::loadSounds() {
+	mSounds.load(SoundEffect::Animal_Jump, "Assets/Sounds/animal_jump.wav");
+	mSounds.load(SoundEffect::Train_Incoming, "Assets/Sounds/train_incoming.wav");
+	mSounds.load(SoundEffect::Train_Passing, "Assets/Sounds/train_passing.wav");
+	mSounds.load(SoundEffect::Car_Honk, "Assets/Sounds/car_honk_1.wav");
 }
 
 void World::loadTextures()
@@ -199,11 +216,11 @@ void World::buildScene()
 	}
 
 	for (int i = 0; i < mNumPlayer; i++) {
-		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, airNode, mCurrentScore);
+		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, mSounds, airNode, mCurrentScore);
 		mPlayers[i]->setPosition(0, 0);
 	}
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayers, mDifficulty, airNode));
+	std::unique_ptr<RoadList> roadList(new RoadList(mContext, mTextures, mSounds, mWorldView, 12, mPlayers, mDifficulty, airNode));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mRoadList = roadList.get();
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
@@ -240,7 +257,7 @@ void World::adaptPlayerPosition()
 
 	for (int i = 0; i < mNumPlayer; i++) {
 		if (intersection(mPlayers[i]->getHitbox(), viewBounds) < 1) {
-			throw GameStatus(GameStatus::GameLost, mPlayers[i]);
+			throw GameStatus(GameStatus::GameLost, GameStatus::OutOfMap, mPlayers[i]);
 		}
 	}
 	// position.x = std::max(position.x, viewBounds.left + borderDistance);

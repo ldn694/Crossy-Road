@@ -1,4 +1,5 @@
 #pragma once
+#include "Context.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "Road.hpp"
 #include "Car.hpp"
@@ -21,13 +22,14 @@ private:
     std::vector <Car*> cars;
     // Car::Type carType;
     StopLight* stopLight;
-    sf::Time mStopLightTimer;;
+    sf::Time mStopLightTimer;
+    SoundPlayer& mSounds;
     const sf::Time mStopLightPeriod[StopLight::State::NumStopLightState] = {sf::seconds(2.0f), sf::seconds(1.0f), sf::seconds(2.5f)};
 private:
     Car* addCar(Car::Type carType, sf::Vector2f position);
 public:
     ~SRoad();
-    SRoad(const TextureHolder& textures, Difficulty difficulty, int variant);
+    SRoad(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant);
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
 };

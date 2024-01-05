@@ -19,7 +19,8 @@ WalkingAnimal::Type toType(LandWithAnimal::Variant variant){
         break;
     }
 }
-LandWithAnimal::LandWithAnimal(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(Textures::NormalLand, textures, Road::Type::LandWithAnimal, Zone::Safety::Safe, difficulty){
+LandWithAnimal::LandWithAnimal(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant) : 
+Road(Textures::NormalLand, textures, Road::Type::LandWithAnimal, Zone::Safety::Safe, difficulty){
     std::unique_ptr<SceneNode> mediate(new SceneNode());
     mediateNode = mediate.get();
     requestAttach(std::move(mediate));

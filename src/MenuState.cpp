@@ -119,6 +119,7 @@ bool MenuState::handleEvent(const sf::Event& event)
 				case MenuState::ClickableID::Load: {
 					int Size = getStackSize();
 					if (Size != 1) {
+						getContext().music->stopAllMusic();
 						requestStackPop();
 						requestStackPush(States::Loading);
 					}

@@ -10,8 +10,9 @@ private:
     sf::FloatRect mRect;
     sf::Text mText;
     Textures::ID mTextureID[2];
+    SoundEffect::ID mSoundEffectID[2];
     sf::Sprite mSprite;
-    bool isHovering;
+    bool previousIsHovering, isHovering;
 public:
     Button(ClickableList* mList, int id, Context context, Clickable::Info info);
     void draw();
