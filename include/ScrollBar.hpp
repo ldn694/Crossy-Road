@@ -9,7 +9,7 @@ class ScrollBar{
     void                          update(sf::RenderWindow& window);
     void                          draw(sf::RenderWindow& window);
     float                         getValue() const;
-    void                          handleEvent(const sf::Event& event,sf::RenderWindow &window);
+    bool                          handleEvent(const sf::Event& event,sf::RenderWindow &window);
     float                         getPos() const;
     void                          updateBarSize();
     private:

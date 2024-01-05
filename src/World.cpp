@@ -32,14 +32,14 @@ World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vect
 	, mContext(context)
 {
 	assertThrow(numPlayer == 1 || numPlayer == 2, "numPlayer must be 1 or 2");
-	assertThrow(playerTypes.size() == numPlayer, "playerTypes.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerTypes.size()));
-	assertThrow(playerNames.size() == numPlayer, "playerNames.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerNames.size()));
+	//assertThrow(playerTypes.size() == numPlayer, "playerTypes.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerTypes.size()));
+	//assertThrow(playerNames.size() == numPlayer, "playerNames.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerNames.size()));
 	mPlayers.resize(numPlayer);
 	for (int i = 0; i < numPlayer; i++) {
 		mPlayers[i] = nullptr;
 	}
-
 	loadTextures();
+	loadSounds();
 	buildScene();
 
 	setRaining(false);
@@ -61,6 +61,10 @@ void World::update(sf::Time dt)
 			mPlayers[i]->setVelocity(0.f, 0.f);
 		}
 	}
+
+	mContext.sounds->removeStoppedSounds();
+	mContext.sounds->setListenerPosition(mPlayers[0]->getWorldPosition());
+
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
@@ -95,6 +99,18 @@ void World::draw()
 CommandQueue& World::getCommandQueue()
 {
 	return mCommandQueue;
+}
+
+SoundPlayer& World::getSoundPlayer()
+{
+	return mSounds;
+}
+
+void World::loadSounds() {
+	mSounds.load(SoundEffect::Animal_Jump, "Assets/Sounds/animal_jump.wav");
+	mSounds.load(SoundEffect::Train_Incoming, "Assets/Sounds/train_incoming.wav");
+	mSounds.load(SoundEffect::Train_Passing, "Assets/Sounds/train_passing.wav");
+	mSounds.load(SoundEffect::Car_Honk, "Assets/Sounds/car_honk_1.wav");
 }
 
 void World::loadTextures()
@@ -152,6 +168,18 @@ void World::loadTextures()
 	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
 	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");
 	mTextures.load(Textures::Lily, "Assets/Images/ForGame/river_log/lily.png");
+	mTextures.load(Textures::Pig1, "Assets/Images/ForGame/animal/pig_move/left_1.png");
+	mTextures.load(Textures::Pig2, "Assets/Images/ForGame/animal/pig_move/left_2.png");
+	mTextures.load(Textures::Pig3, "Assets/Images/ForGame/animal/pig_move/right_1.png");
+	mTextures.load(Textures::Pig4, "Assets/Images/ForGame/animal/pig_move/right_2.png");
+	mTextures.load(Textures::Lion1, "Assets/Images/ForGame/animal/lion_move/left_1.png");
+	mTextures.load(Textures::Lion2, "Assets/Images/ForGame/animal/lion_move/left_2.png");
+	mTextures.load(Textures::Lion3, "Assets/Images/ForGame/animal/lion_move/right_1.png");
+	mTextures.load(Textures::Lion4, "Assets/Images/ForGame/animal/lion_move/right_2.png");
+	mTextures.load(Textures::Fox1, "Assets/Images/ForGame/animal/fox_move/left_1.png");
+	mTextures.load(Textures::Fox2, "Assets/Images/ForGame/animal/fox_move/left_2.png");
+	mTextures.load(Textures::Fox3, "Assets/Images/ForGame/animal/fox_move/right_1.png");
+	mTextures.load(Textures::Fox4, "Assets/Images/ForGame/animal/fox_move/right_2.png");
 
 }
 
@@ -188,11 +216,11 @@ void World::buildScene()
 	}
 
 	for (int i = 0; i < mNumPlayer; i++) {
-		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, airNode, mCurrentScore);
+		mPlayers[i] = new Animal(i, mPlayerTypes[i], mPlayerNames[i], mTextures, *mContext.fonts, mSounds, airNode, mCurrentScore);
 		mPlayers[i]->setPosition(0, 0);
 	}
 
-	std::unique_ptr<RoadList> roadList(new RoadList(mTextures, mWorldView, 12, mPlayers, mDifficulty, airNode));
+	std::unique_ptr<RoadList> roadList(new RoadList(mContext, mTextures, mSounds, mWorldView, 12, mPlayers, mDifficulty, airNode));
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mRoadList = roadList.get();
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
@@ -229,7 +257,7 @@ void World::adaptPlayerPosition()
 
 	for (int i = 0; i < mNumPlayer; i++) {
 		if (intersection(mPlayers[i]->getHitbox(), viewBounds) < 1) {
-			throw GameStatus(GameStatus::GameLost, mPlayers[i]);
+			throw GameStatus(GameStatus::GameLost, GameStatus::OutOfMap, mPlayers[i]);
 		}
 	}
 	// position.x = std::max(position.x, viewBounds.left + borderDistance);

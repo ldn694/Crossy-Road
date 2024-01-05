@@ -1,5 +1,6 @@
 #include "Car.hpp"
 #include "ResourceHolder.hpp"
+#include "ResourceIdentifiers.hpp"
 #include "Utility.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -30,9 +31,10 @@ Textures::ID toTextureID(Car::Type type)
     }
 }
 
-Car::Car(Type type, sf::Vector2f position, const TextureHolder& textures, Road* road):
+Car::Car(Type type, sf::Vector2f position, const TextureHolder& textures, SoundPlayer& sounds, Road* road):
     mType(type)
     ,mSprite(textures.get(toTextureID(type)))
+    ,mSounds(sounds)
 {
     float width, height;
     width = WIDTH_SIZE;
@@ -40,6 +42,7 @@ Car::Car(Type type, sf::Vector2f position, const TextureHolder& textures, Road* 
     setSize(mSprite, sf::Vector2f(width, height));
     centerOrigin(mSprite);
     mSprite.setPosition(15, 18);
+    mTimeSinceLastHonk = sf::seconds(rand() % 20);
 }
 
 void Car::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -53,6 +56,18 @@ void Car::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
     shape.setOutlineThickness(1);
     shape.setPosition(rect.left, rect.top);
     target.draw(shape);
+}
+
+void Car::updateCurrent(sf::Time dt)
+{
+    Entity::updateCurrent(dt);
+    //honk
+    mTimeSinceLastHonk += dt;
+    if (mTimeSinceLastHonk >= mHonkPeriod) {
+        sf::Sound& honk = mSounds.play(SoundEffect::Car_Honk, getWorldPosition(), 0.1f);
+        honk.setAttenuation(50.f);
+        mTimeSinceLastHonk = sf::Time::Zero;
+    }
 }
 
 sf::FloatRect Car::getHitbox() const

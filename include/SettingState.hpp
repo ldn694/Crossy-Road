@@ -12,15 +12,6 @@
 #include <SFML/Window/Keyboard.hpp>
 class SettingState : public State{
     public:
-                                SettingState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
-		virtual void			draw();
-		virtual bool			update(sf::Time dt);
-		virtual bool			handleEvent(const sf::Event& event);
-
-		void					updateOptionText();
-        std::string             keyCodeToString(sf::Keyboard::Key keyCode);
-        sf::Keyboard::Key       stringToSFMLKey(const std::string& keyString);
-                                ~SettingState();
         enum ClickableID {
 			Sound,
 			Music,
@@ -29,31 +20,54 @@ class SettingState : public State{
             MoveRight,
             MoveUp,
             MoveDown,
-            P11,
-            P12,
-            P13,
-            P14,
-            P21,
-            P22,
-            P23,
-            P24,
+            PlayerOneMoveLeft,
+            PlayerOneMoveRight,
+            PlayerOneMoveUp,
+            PlayerOneMoveDown,
+            PlayerTwoMoveLeft,
+            PlayerTwoMoveRight,
+            PlayerTwoMoveUp,
+            PlayerTwoMoveDown,
             SetPlayer1,
             SetPlayer2,
 		};
-    private:
-    enum OptionNames
-    {
+        enum Data {
+            SoundVolume,
+            MusicVolume,
+            P1Left,
+            P1Right,
+            P1Up,
+            P1Down,
+            P2Left,
+            P2Right,
+            P2Up,
+            P2Down,      
+        };
+                                SettingState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
+		virtual void			draw();
+		virtual bool			update(sf::Time dt);
+		virtual bool			handleEvent(const sf::Event& event);
 
-    };
+		void					updateOptionText();
+                                ~SettingState();
     private:
-        sf::Sprite				mBackgroundSprite;
-		std::vector<sf::Text>	mOptions;
-		std::size_t				mOptionIndex;
-        ClickableList           mClickableList;
-        std::size_t             mChoiceIndex;
-        ScrollBarList           mScrollBarList;
-        sf::Music               mMusic;
-        bool                    c[8];
+    public:
+        static std::string          getData(std::vector<std::string>& data, Data type);
+        static bool                 checkValidSettings(const std::string& path);
+        static void                 createDefaultData();
+        static const std::string    mSettingsPath;
+        static bool                 pendingUpdated();
+    private:
+        static bool                 mPendingUpdate;
+        sf::Sprite				    mBackgroundSprite;
+		std::vector<sf::Text>	    mOptions;
+		std::size_t				    mOptionIndex;
+        ClickableList               mClickableList;
+        std::size_t                 mChoiceIndex;
+        ScrollBarList               mScrollBarList;
+        sf::Music                   mMusic;
+        std::vector <std::string>   mData;
+        bool                        c[8];
 
         
 };

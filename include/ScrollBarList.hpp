@@ -6,12 +6,16 @@
 #include "ScrollBar.hpp"
 
 class ScrollBarList {
-    public:
-                              ScrollBarList();
-    void                      draw(sf::RenderWindow &window);
-    void                      handleEvent(const sf::Event& event,sf::RenderWindow &window);
+public:
+    ScrollBarList();
+    ScrollBarList(std::string path);
+    void                      draw(sf::RenderWindow& window);
+    bool                      handleEvent(const sf::Event& event, sf::RenderWindow& window);
     float                     getVolumeSound() const;
     float                     getVolumeMusic() const;
-    private:
-     std::vector<ScrollBar>   mScrollBars;
+private:
+    void                      updateFile();
+private:
+    std::vector<ScrollBar>   mScrollBars;
+    std::string              mFileName;
 };

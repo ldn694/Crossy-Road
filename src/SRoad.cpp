@@ -22,7 +22,11 @@ Car::Type getRandCarType(int movementSign) {
 
 }
 
-SRoad::SRoad(const TextureHolder& textures, Difficulty difficulty, int variant) : Road(toTextureID(), textures, Road::Type::SRoad, Zone::Safety::Safe, difficulty), textures(textures) {
+SRoad::SRoad(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant) : 
+    Road(toTextureID(), textures, Road::Type::SRoad, Zone::Safety::Safe, difficulty), 
+    textures(textures),
+    mSounds(sounds)
+ {
     sf::Time basePeriodTime = sf::seconds(2.5f);
     int numPartionPeriod;
     switch (difficulty) {
@@ -101,7 +105,7 @@ SRoad::~SRoad() {
 
 Car* SRoad::addCar(Car::Type carType, sf::Vector2f position)
 {
-    std::unique_ptr<Car> car(new Car(carType, position, textures, this));
+    std::unique_ptr<Car> car(new Car(carType, position, textures, mSounds, this));
     cars.push_back(car.get());
     car->setPosition(position);
     Car* carPtr = car.get();

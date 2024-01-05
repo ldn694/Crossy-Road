@@ -3,6 +3,7 @@
 #include "River.hpp"
 #include "SRoad.hpp"
 #include "Land.hpp"
+#include "LandWithAnimal.hpp"
 
 
 Road::Type RoadList::getNextType()
@@ -22,6 +23,8 @@ int getNumType(Road::Type type)
         return SRoad::NumSRoadVariants;
     case Road::Land:
         return Land::NumLandVariants;
+    case Road::LandWithAnimal:
+        return LandWithAnimal::NumLandWithAnimalVariants;
     }
     return 0;
 }
@@ -66,15 +69,18 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     Road::Type type = Road::Land;
     if (i > 5) {
         type = getNextType();
-        // type = Road::Land;
+        // type = Road::Railways;
     }
     int variant = rand() % getNumType(type);
-    if (type == Road::Land) {
-        if (pre != Road::Land) {
+    if (type == Road::Land || type == Road::LandWithAnimal) {
+        if (pre != Road::Land && pre != Road::LandWithAnimal) {
+            type = Road::Land;
             variant = Land::Start;
         }
         else {
-            variant = Land::Normal;
+            if (type == Road::Land) {
+                variant = Land::Normal;
+            }
         }
     }
     if (i <= 5) {
@@ -85,19 +91,22 @@ std::pair <Road::Type, int> RoadList::getNextRoadInfo(int i = 20) {
     return std::make_pair(type, variant);
 }
 
-RoadList::RoadList(const TextureHolder& textures, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode)
+RoadList::RoadList(Context context, const TextureHolder& textures, SoundPlayer& sounds, sf::View& view, int numRoads, std::vector <Animal*> players, Difficulty difficulty, SceneNode* tmpNode)
     : mView(view)
     , mTextures(textures)
     , mPlayers(players)
     , mDifficulty(difficulty)
     , mPlayerSpeedMultiplier(1.0f)
     , mTmpNode(tmpNode)
+    , mContext(context)
+    , mSounds(sounds)
 {
     setDifficulty(difficulty);
     registerRoad<Railways>(Road::Railways);
 	registerRoad<River>(Road::River);
 	registerRoad<SRoad>(Road::SRoad);
 	registerRoad<Land>(Road::Land);
+    registerRoad<LandWithAnimal>(Road::LandWithAnimal);
     pre = Road::Land;
     if (numRoads < 1) return;
     firstRoad = nullptr;

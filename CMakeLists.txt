@@ -65,8 +65,15 @@ add_executable(CrossyRoad
     src/TrafficLight.cpp
     src/Rain.cpp
     src/StopLight.cpp
+    src/Settings.cpp
+    src/SoundPlayer.cpp
+    src/MusicPlayer.cpp
+    src/LandWithAnimal.cpp
+    src/WalkingAnimal.cpp
     )
-target_link_libraries(CrossyRoad PRIVATE sfml-graphics sfml-audio)
+
+target_link_libraries(CrossyRoad PRIVATE sfml-audio)
+target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
 
 if(WIN32)

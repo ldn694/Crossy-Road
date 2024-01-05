@@ -85,19 +85,19 @@ struct AirCraftTeleport {
 Player::Player(SceneNode* sceneGraph): mSceneGraph(sceneGraph)
 {
 	// Set initial key bindings
-	mKeyBinding[sf::Keyboard::A] = PlayerOneMoveLeft;
-	mKeyBinding[sf::Keyboard::D] = PlayerOneMoveRight;
-	mKeyBinding[sf::Keyboard::W] = PlayerOneMoveUp;
-	mKeyBinding[sf::Keyboard::S] = PlayerOneMoveDown;
+	// mKeyBinding[sf::Keyboard::A] = PlayerOneMoveLeft;
+	// mKeyBinding[sf::Keyboard::D] = PlayerOneMoveRight;
+	// mKeyBinding[sf::Keyboard::W] = PlayerOneMoveUp;
+	// mKeyBinding[sf::Keyboard::S] = PlayerOneMoveDown;
 
-	mKeyBinding[sf::Keyboard::Left] = PlayerTwoMoveLeft;
-	mKeyBinding[sf::Keyboard::Right] = PlayerTwoMoveRight;
-	mKeyBinding[sf::Keyboard::Up] = PlayerTwoMoveUp;
-	mKeyBinding[sf::Keyboard::Down] = PlayerTwoMoveDown;
-	mKeyBinding[sf::Keyboard::U] = TeleAlly;
-	mKeyBinding[sf::Keyboard::I] = TeleEnemy;
-	mKeyBinding[sf::Keyboard::O] = TeleToAlly;
-	mKeyBinding[sf::Keyboard::P] = TeleToEnemy;
+	// mKeyBinding[sf::Keyboard::Left] = PlayerTwoMoveLeft;
+	// mKeyBinding[sf::Keyboard::Right] = PlayerTwoMoveRight;
+	// mKeyBinding[sf::Keyboard::Up] = PlayerTwoMoveUp;
+	// mKeyBinding[sf::Keyboard::Down] = PlayerTwoMoveDown;
+	// mKeyBinding[sf::Keyboard::U] = TeleAlly;
+	// mKeyBinding[sf::Keyboard::I] = TeleEnemy;
+	// mKeyBinding[sf::Keyboard::O] = TeleToAlly;
+	// mKeyBinding[sf::Keyboard::P] = TeleToEnemy;
 
 	// Set initial action bindings
 	mActionBinding[PlayerOneMoveLeft].category = Category::PlayerOne;

@@ -21,6 +21,8 @@
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 #include <array>
 #include <queue>
@@ -41,6 +43,7 @@ class World : private sf::NonCopyable
 		
 		CommandQueue&						getCommandQueue();
 		SceneNode&							getSceneGraph();
+		SoundPlayer&						getSoundPlayer();
 
 		int									getCurrentScore();
 		void 								setRaining(bool raining);
@@ -49,6 +52,7 @@ class World : private sf::NonCopyable
 
 	private:
 		void								loadTextures();
+		void								loadSounds();
 		void								buildScene();
 		void								adaptPlayerPosition();
 		void								adaptPlayerVelocity();
@@ -68,6 +72,7 @@ class World : private sf::NonCopyable
 		sf::RenderWindow&					mWindow;
 		sf::View							mWorldView;
 		TextureHolder						mTextures;
+		SoundPlayer 						mSounds;
 		Context								mContext;
 
 		SceneNode							mSceneGraph;

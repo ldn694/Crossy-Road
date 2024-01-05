@@ -1,26 +1,31 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <vector>
 #include "ScrollBar.hpp"
 #include "ScrollBarList.hpp"
-ScrollBarList::ScrollBarList() 
-  : mScrollBars()
+#include "SettingState.hpp"
+#include "Utility.hpp"
+ScrollBarList::ScrollBarList() {}
+ScrollBarList::ScrollBarList(std::string filename) 
+  : mScrollBars(), mFileName(filename)
 {
    // load mScrollBarList from text file
-	std::ifstream fin("Assets/Files/Setting.txt");
+    
+	std::ifstream fin(mFileName);
 	if(fin.is_open())
 	{
         std::string temp1,temp2,sound_string,music_string;
 		fin >> temp1 >> sound_string >> temp2 >> music_string;
         std::cout<<sound_string<<std::endl;
 		
-		int a = std::stoi(sound_string);
-		int b = std::stoi(music_string);
-		ScrollBar mSB_Sound(600,430,200,a);
-		ScrollBar mSB_Music(600,530,200,b);
+		float a = std::stof(sound_string);
+		float b = std::stof(music_string);
+		ScrollBar mSB_Sound(600,430,200,a * 180 + 600);
+		ScrollBar mSB_Music(600,530,200,b * 180 + 600);
         mScrollBars.push_back(mSB_Sound);
         mScrollBars.push_back(mSB_Music);
 }
@@ -35,20 +40,42 @@ void ScrollBarList::draw(sf::RenderWindow &window)
     }
 }
 
-void ScrollBarList::handleEvent(const sf::Event& event, sf::RenderWindow& window)
+void ScrollBarList::updateFile()
 {
+    // Open the file in input and output modes
+    std::fstream file(mFileName, std::ios::in | std::ios::out);
+
+    assertThrow(file.is_open(), "Failed to open file.");
+
+    // Read the first line
+    std::string firstLine;
+    std::getline(file, firstLine);
+
+    // Modify the first line as needed
+    // For example, appending " - Modified" to the end of the line
+
+    // Move the file pointer back to the beginning
+    file.seekp(0, std::ios::beg);
+
+    // Write the modified first line back to the file
+    file << std::fixed << std::setprecision(2) <<  "Sound: " << mScrollBars[0].getValue() << " Music: " << mScrollBars[1].getValue() << "\n";
+    
+
+    // Close the file
+    file.close();
+}
+
+bool ScrollBarList::handleEvent(const sf::Event& event, sf::RenderWindow& window)
+{
+    bool changed = false;
     for(int i=0;i<mScrollBars.size();i++)
     {
-        mScrollBars[i].handleEvent(event,window);
+        if (mScrollBars[i].handleEvent(event,window)) {
+            updateFile();
+            changed = true;
+        }
     }
-    // save to text file
-    std::ofstream fout("Assets/Files/Setting.txt",std::ios::trunc);
-    if(fout.is_open())
-    {
-        fout<<"Sound: "<<(int)mScrollBars[0].getPos()<<" "<<"Music: "<<(int)mScrollBars[1].getPos();
-        fout.close();
-    }
-
+    return changed;
 }
 
 float ScrollBarList::getVolumeSound() const

@@ -4,17 +4,21 @@
 #include "StateIdentifiers.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
-#include "Player.hpp"
+#include "Settings.hpp"
 #include "Scoreboard.hpp"
+#include "SoundPlayer.hpp"
+#include "MusicPlayer.hpp"
 
 struct Context
 {
-                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts,sf::Music &backgroundmusic, Scoreboard& scoreboard);
+                        Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, SoundPlayer& sounds, MusicPlayer& music, Scoreboard& scoreboard, Settings& settings);
 
     sf::RenderWindow*	window;
     TextureHolder*		textures;
+    SoundPlayer*		sounds;
     FontHolder*			fonts;
     Scoreboard*         scoreboard;
-    Player*				player;
-    sf::Music*          backgroundmusic;
+    MusicPlayer*        music;
+    Settings*           settings;
+    //Player*				player;
 };
