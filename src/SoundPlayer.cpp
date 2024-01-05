@@ -73,8 +73,15 @@ sf::Sound& SoundPlayer::play(SoundEffect::ID effect, float volumePercentage)
 
 sf::Sound& SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position, float volumePercentage)
 {
+	if (mSounds.size() >= 100)
+	{
+		removeStoppedSounds();
+		if (mSounds.size() >= 100) {
+			mSounds.front().stop();
+			mSounds.pop_front();
+		}
+	}
 	mSounds.push_back(sf::Sound());
-	// std::cout << "sounds size: " << mSounds.size() << "\n";
 	sf::Sound& sound = mSounds.back();
 
 	sound.setBuffer(mSoundBuffers.get(effect));
@@ -85,6 +92,19 @@ sf::Sound& SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position, floa
 
 	sound.play();
 	return sound;
+}
+
+void SoundPlayer::stop(sf::Sound& sound)
+{
+	for (auto it = mSounds.begin(); it != mSounds.end(); ++it)
+	{
+		if (&(*it) == &sound)
+		{
+			it->stop();
+			mSounds.erase(it);
+			break;
+		}
+	}
 }
 
 void SoundPlayer::removeStoppedSounds()

@@ -38,6 +38,18 @@ bool Button::isInside(sf::Vector2f position) {
     return mRect.contains(position);
 }
 
+void Button::setText(const std::string &newString)
+{
+    mText.setString(newString);
+    centerOrigin(mText);
+}
+
+std::string Button::getText()
+{
+    std::string result = mText.getString();
+    return result;
+}
+
 void Button::draw() {
     if (mStatus.isHoverable()) {
         mSprite.setTexture(mContext.textures->get(isHovering ? mTextureID[1] : mTextureID[0]));
@@ -55,6 +67,7 @@ void Button::handleEvent(const sf::Event& event) {
     if (!mStatus.isClickable()) return;
     if (event.type == sf::Event::MouseMoved) {
         if (isHovering && !previousIsHovering) {
+            previousIsHovering = isHovering;
             mContext.sounds->play(mSoundEffectID[0]);
         }
     }

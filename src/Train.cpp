@@ -24,8 +24,7 @@ Train::Train(sf::Vector2f position, SoundPlayer& sounds, const TextureHolder& te
 
 Train::~Train()
 {
-    mTrainSound.stop();
-    mSounds.removeStoppedSounds();
+    mSounds.stop(mTrainSound);
 }
 
 void Train::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

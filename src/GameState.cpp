@@ -41,6 +41,11 @@ Difficulty toDifficulty(std::string difficulty) {
 	}
 }
 
+GameState::~GameState() {
+	getContext().settings->setGameSounds(nullptr);
+	getContext().settings->setPlayer(nullptr);
+}
+
 GameState::GameState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
 : State(stack, stateID, context)
 , mWorld(*context.window, context, stateInfo.floatList[0], 
@@ -49,6 +54,7 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 , mPlayerNames(stateInfo.floatList[0] == 1 ? std::vector <std::string>({stateInfo.stringList[0]}) : std::vector <std::string>({stateInfo.stringList[0], stateInfo.stringList[3]}))
 , mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
+	context.settings->setGameSounds(&mWorld.getSoundPlayer());
 	context.music->stopAllMusic();
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	context.settings->setPlayer(&mPlayer);

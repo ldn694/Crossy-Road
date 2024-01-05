@@ -15,6 +15,8 @@ class GameState : public State
 public:
 	GameState(StateStack& stack, States::ID stateID, Context context, State::Info info = State::Info());
 
+	virtual          	~GameState();
+
 	virtual void		draw();
 	virtual bool		update(sf::Time dt);
 	virtual bool		handleEvent(const sf::Event& event);

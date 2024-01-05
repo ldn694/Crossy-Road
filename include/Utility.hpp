@@ -6,6 +6,7 @@
 #include <time.h> 
 #include "SFML/System/Time.hpp"
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Window/Keyboard.hpp>
 
 
 namespace sf
@@ -24,6 +25,8 @@ void centerOrigin(sf::Text& text);
 void setSize(sf::Sprite& sprite, float width, float height);
 void setSize(sf::Sprite& sprite, sf::Vector2f size);
 
+std::string             keyCodeToString(sf::Keyboard::Key keyCode);
+sf::Keyboard::Key       stringToSFMLKey(const std::string& keyString);
 
 float intersection(sf::FloatRect rect1, sf::FloatRect rect2);
 float squaredDistance(sf::Vector2f v1, sf::Vector2f v2);

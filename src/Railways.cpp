@@ -8,10 +8,9 @@
 Railways::~Railways(){
     if (!mTrainIncomingSounds.empty()) {
         for (int i = 0; i < mTrainIncomingSounds.size(); i++) {
-            mTrainIncomingSounds[i]->stop();
+            soundPlayer.stop(*mTrainIncomingSounds[i]);
         }
         mTrainIncomingSounds.clear();
-        soundPlayer.removeStoppedSounds();
     }
 }
 Railways::Railways(Context context, const TextureHolder& textures, SoundPlayer& sounds, Difficulty difficulty, int variant) : 
@@ -139,7 +138,7 @@ void Railways::updateCurrent(sf::Time dt)
         light->setDefaultColor();
         if (!mTrainIncomingSounds.empty()) {
             for (int i = 0; i < mTrainIncomingSounds.size(); i++) {
-                mTrainIncomingSounds[i]->stop();
+                soundPlayer.stop(*mTrainIncomingSounds[i]);
             }
             mTrainIncomingSounds.clear();
         }

@@ -20,7 +20,8 @@ const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 Application::Application(sf::ContextSettings contextSettings)
 	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, contextSettings), mTextures(), mFonts(), mSounds(), mScoreboard(), mMusic(), mStateStack(Context(mWindow, mTextures, mFonts, mSounds, mMusic, mScoreboard, mSettings)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
-	mSettings.setSoundPlayer(&mSounds);
+	mSettings.setMainSounds(&mSounds);
+	mSettings.setMusicPlayer(&mMusic);
 	mWindow.setKeyRepeatEnabled(false);
 	srand(time(NULL));
 	mFonts.load(Fonts::Main, "Assets/Fonts/Sansation.ttf");
@@ -60,6 +61,7 @@ void Application::run()
 
 	while (mWindow.isOpen())
 	{
+		mSettings.lazyUpdate();
 		sf::Time dt = clock.restart();
 		timeSinceLastUpdate += dt;
 		while (timeSinceLastUpdate > TimePerFrame)
@@ -92,6 +94,7 @@ void Application::processInput()
 
 void Application::update(sf::Time dt)
 {
+	mSounds.removeStoppedSounds();
 	mStateStack.update(dt);
 }
 

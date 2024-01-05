@@ -11,6 +11,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Audio.hpp>
 
 
 class Application
@@ -40,7 +41,6 @@ class Application
 		Scoreboard				mScoreboard;
 		Settings				mSettings;
 		// Player					mPlayer;
-
 		StateStack				mStateStack;
 
 		sf::Text				mStatisticsText;

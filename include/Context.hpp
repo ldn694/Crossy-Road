@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Audio.hpp>
 #include "StateIdentifiers.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"

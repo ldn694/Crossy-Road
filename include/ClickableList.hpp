@@ -5,6 +5,7 @@
 #include "Clickable.hpp"
 #include "State.hpp"
 #include "Context.hpp"
+#include "Button.hpp"
 
 class ClickableList
 {
@@ -29,6 +30,8 @@ public:
 
 
     void                        addClickable(Clickable::Type clickableType, int id, Clickable::Info info);
+    void                        setTextByID(int clickableID,const std::string &newString);
+    std::string                 getTextByID(int clickableID); 
 
 
 private:

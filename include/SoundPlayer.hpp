@@ -20,6 +20,7 @@ public:
 
 	sf::Sound& play(SoundEffect::ID effect, float volumePercentage = 1.f); // play sound at listener position, volumePercentage is a value between 0 and 1
 	sf::Sound& play(SoundEffect::ID effect, sf::Vector2f position, float volumePercentage = 1.f); // play sound at position, volumePercentage is a value between 0 and 1
+	void 						stop(sf::Sound& sound);
 
 	void 						stopAllSounds();
 	void						pauseAllSounds();

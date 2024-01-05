@@ -48,6 +48,10 @@ sf::Music::Status MusicPlayer::getStatus(Music::ID theme)
 void MusicPlayer::setVolume(float volume)
 {
     mVolume = volume;
+    for (auto& music : mMusic)
+    {
+        music->setVolume(mVolume);
+    }
 }
 
 void MusicPlayer::setPaused(Music::ID theme, bool paused)

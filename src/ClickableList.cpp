@@ -82,6 +82,28 @@ void ClickableList::addClickable(Clickable::Type clickableType, int id, Clickabl
     mClickables.insert(std::make_pair(id, createClickable(clickableType, id, info)));
 }
 
+void ClickableList::setTextByID(int clickableID, const std::string& newString)
+{
+    auto found = mClickables.find(clickableID);
+    if (found != mClickables.end()) {
+         found->second->setText(newString);
+    }
+    return ;
+}
+
+std::string ClickableList::getTextByID(int clickableID)
+{
+    auto found = mClickables.find(clickableID);
+    if (found != mClickables.end()) {
+       return found->second->getText();
+    }
+    return std::string();
+}
+
+
+
+
+
 Clickable::Ptr ClickableList::createClickable(Clickable::Type clickableType, int id, Clickable::Info info)
 {
     auto found = mFactories.find(clickableType);

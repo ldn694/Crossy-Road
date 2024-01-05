@@ -61,4 +61,8 @@ void Clickable::requestPushAnnouncement(Clickable::Action action) {
     mList->pushAnnouncement(action, mID);
 }
 
+std::string Clickable::getText()
+{
+    return std::string();
+}
 
