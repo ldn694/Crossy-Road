@@ -35,6 +35,7 @@ public:
         std::vector <std::string>       stringList;
         std::vector <Textures::ID>      textureIDList;
         std::vector <Fonts::ID>         fontIDList;
+        std::vector <SoundEffect::ID>   soundEffectIDList;
         std::vector <sf::Vector2f>      vector2fList;
         std::vector <sf::Time>          timeList;
         std::vector <sf::Color>         colorList;

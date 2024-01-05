@@ -37,8 +37,10 @@ Application::Application(sf::ContextSettings contextSettings)
 	mTextures.load(Textures::M2, "Assets/Images/ForMenu/M2.PNG");
 	mTextures.load(Textures::ScoreBoard_Background, "Assets/Images/ForScore/scoreboard.png");
 	
-	mSounds.load(SoundEffect::Water_Splash, "Assets/Sounds/Water_Splash.wav");
 	mSounds.setListenerPosition(sf::Vector2f(0.f, 0.f));
+	mSounds.load(SoundEffect::Water_Splash, "Assets/Sounds/Water_Splash.wav");
+	mSounds.load(SoundEffect::Mouse_Click, "Assets/Sounds/mouse_click.wav");
+	mSounds.load(SoundEffect::Mouse_Hover, "Assets/Sounds/mouse_hover.wav");
 
 	mMusic.play(Music::MenuTheme);
 

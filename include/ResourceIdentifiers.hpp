@@ -170,6 +170,8 @@ namespace SoundEffect
 		Train_Incoming,
 		Train_Passing,
 		Car_Honk,
+		Mouse_Click,
+		Mouse_Hover,
 	};
 }
 

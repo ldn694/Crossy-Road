@@ -10,8 +10,10 @@ private:
     sf::FloatRect mRect;
     sf::Text mText;
     Textures::ID mTextureID[3];
+    SoundEffect::ID mSoundEffectID[2];
     sf::Sprite mSprite;
     bool isHovering;
+    bool previousIsHovering;
     bool isPressed;
 public:
     Choice(ClickableList* mList, int id, Context context, Clickable::Info info);
