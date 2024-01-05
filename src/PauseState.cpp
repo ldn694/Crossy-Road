@@ -77,8 +77,9 @@ void PauseState::draw()
 	mClickableList.draw();
 }
 
-bool PauseState::update(sf::Time)
+bool PauseState::update(sf::Time dt)
 {
+	mClickableList.update(dt);
 	return false;
 }
 

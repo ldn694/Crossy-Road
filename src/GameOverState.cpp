@@ -118,8 +118,9 @@ void GameOverState::draw()
     window.draw(mResult);
 }
 
-bool GameOverState::update(sf::Time)
+bool GameOverState::update(sf::Time dt)
 {
+	mClickableList.update(dt);
 	return false;
 }
 

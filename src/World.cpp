@@ -32,13 +32,12 @@ World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vect
 	, mContext(context)
 {
 	assertThrow(numPlayer == 1 || numPlayer == 2, "numPlayer must be 1 or 2");
-	assertThrow(playerTypes.size() == numPlayer, "playerTypes.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerTypes.size()));
-	assertThrow(playerNames.size() == numPlayer, "playerNames.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerNames.size()));
+	//assertThrow(playerTypes.size() == numPlayer, "playerTypes.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerTypes.size()));
+	//assertThrow(playerNames.size() == numPlayer, "playerNames.size() must be equal to numPlayer, or " + std::to_string(numPlayer) + " != " + std::to_string(playerNames.size()));
 	mPlayers.resize(numPlayer);
 	for (int i = 0; i < numPlayer; i++) {
 		mPlayers[i] = nullptr;
 	}
-
 	loadTextures();
 	loadSounds();
 	buildScene();
@@ -169,6 +168,18 @@ void World::loadTextures()
 	mTextures.load(Textures::BigLog, "Assets/Images/ForGame/river_log/log_big.png");
 	mTextures.load(Textures::SmallLog, "Assets/Images/ForGame/river_log/log_small.png");
 	mTextures.load(Textures::Lily, "Assets/Images/ForGame/river_log/lily.png");
+	mTextures.load(Textures::Pig1, "Assets/Images/ForGame/animal/pig_move/left_1.png");
+	mTextures.load(Textures::Pig2, "Assets/Images/ForGame/animal/pig_move/left_2.png");
+	mTextures.load(Textures::Pig3, "Assets/Images/ForGame/animal/pig_move/right_1.png");
+	mTextures.load(Textures::Pig4, "Assets/Images/ForGame/animal/pig_move/right_2.png");
+	mTextures.load(Textures::Lion1, "Assets/Images/ForGame/animal/lion_move/left_1.png");
+	mTextures.load(Textures::Lion2, "Assets/Images/ForGame/animal/lion_move/left_2.png");
+	mTextures.load(Textures::Lion3, "Assets/Images/ForGame/animal/lion_move/right_1.png");
+	mTextures.load(Textures::Lion4, "Assets/Images/ForGame/animal/lion_move/right_2.png");
+	mTextures.load(Textures::Fox1, "Assets/Images/ForGame/animal/fox_move/left_1.png");
+	mTextures.load(Textures::Fox2, "Assets/Images/ForGame/animal/fox_move/left_2.png");
+	mTextures.load(Textures::Fox3, "Assets/Images/ForGame/animal/fox_move/right_1.png");
+	mTextures.load(Textures::Fox4, "Assets/Images/ForGame/animal/fox_move/right_2.png");
 
 }
 

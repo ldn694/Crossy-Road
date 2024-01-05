@@ -86,6 +86,10 @@ namespace Textures
 		VanRight, VanLeft,
 		SRoad_Default, SRoad_Line, SRoad_Stripe,		
 		StopLightRed, StopLightGreen, StopLightYellow,
+		//LandWithAnimal
+		Pig1, Pig2, Pig3, Pig4,
+		Lion1, Lion2, Lion3, Lion4,
+		Fox1, Fox2, Fox3, Fox4,
 		//Cat
 		CatUp,
 		CatDown,

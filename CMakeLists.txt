@@ -66,6 +66,8 @@ add_executable(CrossyRoad
     src/Settings.cpp
     src/SoundPlayer.cpp
     src/MusicPlayer.cpp
+    src/LandWithAnimal.cpp
+    src/WalkingAnimal.cpp
     )
 
 target_link_libraries(CrossyRoad PRIVATE sfml-audio)

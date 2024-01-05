@@ -15,6 +15,7 @@ public:
         SRoad,
         River,
         Land,
+        LandWithAnimal,
         TypeCount
     };
     const float WITDH_SIZE = 1050;

@@ -54,8 +54,6 @@ void Button::draw() {
 void Button::handleEvent(const sf::Event& event) {
     if (!mStatus.isClickable()) return;
     if (event.type == sf::Event::MouseMoved) {
-        previousIsHovering = isHovering;
-        isHovering = isInside(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
         if (isHovering && !previousIsHovering) {
             mContext.sounds->play(mSoundEffectID[0]);
         }
@@ -74,7 +72,8 @@ void Button::handleEvent(const sf::Event& event) {
 }
 
 void Button::update(sf::Time dt) {
-
+    previousIsHovering = isHovering;
+    isHovering = isInside(sf::Vector2f(sf::Mouse::getPosition(*mContext.window)));
 }
 sf::String Button::getString() {
     return mText.getString();
