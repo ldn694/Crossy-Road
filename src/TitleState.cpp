@@ -19,7 +19,7 @@ TitleState::TitleState(StateStack& stack, States::ID stateID, Context context, S
 
 	mText.setFont(context.fonts->get(Fonts::T1));
 	mText.setString("Press any key to start");
-	mText.setColor(sf::Color(251,224,91,255));
+	mText.setFillColor(sf::Color(251,224,91));
 	centerOrigin(mText);
 	mText.setScale(1.0,1.0);
 	mText.setPosition(context.window->getView().getSize() / 2.f + sf::Vector2f(10.f, 150.f));

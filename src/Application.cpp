@@ -18,7 +18,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application(sf::ContextSettings contextSettings)
-	: mWindow(sf::VideoMode(1050, 600), "States", sf::Style::Close, contextSettings), mTextures(), mFonts(), mSounds(), mScoreboard(), mMusic(), mStateStack(Context(mWindow, mTextures, mFonts, mSounds, mMusic, mScoreboard, mSettings)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
+	: mWindow(sf::VideoMode(1050, 600), "Crossy Road", sf::Style::Close, contextSettings), mTextures(), mFonts(), mSounds(), mScoreboard(), mMusic(), mStateStack(Context(mWindow, mTextures, mFonts, mSounds, mMusic, mScoreboard, mSettings)), mStatisticsText(), mStatisticsUpdateTime(), mStatisticsNumFrames(0)
 {
 	mSettings.setMainSounds(&mSounds);
 	mSettings.setMusicPlayer(&mMusic);
@@ -29,8 +29,7 @@ Application::Application(sf::ContextSettings contextSettings)
 	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
 	mFonts.load(Fonts::Bungee,"Assets/Fonts/Bungee-Regular.otf");
 
-	mTextures.load(Textures::TitleScreen, "Assets/Images/TitleScreen.png");
-    mTextures.load(Textures::SettingBackground, "Assets/Images/SettingBackground.png");
+    mTextures.load(Textures::SettingBackground, "Assets/Images/ForSettings/SettingBackground.png");
 	mFonts.load(Fonts::T1, "Assets/Fonts/Colo-Pro.otf");
 	mFonts.load(Fonts::T2,"Assets/Fonts/MOTTCI.ttf");
 	mFonts.load(Fonts::Bungee, "Assets/Fonts/Bungee-Regular.otf");

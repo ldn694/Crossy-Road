@@ -21,7 +21,9 @@ void Rain::RainDrop::draw(sf::RenderWindow& window) {
     window.draw(shape);
 }
 
-Rain::Rain(float width, float height, float dropWidth, float dropHeight, float dropSpeed, sf::Time spawnPeriod, sf::Time startRainPeriod) {
+Rain::Rain(float width, float height, float dropWidth, float dropHeight, float dropSpeed, sf::Time spawnPeriod, sf::Time startRainPeriod, SoundPlayer& soundPlayer): 
+            mSoundPlayer(soundPlayer), mRainSound(nullptr)
+{
     this->width = width;
     this->height = height;
     this->dropWidth = dropWidth;
@@ -74,6 +76,10 @@ void Rain::draw(sf::RenderWindow& window) {
 }
 
 void Rain::reset() {
+    if (mRainSound != nullptr) {
+        mSoundPlayer.stop(*mRainSound);
+    }
+    mRainSound = &mSoundPlayer.play(SoundEffect::Thunder);
     drops.clear();
     spawnTimer = sf::Time::Zero;
 }

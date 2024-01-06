@@ -22,6 +22,7 @@ MusicPlayer::MusicPlayer()
 
 void MusicPlayer::play(Music::ID theme, bool loop)
 {
+    std::cout << "Playing music " << theme << "\n";
     mMusic[theme]->setVolume(mVolume);
     mMusic[theme]->setLoop(loop);
     mMusic[theme]->stop();

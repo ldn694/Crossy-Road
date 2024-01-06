@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SoundPlayer.hpp"
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -17,6 +19,8 @@ class Rain {
         void draw(sf::RenderWindow& window);
     };
 private:
+    SoundPlayer& mSoundPlayer;
+    sf::Sound* mRainSound;
     std::vector<RainDrop> drops;
     float width, height;
     float dropWidth, dropHeight;
@@ -27,7 +31,7 @@ private:
     sf::Time startRainPeriod;
     sf::RectangleShape background;
 public:
-    Rain(float width, float height, float dropWidth, float dropHeight, float dropSpeed, sf::Time spawnPeriod, sf::Time startRainPeriod);
+    Rain(float width, float height, float dropWidth, float dropHeight, float dropSpeed, sf::Time spawnPeriod, sf::Time startRainPeriod, SoundPlayer& soundPlayer);
     void reset();
     void update(sf::Time dt);
     void draw(sf::RenderWindow& window);

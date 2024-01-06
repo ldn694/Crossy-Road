@@ -10,30 +10,30 @@
 #include "SettingState.hpp"
 #include "Utility.hpp"
 ScrollBarList::ScrollBarList() {}
-ScrollBarList::ScrollBarList(std::string filename) 
-  : mScrollBars(), mFileName(filename)
+ScrollBarList::ScrollBarList(std::string filename)
+    : mScrollBars(), mFileName(filename)
 {
-   // load mScrollBarList from text file
-    
-	std::ifstream fin(mFileName);
-	if(fin.is_open())
-	{
-        std::string temp1,temp2,sound_string,music_string;
-		fin >> temp1 >> sound_string >> temp2 >> music_string;
-		
-		float a = std::stof(sound_string);
-		float b = std::stof(music_string);
-		ScrollBar mSB_Sound(600,430,200,a * 180 + 600);
-		ScrollBar mSB_Music(600,530,200,b * 180 + 600);
+    // load mScrollBarList from text file
+
+    std::ifstream fin(mFileName);
+    if (fin.is_open())
+    {
+        std::string temp1, temp2, sound_string, music_string;
+        fin >> temp1 >> sound_string >> temp2 >> music_string;
+
+        float a = std::stof(sound_string);
+        float b = std::stof(music_string);
+        ScrollBar mSB_Sound(450, 425, 280, a * 260 + 450);
+        ScrollBar mSB_Music(450, 525, 280, b * 260 + 450);
         mScrollBars.push_back(mSB_Sound);
         mScrollBars.push_back(mSB_Music);
+    }
+    fin.close();
 }
-        fin.close();
-	}
-    
-void ScrollBarList::draw(sf::RenderWindow &window)
+
+void ScrollBarList::draw(sf::RenderWindow& window)
 {
-    for(int i =0;i<mScrollBars.size();i++)
+    for (int i = 0;i < mScrollBars.size();i++)
     {
         mScrollBars[i].draw(window);
     }
@@ -57,8 +57,8 @@ void ScrollBarList::updateFile()
     file.seekp(0, std::ios::beg);
 
     // Write the modified first line back to the file
-    file << std::fixed << std::setprecision(2) <<  "Sound: " << mScrollBars[0].getValue() << " Music: " << mScrollBars[1].getValue() << "\n";
-    
+    file << std::fixed << std::setprecision(2) << "Sound: " << mScrollBars[0].getValue() << " Music: " << mScrollBars[1].getValue() << "\n";
+
 
     // Close the file
     file.close();
@@ -67,9 +67,9 @@ void ScrollBarList::updateFile()
 bool ScrollBarList::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 {
     bool changed = false;
-    for(int i=0;i<mScrollBars.size();i++)
+    for (int i = 0;i < mScrollBars.size();i++)
     {
-        if (mScrollBars[i].handleEvent(event,window)) {
+        if (mScrollBars[i].handleEvent(event, window)) {
             updateFile();
             changed = true;
         }
@@ -85,4 +85,14 @@ float ScrollBarList::getVolumeSound() const
 float ScrollBarList::getVolumeMusic() const
 {
     return mScrollBars[1].getValue();
+}
+
+void ScrollBarList::toggleSound()
+{
+    mScrollBars[0].toggle();
+}
+
+void ScrollBarList::toggleMusic()
+{
+    mScrollBars[1].toggle();
 }

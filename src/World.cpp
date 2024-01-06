@@ -28,7 +28,7 @@ World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vect
 	, mPlayerNames(playerNames)
 	, mNumPlayer(numPlayer)
 	, mCurrentScore(0)
-	, mRain(mWorldView.getSize().x, mWorldView.getSize().y, 3, 10, 500, sf::seconds(0.1f), sf::seconds(1.0f))
+	, mRain(mWorldView.getSize().x, mWorldView.getSize().y, 3, 10, 500, sf::seconds(0.1f), sf::seconds(1.0f), mSounds)
 	, mContext(context)
 {
 	assertThrow(numPlayer == 1 || numPlayer == 2, "numPlayer must be 1 or 2");
@@ -113,6 +113,7 @@ void World::loadSounds() {
 	mSounds.load(SoundEffect::Car_Honk, "Assets/Sounds/car_honk_1.wav");
 	mSounds.load(SoundEffect::Hard_Collision, "Assets/Sounds/hard_collision.wav");
 	mSounds.load(SoundEffect::Soft_Collision, "Assets/Sounds/soft_collision.wav");
+	mSounds.load(SoundEffect::Thunder, "Assets/Sounds/thunder.wav");
 }
 
 void World::loadTextures()
@@ -137,16 +138,13 @@ void World::loadTextures()
 	mTextures.load(Textures::FoxUp, "Assets/Images/ForGame/character/fox/back.png");
 	mTextures.load(Textures::FoxLeft, "Assets/Images/ForGame/character/fox/left.png");
 	mTextures.load(Textures::FoxRight, "Assets/Images/ForGame/character/fox/right.png");
-	mTextures.load(Textures::Eagle, "Assets/Images/Eagle.png");
-	mTextures.load(Textures::Raptor, "Assets/Images/Raptor.png");
-	mTextures.load(Textures::Desert, "Assets/Images/Desert.png");
 	mTextures.load(Textures::Railways, "Assets/Images/ForGame/railway_train/railway.png");
 	mTextures.load(Textures::Train, "Assets/Images/ForGame/railway_train/train.png");
 	mTextures.load(Textures::TrafficLight, "Assets/Images/ForGame/railway_train/light0.png");
 	mTextures.load(Textures::TrafficLight1, "Assets/Images/ForGame/railway_train/light1.png");
 	mTextures.load(Textures::TrafficLight2, "Assets/Images/ForGame/railway_train/light2.png");
-	mTextures.load(Textures::RiverLeftToRight, "Assets/Images/ForGame/river_log/river0.png");
-	mTextures.load(Textures::RiverRightToLeft, "Assets/Images/ForGame/river_log/river1.png");
+	mTextures.load(Textures::RiverLeftToRight, "Assets/Images/ForGame/river_log/river.png");
+	mTextures.load(Textures::RiverRightToLeft, "Assets/Images/ForGame/river_log/river.png");
 	mTextures.load(Textures::SRoad_Default, "Assets/Images/ForGame/road_car/default.png");
 	mTextures.load(Textures::SRoad_Line, "Assets/Images/ForGame/road_car/line.png");
 	mTextures.load(Textures::SRoad_Stripe, "Assets/Images/ForGame/road_car/stripe.png");
@@ -163,7 +161,7 @@ void World::loadTextures()
 	mTextures.load(Textures::StopLightYellow, "Assets/Images/ForGame/road_car/light_yellow.png");
 	mTextures.load(Textures::StartLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light_shadow.png");
 	mTextures.load(Textures::NormalLand, "Assets/Images/ForGame/sidewalk_stuff/sidewalk_light.png");
-	mTextures.load(Textures::Rock1, "Assets/Images/ForGame/sidewalk_stuff/rock.png");
+	mTextures.load(Textures::Rock, "Assets/Images/ForGame/sidewalk_stuff/rock.png");
 	mTextures.load(Textures::SmallTree, "Assets/Images/ForGame/sidewalk_stuff/tree_small.png");
 	mTextures.load(Textures::MediumTree, "Assets/Images/ForGame/sidewalk_stuff/tree_medium.png");
 	mTextures.load(Textures::BigTree, "Assets/Images/ForGame/sidewalk_stuff/tree_big.png");
@@ -198,9 +196,6 @@ void World::buildScene()
 	}
 
 	// Prepare the tiled background
-	sf::Texture& texture = mTextures.get(Textures::Desert);
-	sf::IntRect textureRect(mWorldBounds);
-	texture.setRepeated(true);
 
 	// // Add the background sprite to the scene
 	// std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));

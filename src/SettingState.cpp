@@ -4,6 +4,8 @@
 #include "ResourceHolder.hpp"
 #include "StateIdentifiers.hpp"
 #include "SettingState.hpp"
+#include "Switch.hpp"
+#include "KeyBindingButton.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Audio.hpp>
@@ -41,18 +43,18 @@ bool SettingState::checkValidSettings(const std::string& filename) {
 		return false;
 	}
 	//Must be the same letter
-	if (data[0] != "Sound:" || 
-		data[2] != "Music:" || 
-		data[4] != "Player" || data[5] != "1" || 
-		data[6] != "MoveLeft:" || 
-		data[8] != "MoveRight:" || 
-		data[10] != "MoveUp:" || 
-		data[12] != "MoveDown:" || 
-		data[14] != "Player" || 
-		data[15] != "2" || 
-		data[16] != "MoveLeft:" || 
-		data[18] != "MoveRight:" || 
-		data[20] != "MoveUp:" || 
+	if (data[0] != "Sound:" ||
+		data[2] != "Music:" ||
+		data[4] != "Player" || data[5] != "1" ||
+		data[6] != "MoveLeft:" ||
+		data[8] != "MoveRight:" ||
+		data[10] != "MoveUp:" ||
+		data[12] != "MoveDown:" ||
+		data[14] != "Player" ||
+		data[15] != "2" ||
+		data[16] != "MoveLeft:" ||
+		data[18] != "MoveRight:" ||
+		data[20] != "MoveUp:" ||
 		data[22] != "MoveDown:") {
 		std::cout << "Invalid const string data\n";
 		return false;
@@ -63,12 +65,19 @@ bool SettingState::checkValidSettings(const std::string& filename) {
 		return false;
 	}
 	//Player 1 and 2 must be a valid key
-	int player1[4] = { 7, 9, 11, 13 };
-	int player2[4] = { 17, 19, 21, 23 };
-	for (int i = 0; i < 4; i++) {
-		if (stringToSFMLKey(data[player1[i]]) == sf::Keyboard::Unknown || stringToSFMLKey(data[player2[i]]) == sf::Keyboard::Unknown) {
+	int keyPos[] = { 7, 9, 11, 13, 17, 19, 21, 23 };
+	for (int i = 0; i < 8; i++) {
+		if (keyCodeToString(sf::Keyboard::Unknown) == data[keyPos[i]]) {
 			std::cout << "Invalid key data\n";
 			return false;
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = i + 1; j < 8;j++) {
+			if (data[keyPos[i]] == data[keyPos[j]]) {
+				std::cout << "Same key\n";
+				return false;
+			}
 		}
 	}
 	return true;
@@ -171,79 +180,78 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	mScrollBarList = std::move(ScrollBarList(mSettingsPath));
 	sf::Texture& texture = context.textures->get(Textures::SettingBackground);
 	sf::Font& font = context.fonts->get(Fonts::Main);
-	context.textures->load(Textures::Sound, "Assets/Images/sound.png");
-	context.textures->load(Textures::Sound_, "Assets/Images/sound_hover.png");
-	context.textures->load(Textures::Music, "Assets/Images/music.png");
-	context.textures->load(Textures::Music_, "Assets/Images/music_hover.png");
-	context.textures->load(Textures::Back, "Assets/Images/back.png");
-	context.textures->load(Textures::Back_, "Assets/Images/back_hover.png");
+	context.textures->load(Textures::Sound, "Assets/Images/ForSettings/sound.png");
+	context.textures->load(Textures::Sound_Hover, "Assets/Images/ForSettings/sound_hover.png");
+	context.textures->load(Textures::Sound_Muted, "Assets/Images/ForSettings/sound_muted.png");
+	context.textures->load(Textures::Music, "Assets/Images/ForSettings/music.png");
+	context.textures->load(Textures::Music_Hover, "Assets/Images/ForSettings/music_hover.png");
+	context.textures->load(Textures::Music_Muted, "Assets/Images/ForSettings/music_muted.png");
 	context.textures->load(Textures::scoreboard_quit, "Assets/Images/ForScore/quit.png");
 	context.textures->load(Textures::scoreboard_quit_hover, "Assets/Images/ForScore/quit_hover.png");
 
-	context.textures->load(Textures::MoveLeft, "Assets/Images/MoveLeft_.png");
-	context.textures->load(Textures::MoveLeft_, "Assets/Images/MoveLeft.png");
-	context.textures->load(Textures::MoveRight, "Assets/Images/MoveRight_.png");
-	context.textures->load(Textures::MoveRight_, "Assets/Images/MoveRight.png");
-	context.textures->load(Textures::MoveUp, "Assets/Images/MoveUp_.png");
-	context.textures->load(Textures::MoveUp_, "Assets/Images/MoveUp.png");
-	context.textures->load(Textures::MoveDown_, "Assets/Images/MoveDown.png");
-	context.textures->load(Textures::MoveDown, "Assets/Images/MoveDown_.png");
+	context.textures->load(Textures::MoveLeft, "Assets/Images/ForSettings/MoveLeft.png");
+	context.textures->load(Textures::MoveRight, "Assets/Images/ForSettings/MoveRight.png");
+	context.textures->load(Textures::MoveUp, "Assets/Images/ForSettings/MoveUp.png");
+	context.textures->load(Textures::MoveDown, "Assets/Images/ForSettings/MoveDown.png");
 
-	context.textures->load(Textures::KeyBinding, "Assets/Images/keybinding.png");
-	context.textures->load(Textures::KeyBinding_, "Assets/Images/keybinding_.png");
+	context.textures->load(Textures::KeyBinding, "Assets/Images/ForSettings/keybinding.png");
+	context.textures->load(Textures::KeyBinding_Hover, "Assets/Images/ForSettings/keybinding_.png");
 
-	context.textures->load(Textures::SetPlayer1, "Assets/Images/P1.png");
-	context.textures->load(Textures::SetPlayer2, "Assets/Images/P2.png");
+	context.textures->load(Textures::SetPlayer1, "Assets/Images/ForSettings/P1.png");
+	context.textures->load(Textures::SetPlayer2, "Assets/Images/ForSettings/P2.png");
 	mBackgroundSprite.setTexture(texture);
 	mBackgroundSprite.setScale(1050.0f / mBackgroundSprite.getGlobalBounds().width, 600.0f / mBackgroundSprite.getGlobalBounds().height);
 
 
+	mClickableList.registerClickable<Switch>(Clickable::Type::Switch);
 	mClickableList.registerClickable<Button>(Clickable::Type::Button);
+	mClickableList.registerClickable<KeyBindingButton>(Clickable::Type::KeyBindingButton);
+
 	Clickable::Info info;
-	info.floatList = { 295, 400, 220, 90, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.floatList = { 332, 410, 49, 49, 15 };				//toa do (x,y, +x, +y, scale/10)
 	info.status = Clickable::Status(true, true, true);      //cac trang thai duoc cho phep cua button					
-	info.textureIDList = { Textures::Sound_, Textures::Sound };	//cac nut
+	info.textureIDList = { Textures::Sound, Textures::Sound_Hover, Textures::Sound_Muted };	//cac nut
 	info.stringList = { "" };
 	info.fontIDList = { Fonts::Bungee };
 	info.colorList = { sf::Color::White };
-	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Sound, info);
+	mClickableList.addClickable(Clickable::Type::Switch, ClickableID::Sound, info);
 
-	info.floatList = { 300, 500, 220, 90, 15 };
-	info.textureIDList = { Textures::Music_, Textures::Music };
-	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Music, info);
+	info.floatList = { 332, 510, 49, 49, 15 };
+	info.textureIDList = { Textures::Music, Textures::Music_Hover, Textures::Music_Muted };
+	mClickableList.addClickable(Clickable::Type::Switch, ClickableID::Music, info);
 
-	info.floatList = {30, 13, 70, 70, 15};
+	info.floatList = { 30, 13, 70, 70, 15 };
 	info.textureIDList = { Textures::scoreboard_quit, Textures::scoreboard_quit_hover };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::Back, info);
 
-	info.floatList = { 295, 180, 110, 45, 15 };				//toa do (x,y, +x, +y, scale/10)
+	info.floatList = { 250, 180, 210, 210.f / 627 * 170, 15 };				//toa do (x,y, +x, +y, scale/10)
 	info.status = Clickable::Status(Clickable::Status(true, false, false));
-	info.textureIDList = { Textures::MoveLeft_, Textures::MoveLeft };	//cac nut
+	info.textureIDList = { Textures::MoveLeft, Textures::MoveLeft };	//cac nut
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::MoveLeft, info);
 
-	info.floatList = { 300, 235, 110, 45, 15 };
+	info.floatList = { 250, 235, 210, 210.f / 627 * 170, 15 };
 	info.status = Clickable::Status(Clickable::Status(true, false, false));
-	info.textureIDList = { Textures::MoveRight_, Textures::MoveRight };
+	info.textureIDList = { Textures::MoveRight, Textures::MoveRight };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::MoveRight, info);
 
-	info.floatList = { 295, 285, 110, 45, 15 };
+	info.floatList = { 250, 285, 210, 210.f / 627 * 170, 15 };
 	info.status = Clickable::Status(Clickable::Status(true, false, false));
-	info.textureIDList = { Textures::MoveUp_, Textures::MoveUp };
+	info.textureIDList = { Textures::MoveUp, Textures::MoveUp };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::MoveUp, info);
 
-	info.floatList = { 300, 340, 110, 45, 15 };
+	info.floatList = { 250, 340, 210, 210.f / 627 * 170, 15 };
 	info.status = Clickable::Status(Clickable::Status(true, false, false));
-	info.textureIDList = { Textures::MoveDown_, Textures::MoveDown };
+	info.textureIDList = { Textures::MoveDown, Textures::MoveDown };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::MoveDown, info);
 
-	info.floatList = { 680, 130, 110, 45, 15 };				
-	info.status = Clickable::Status(Clickable::Status(true, false, false));      					
-	info.textureIDList = { Textures::SetPlayer1, Textures::SetPlayer1};	
+	info.floatList = { 400, 130, 210, 210.f / 627 * 170, 15 };
+	info.status = Clickable::Status(Clickable::Status(true, false, false));
+	info.textureIDList = { Textures::SetPlayer1, Textures::SetPlayer1 };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::SetPlayer1, info);
 
-    info.floatList = { 850, 130, 110, 45, 15 };			
-	info.status = Clickable::Status(Clickable::Status(true, false, false));      				
-	info.textureIDList = { Textures::SetPlayer2, Textures::SetPlayer2};	
+	info.floatList = { 570, 130, 210, 210.f / 627 * 170, 15 };
+	info.status = Clickable::Status(Clickable::Status(true, false, false));
+	info.textureIDList = { Textures::SetPlayer2, Textures::SetPlayer2 };
 	mClickableList.addClickable(Clickable::Type::Button, ClickableID::SetPlayer2, info);
 
 	//load date from text file
@@ -263,13 +271,13 @@ SettingState::SettingState(StateStack& stack, States::ID stateID, Context contex
 	for (int playerID = 0; playerID < 2; playerID++) {
 		for (int moveID = 0; moveID < 4; moveID++) {
 			int id = playerID * 4 + moveID;
-			info.floatList = { 680.f + 170 * playerID, 180.f + 55 * moveID, 110, 45, 15 };
+			info.floatList = { 450.f + 170 * playerID, 180.f + 55 * moveID, 110, 45, 15 };
 			info.status = Clickable::Status(true, true, true);
-			info.textureIDList = { Textures::KeyBinding, Textures::KeyBinding_ };
+			info.textureIDList = { Textures::KeyBinding, Textures::KeyBinding_Hover, Textures::KeyBinding_Hover };
 			info.stringList = { getData(mData, static_cast<Data>(id + Data::P1Left)) };
 			info.fontIDList = { Fonts::Bungee };
 			info.colorList = { sf::Color::White };
-			mClickableList.addClickable(Clickable::Type::Button, ClickableID::PlayerOneMoveLeft + id, info);
+			mClickableList.addClickable(Clickable::Type::KeyBindingButton, ClickableID::PlayerOneMoveLeft + id, info);
 		}
 	}
 
@@ -316,6 +324,13 @@ bool SettingState::handleEvent(const sf::Event& event)
 			{
 				std::string key_string = keyCodeToString(event.key.code);
 				mClickableList.setTextByID(i + ClickableID::PlayerOneMoveLeft, key_string);
+				for (int j = 0; j < 8; j++)
+				{
+					if (j != i && key_string == mClickableList.getTextByID(j + ClickableID::PlayerOneMoveLeft))
+					{
+						mClickableList.setTextByID(j + ClickableID::PlayerOneMoveLeft, keyCodeToString(sf::Keyboard::Unknown));
+					}
+				}
 				updateFile();
 				mPendingUpdate = true;
 				//std::string test = mClickableList.getTextByID(i+7);
@@ -330,11 +345,15 @@ bool SettingState::handleEvent(const sf::Event& event)
 			std::cout << "Left Clicked " << announcement.id << "\n";
 			switch (announcement.id) {
 			case SettingState::ClickableID::Sound: {
-
+				mScrollBarList.toggleSound();
+				updateFile();
+				mPendingUpdate = true;
 				break;
 			}
 			case SettingState::ClickableID::Music: {
-
+				mScrollBarList.toggleMusic();
+				updateFile();
+				mPendingUpdate = true;
 				break;
 			}
 			case SettingState::ClickableID::Back: {
@@ -342,17 +361,20 @@ bool SettingState::handleEvent(const sf::Event& event)
 				break;
 			}
 			default:
-				if (announcement.id >= SettingState::ClickableID::PlayerOneMoveLeft && announcement.id <= SettingState::ClickableID::PlayerTwoMoveDown) {
-					for (int i = 0; i < 8; i++) {
-						c[i] = false;
-					}
-					c[announcement.id - SettingState::ClickableID::PlayerOneMoveLeft] = true;
-				}
 				break;
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
 			std::cout << "Right Clicked " << announcement.id << "\n";
+		}
+		else if (announcement.action == Clickable::Toggled) {
+			std::cout << "Toggled " << announcement.id << "\n";
+			if (announcement.id >= ClickableID::PlayerOneMoveLeft && announcement.id <= ClickableID::PlayerTwoMoveDown) {
+				c[announcement.id - ClickableID::PlayerOneMoveLeft] = !c[announcement.id - ClickableID::PlayerOneMoveLeft];
+			}
+		}
+		else if (announcement.action == Clickable::Moved) {
+			std::cout << "Moved " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {

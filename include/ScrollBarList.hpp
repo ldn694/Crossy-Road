@@ -13,6 +13,8 @@ public:
     bool                      handleEvent(const sf::Event& event, sf::RenderWindow& window);
     float                     getVolumeSound() const;
     float                     getVolumeMusic() const;
+    void                      toggleSound();
+    void                      toggleMusic();
 private:
     void                      updateFile();
 private:

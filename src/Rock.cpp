@@ -12,7 +12,7 @@ Textures::ID toTextureID(Rock::Type type)
 	switch (type)
 	{
 	case Rock::Rock1:
-        return Textures::Rock1;
+        return Textures::Rock;
 	}
 }
 

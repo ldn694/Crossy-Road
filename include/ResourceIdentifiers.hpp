@@ -13,10 +13,6 @@ namespace Textures
 {
 	enum ID
 	{
-		Eagle,
-		Raptor,
-		Desert,
-		TitleScreen,
 		M1,
 		M2,
 		Button,
@@ -76,25 +72,21 @@ namespace Textures
 		Lily, SmallLog, BigLog,
 		//Land
 		NormalLand, StartLand,
-		Rock1,
+		Rock,
 		SmallTree, MediumTree, BigTree,
 		SettingBackground,
 		Sound,
-		Sound_,
+		Sound_Hover,
+		Sound_Muted,
 		Music,
-		Music_,
-		Back,
-        Back_,
+		Music_Hover,
+		Music_Muted,
 		MoveLeft,
-		MoveLeft_,
 		MoveRight,
-		MoveRight_,
 		MoveUp,
-		MoveUp_,
 		MoveDown,
-		MoveDown_,
 		KeyBinding,
-		KeyBinding_,
+		KeyBinding_Hover,
 		SetPlayer1,
 		SetPlayer2,
 		//SRoad
@@ -201,6 +193,7 @@ namespace SoundEffect
 		Dead_Lion,
 		Soft_Collision,
 		Hard_Collision,
+		Thunder,
 	};
 }
 

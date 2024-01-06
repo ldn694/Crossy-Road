@@ -16,8 +16,7 @@ Button::Button(ClickableList* mList, int id, Context context, Clickable::Info in
     mTextureID[0] = info.textureIDList[0];
     mTextureID[1] = info.textureIDList[1];
     if (info.soundEffectIDList.size() == 2) {
-        mSoundEffectID[0] = info.soundEffectIDList[0];
-        mSoundEffectID[1] = info.soundEffectIDList[1];
+        mSoundEffectID[0] = info.soundEffectIDList[1];
     }
     else {
         mSoundEffectID[0] = SoundEffect::Mouse_Hover;

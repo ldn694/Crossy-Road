@@ -14,13 +14,16 @@ public:
         Slide,
         Choice,
         TypeBox,
+        Switch,
+        KeyBindingButton,
     };
     enum Action {
         LeftPressed,
         RightPressed,
         LeftReleased,
         RightReleased,
-        Moved
+        Moved,
+        Toggled,
     };
     struct Status {
         int status;

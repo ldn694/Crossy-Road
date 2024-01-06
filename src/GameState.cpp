@@ -148,8 +148,10 @@ void GameState::endGame(GameStatus status) {
 bool GameState::update(sf::Time dt) {
 	try {
 		if (firstTrueUpdate) {
-			getContext().music->stopAllMusic();
-			getContext().music->play(Music::IngameTheme);
+			if (getContext().music->getStatus(Music::IngameTheme) != sf::Music::Playing) {
+				getContext().music->stopAllMusic();
+				getContext().music->play(Music::IngameTheme);
+			}
 			firstTrueUpdate = false;
 		}
 		mWorld.getSoundPlayer().playAllSounds();

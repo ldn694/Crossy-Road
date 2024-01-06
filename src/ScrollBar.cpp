@@ -9,6 +9,7 @@ ScrollBar::ScrollBar() {}
 
 ScrollBar::ScrollBar(float x, float y, float width, float z)
 {
+    isTurnedOn = true;
     bar.setSize(sf::Vector2f(width, 20.f));
     bar.setPosition(x, y);
     bar.setFillColor(sf::Color(200, 200, 200));
@@ -60,8 +61,15 @@ void ScrollBar::draw(sf::RenderWindow& window)
 }
 float ScrollBar::getValue() const
 {
+    if (!isTurnedOn)
+        return 0.f;
     // Normalize the slider position to a value between 0 and 1
     return (slider.getPosition().x - bar.getPosition().x) / (bar.getSize().x - slider.getSize().x);
+}
+
+void ScrollBar::toggle()
+{
+    isTurnedOn = !isTurnedOn;
 }
 
 bool ScrollBar::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
