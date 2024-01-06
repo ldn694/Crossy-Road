@@ -49,6 +49,11 @@ unsigned int Animal::getCategory() const
     return Category::Player | (mPlayerID == 0 ? Category::PlayerOne : Category::PlayerTwo);
 }
 
+Animal::Type Animal::getType() const
+{
+    return mType;
+}
+
 Textures::ID Animal::toTextureID(Type type, Direction direction) 
 {
     //No general return
@@ -114,6 +119,18 @@ Textures::ID Animal::toTextureID(Type type, Direction direction)
 void Animal::updateCurrent(sf::Time dt)
 {
     Entity::updateCurrent(dt);
+    CollisionInfo info = getCollisionInfo();
+    if (info.type == Entity::BlockedCollision) {
+        if (static_cast<Animal*>(info.mover) != nullptr) {
+            if (info.blocker->getCategory() & Category::SoftObstacle) {
+                mSounds.play(SoundEffect::Soft_Collision, info.blocker->getWorldPosition());
+                mSounds.play(SoundEffect::Hard_Collision, info.blocker->getWorldPosition());
+            }
+            else if (info.blocker->getCategory() & Category::HardObstacle) {
+                mSounds.play(SoundEffect::Hard_Collision, info.blocker->getWorldPosition());
+            }
+        }
+    }
     if (isMoving && !pendingAnimation()) {
         isMoving = false;
         assertThrow(this->getParent() != nullptr, "Animal has no parent");

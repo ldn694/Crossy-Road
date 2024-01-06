@@ -6,6 +6,7 @@ MusicPlayer::MusicPlayer()
     , mFilenames()
     , mVolume(100.f)
 {
+    mFilenames[Music::TitleTheme] = "Assets/Music/TitleTheme.mp3";
     mFilenames[Music::MenuTheme] = "Assets/Music/MenuTheme.mp3";
     mFilenames[Music::IngameTheme] = "Assets/Music/IngameTheme.mp3";
     mFilenames[Music::GameOverTheme] = "Assets/Music/GameOverTheme.mp3";

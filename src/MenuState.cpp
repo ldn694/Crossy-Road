@@ -13,6 +13,11 @@ MenuState::MenuState(StateStack& stack, States::ID stateID, Context context, Sta
 	sf::Texture &texture = context.textures->get(Textures::M2);
 	sf::Font &font = context.fonts->get(Fonts::T2);
 
+	if (getContext().music->getStatus(Music::MenuTheme) != sf::SoundSource::Status::Playing) {
+		getContext().music->stopAllMusic();
+		getContext().music->play(Music::MenuTheme);
+	}
+
 	std::string path = "Assets/Images/ForMenu/";
 
 	context.textures->load(Textures::Play, path + "newgame.png");

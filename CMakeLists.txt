@@ -16,7 +16,6 @@ include_directories(include)
 add_executable(CrossyRoad 
     src/main.cpp
     src/Application.cpp
-    src/Aircraft.cpp
     src/Command.cpp
     src/CommandQueue.cpp 
     src/Entity.cpp

@@ -20,10 +20,10 @@ std::string toString(Category::Type type)
             return "SafeZone";
         case Category::DeadZone:
             return "DeadZone";
-        case Category::AlliedAircraft:
-            return "AlliedAircraft";
-        case Category::EnemyAircraft:
-            return "EnemyAircraft";
+        case Category::HardObstacle:
+            return "HardObstacle";
+        case Category::SoftObstacle:
+            return "SoftObstacle";
         default:
             return "Unknown";
     }

@@ -194,6 +194,13 @@ namespace SoundEffect
 		Car_Honk,
 		Mouse_Click,
 		Mouse_Hover,
+		Dead_Cat,
+		Dead_Chicken,
+		Dead_Fox,
+		Dead_Pig,
+		Dead_Lion,
+		Soft_Collision,
+		Hard_Collision,
 	};
 }
 
@@ -201,6 +208,7 @@ namespace Music
 {
 	enum ID
 	{
+		TitleTheme,
 		MenuTheme,
 		IngameTheme,
 		GameOverTheme,

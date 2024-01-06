@@ -4,7 +4,6 @@
 #include "ResourceIdentifiers.hpp"
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
-#include "Aircraft.hpp"
 #include "Animal.hpp"
 #include "Railways.hpp"
 #include "River.hpp"
@@ -82,7 +81,6 @@ class World : private sf::NonCopyable
 		sf::FloatRect						mWorldBounds;
 		sf::Vector2f						mSpawnPosition;
 		float								mScrollSpeed;
-		//Aircraft*							mPlayerAircraft;
 		RoadList*							mRoadList;
 		Difficulty							mDifficulty;
 		int 								mNumPlayer;

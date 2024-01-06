@@ -31,6 +31,7 @@ class Animal: public Entity {
                                 Animal(int playerID, Type type, std::string playerName, TextureHolder& textures, FontHolder& fonts, SoundPlayer& soundPlayer,  SceneNode* tmpNode, int& passedRoad);
         virtual unsigned int	getCategory() const;
         sf::FloatRect			getHitbox() const;
+        Animal::Type            getType() const;
         void                    move(Direction direction);
         friend void             setZone(Animal* player, Zone* zone);
         void                    setMovementDuration(sf::Time duration);

@@ -111,6 +111,8 @@ void World::loadSounds() {
 	mSounds.load(SoundEffect::Train_Incoming, "Assets/Sounds/train_incoming.wav");
 	mSounds.load(SoundEffect::Train_Passing, "Assets/Sounds/train_passing.wav");
 	mSounds.load(SoundEffect::Car_Honk, "Assets/Sounds/car_honk_1.wav");
+	mSounds.load(SoundEffect::Hard_Collision, "Assets/Sounds/hard_collision.wav");
+	mSounds.load(SoundEffect::Soft_Collision, "Assets/Sounds/soft_collision.wav");
 }
 
 void World::loadTextures()
@@ -224,23 +226,6 @@ void World::buildScene()
 	roadList->setPosition(0, mWorldView.getSize().y - 50);
 	mRoadList = roadList.get();
 	mSceneLayers[Road]->requestAttach(std::move(roadList));
-
-
-
-	// std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::AllyRaptor, mTextures));
-	// // leftEscort->setPosition(-80.f, 50.f);
-	// // mPlayerAircraft->attachChild(std::move(leftEscort));	
-	// leftEscort->setPosition(mSpawnPosition.x - 80.f, mSpawnPosition.y + 200.f);
-	// //mSceneLayers[Air]->attachChild(std::move(leftEscort));
-	// mSceneLayers[Air]->requestAttach(std::move(leftEscort));
-
-	// std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::EnemyRaptor, mTextures));
-	// // rightEscort->setPosition(80.f, 50.f);
-	// // mPlayerAircraft->attachChild(std::move(rightEscort));
-	// rightEscort->setPosition(mSpawnPosition.x + 80.f, mSpawnPosition.y + 200.f);
-	// //mSceneLayers[Air]->attachChild(std::move(rightEscort));
-	// mSceneLayers[Air]->requestAttach(std::move(rightEscort));
-
 }
 
 void World::adaptPlayerPosition()

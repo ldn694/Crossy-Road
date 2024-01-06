@@ -26,6 +26,27 @@ Animal::Type toAnimalType(std::string animalType) {
 	}
 }
 
+SoundEffect::ID toDeathSound(Animal::Type animalType) {
+	if (animalType == Animal::Cat) {
+		return SoundEffect::Dead_Cat;
+	}
+	else if (animalType == Animal::Chicken) {
+		return SoundEffect::Dead_Chicken;
+	}
+	else if (animalType == Animal::Lion) {
+		return SoundEffect::Dead_Lion;
+	}
+	else if (animalType == Animal::Pig) {
+		return SoundEffect::Dead_Pig;
+	}
+	else if (animalType == Animal::Fox) {
+		return SoundEffect::Dead_Fox;
+	}
+	else {
+		return SoundEffect::Mouse_Click;
+	}
+}
+
 std::vector <Animal::Type> toAnimalTypes(std::vector <std::string> animalTypes) {
 	std::vector <Animal::Type> result;
 	for (int i = 0; i < animalTypes.size(); i++) {
@@ -93,9 +114,18 @@ void GameState::draw()
 void GameState::endGame(GameStatus status) {
 	mWorld.getSoundPlayer().pauseAllSounds();
 	getContext().sounds->setListenerPosition(sf::Vector2f(0.f, 0.f));
+	Entity* entity = status.mEntity;
+	assertThrow(dynamic_cast<Animal*>(entity) != nullptr, "GameState::endGame() entity is not an animal");
+	Animal* animal = static_cast<Animal*>(entity);
 	if (status.mReason == GameStatus::Drowned) {
 		std::cout << "Drowned\n";
 		sf::Sound& sound = getContext().sounds->play(SoundEffect::Water_Splash, 1.f);
+		sound.setPosition(0.f, 0.f, 0.f);
+		sound.setRelativeToListener(true);
+	}
+	else if (status.mReason == GameStatus::Crashed) {
+		std::cout << "Crashed\n";
+		sf::Sound& sound = getContext().sounds->play(toDeathSound(animal->getType()), 1.f);
 		sound.setPosition(0.f, 0.f, 0.f);
 		sound.setRelativeToListener(true);
 	}

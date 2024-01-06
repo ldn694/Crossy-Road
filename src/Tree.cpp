@@ -77,6 +77,6 @@ sf::FloatRect Tree::getHitbox() const
 
 unsigned int Tree::getCategory() const
 {
-    return Category::Obstacle;
+    return Category::Obstacle | Category::SoftObstacle;
 }
 

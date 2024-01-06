@@ -37,6 +37,7 @@ class Entity : public SceneNode
 		CollisionInfo				handleCollision();
 		void 						removeAnimation();
 		virtual sf::FloatRect		getHitbox() const = 0;
+		CollisionInfo				getCollisionInfo() const;
 									~Entity();
 
 
@@ -44,6 +45,7 @@ class Entity : public SceneNode
 		Animation*					curAnimation = nullptr;
 		bool						isMovingBack = false;
 		FakeEntity*					mOriginNode = nullptr;
+		CollisionInfo				mCollisionInfo = CollisionInfo(NoCollision, nullptr, nullptr);
 		void 						setOriginNode();
 		void						resetOriginNode();
 		void 						announceGameLost(CollisionInfo info);
