@@ -38,9 +38,6 @@ bool SettingState::checkValidSettings(const std::string& filename) {
 	}
 	if (data.size() != 24) {
 		std::cout << "Invalid data size\n";
-		for (int i = 0; i < data.size(); i++) {
-			std::cout << data[i] << "\n";
-		}
 		return false;
 	}
 	//Must be the same letter
@@ -298,6 +295,7 @@ void SettingState::draw()
 bool SettingState::update(sf::Time dt)
 {
 	mClickableList.update(dt);
+	getContext().settings->lazyUpdate();
 	return true;
 }
 
@@ -317,8 +315,8 @@ bool SettingState::handleEvent(const sf::Event& event)
 			if (c[i])
 			{
 				std::string key_string = keyCodeToString(event.key.code);
-				std::cout << key_string << std::endl;
 				mClickableList.setTextByID(i + ClickableID::PlayerOneMoveLeft, key_string);
+				updateFile();
 				mPendingUpdate = true;
 				//std::string test = mClickableList.getTextByID(i+7);
 				//std::cout<<test<<std::endl;
@@ -364,9 +362,7 @@ bool SettingState::handleEvent(const sf::Event& event)
 	return false;
 }
 
-SettingState::~SettingState()
-{
-	// save to text file
+void SettingState::updateFile() {
 	std::ofstream fout(mSettingsPath, std::ios::trunc);
 	if (fout.is_open())
 	{
@@ -384,5 +380,10 @@ SettingState::~SettingState()
 		fout << "MoveDown: " << mClickableList.getTextByID(ClickableID::PlayerTwoMoveDown) << "\n";
 	}
 	fout.close();
+}
 
+SettingState::~SettingState()
+{
+	// save to text file
+	updateFile();
 }

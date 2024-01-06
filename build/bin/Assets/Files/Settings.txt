@@ -1,4 +1,4 @@
-Sound: 0.38 Music: 0.62
+Sound: 1.00 Music: 0.21
 Player 1
 MoveLeft: Left MoveRight: Right MoveUp: Up MoveDown: Down
 Player 2

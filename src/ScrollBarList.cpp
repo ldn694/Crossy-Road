@@ -20,7 +20,6 @@ ScrollBarList::ScrollBarList(std::string filename)
 	{
         std::string temp1,temp2,sound_string,music_string;
 		fin >> temp1 >> sound_string >> temp2 >> music_string;
-        std::cout<<sound_string<<std::endl;
 		
 		float a = std::stof(sound_string);
 		float b = std::stof(music_string);

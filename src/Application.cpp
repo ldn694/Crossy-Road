@@ -61,7 +61,6 @@ void Application::run()
 
 	while (mWindow.isOpen())
 	{
-		mSettings.lazyUpdate();
 		sf::Time dt = clock.restart();
 		timeSinceLastUpdate += dt;
 		while (timeSinceLastUpdate > TimePerFrame)

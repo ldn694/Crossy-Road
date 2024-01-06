@@ -5,10 +5,7 @@
 #include <string>
 #include "ScrollBar.hpp"
 
-ScrollBar::ScrollBar()
-{
-    std::cout << "ScrollBar::default constructor" << std::endl;
-}
+ScrollBar::ScrollBar() {}
 
 ScrollBar::ScrollBar(float x, float y, float width, float z)
 {

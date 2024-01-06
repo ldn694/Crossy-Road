@@ -8,15 +8,20 @@
 Animal::Type toAnimalType(std::string animalType) {
 	if (animalType == "Cat") {
 		return Animal::Cat;
-	} else if (animalType == "Chicken") {
+	}
+	else if (animalType == "Chicken") {
 		return Animal::Chicken;
-	} else if (animalType == "Lion") {
+	}
+	else if (animalType == "Lion") {
 		return Animal::Lion;
-	} else if (animalType == "Pig") {
+	}
+	else if (animalType == "Pig") {
 		return Animal::Pig;
-	} else if (animalType == "Fox") {
+	}
+	else if (animalType == "Fox") {
 		return Animal::Fox;
-	} else {
+	}
+	else {
 		return Animal::NumAnimalTypes;
 	}
 }
@@ -32,11 +37,14 @@ std::vector <Animal::Type> toAnimalTypes(std::vector <std::string> animalTypes) 
 Difficulty toDifficulty(std::string difficulty) {
 	if (difficulty == "Easy") {
 		return Easy;
-	} else if (difficulty == "Medium") {
+	}
+	else if (difficulty == "Medium") {
 		return Medium;
-	} else if (difficulty == "Hard") {
+	}
+	else if (difficulty == "Hard") {
 		return Hard;
-	} else {
+	}
+	else {
 		return NumDifficulties;
 	}
 }
@@ -47,12 +55,12 @@ GameState::~GameState() {
 }
 
 GameState::GameState(StateStack& stack, States::ID stateID, Context context, State::Info stateInfo)
-: State(stack, stateID, context)
-, mWorld(*context.window, context, stateInfo.floatList[0], 
-		std::vector <Animal::Type>({toAnimalType(stateInfo.stringList[2]),toAnimalType(stateInfo.stringList[4])}), 
-		std::vector <std::string>({stateInfo.stringList[0], stateInfo.stringList[3]}), toDifficulty(stateInfo.stringList[1]))
-, mPlayerNames(stateInfo.floatList[0] == 1 ? std::vector <std::string>({stateInfo.stringList[0]}) : std::vector <std::string>({stateInfo.stringList[0], stateInfo.stringList[3]}))
-, mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
+	: State(stack, stateID, context)
+	, mWorld(*context.window, context, stateInfo.floatList[0],
+		std::vector <Animal::Type>({ toAnimalType(stateInfo.stringList[2]),toAnimalType(stateInfo.stringList[4]) }),
+		std::vector <std::string>({ stateInfo.stringList[0], stateInfo.stringList[3] }), toDifficulty(stateInfo.stringList[1]))
+	, mPlayerNames(stateInfo.floatList[0] == 1 ? std::vector <std::string>({ stateInfo.stringList[0] }) : std::vector <std::string>({ stateInfo.stringList[0], stateInfo.stringList[3] }))
+	, mStartDifficulty(toDifficulty(stateInfo.stringList[1]))
 {
 	context.settings->setGameSounds(&mWorld.getSoundPlayer());
 	context.music->stopAllMusic();
@@ -94,14 +102,14 @@ void GameState::endGame(GameStatus status) {
 	int numPlayer = mPlayerNames.size();
 	if (numPlayer == 1) {
 		State::Info info;
-		info.floatList = {float(mWorld.getCurrentScore()), float(mStartDifficulty)};
+		info.floatList = { float(mWorld.getCurrentScore()), float(mStartDifficulty) };
 		info.stringList = mPlayerNames;
 		requestStackPush(States::GameOver, info);
 	}
 	else {
 		int lostPlayerID = mWorld.getLostPlayerID(status.mEntity);
 		State::Info info;
-		info.floatList = {float(lostPlayerID)};
+		info.floatList = { float(lostPlayerID) };
 		info.stringList = mPlayerNames;
 		requestStackPush(States::GameOver, info);
 	}
