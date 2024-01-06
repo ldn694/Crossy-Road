@@ -14,12 +14,7 @@ Zone::Zone(Zone::Safety safety, sf::FloatRect hitbox, Road* road):
 }
 
 Zone::~Zone() {
-    // if (dynamic_cast<River*>(mRoad) != nullptr) {
-    //     std::cerr << "River zone deleted\n";
-    // }
-    // if (dynamic_cast<Land*>(mRoad) != nullptr) {
-    //     std::cerr << "Land zone deleted\n";
-    // }
+
 }
 
 sf::FloatRect Zone::getHitbox() const

@@ -333,8 +333,6 @@ bool SettingState::handleEvent(const sf::Event& event)
 				}
 				updateFile();
 				mPendingUpdate = true;
-				//std::string test = mClickableList.getTextByID(i+7);
-				//std::cout<<test<<std::endl;
 			}
 		}
 	}
@@ -342,7 +340,6 @@ bool SettingState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			std::cout << "Left Clicked " << announcement.id << "\n";
 			switch (announcement.id) {
 			case SettingState::ClickableID::Sound: {
 				mScrollBarList.toggleSound();
@@ -365,16 +362,16 @@ bool SettingState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			std::cout << "Right Clicked " << announcement.id << "\n";
+			
 		}
 		else if (announcement.action == Clickable::Toggled) {
-			std::cout << "Toggled " << announcement.id << "\n";
+			
 			if (announcement.id >= ClickableID::PlayerOneMoveLeft && announcement.id <= ClickableID::PlayerTwoMoveDown) {
 				c[announcement.id - ClickableID::PlayerOneMoveLeft] = !c[announcement.id - ClickableID::PlayerOneMoveLeft];
 			}
 		}
 		else if (announcement.action == Clickable::Moved) {
-			std::cout << "Moved " << announcement.id << "\n";
+			
 		}
 	}
 	while (pendingNotification()) {

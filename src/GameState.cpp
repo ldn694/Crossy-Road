@@ -87,12 +87,6 @@ GameState::GameState(StateStack& stack, States::ID stateID, Context context, Sta
 	context.music->stopAllMusic();
 	mPlayer = std::move(Player(&mWorld.getSceneGraph()));
 	context.settings->setPlayer(&mPlayer);
-	// std::cerr << "GameState::GameState()\n";
-	//floatList[0] = 1 if 1 player, 2 if 2 players
-	//stringList[0] = player1 name
-	// for (int i = 0; i < stateInfo.floatList.size(); i++) {
-	// 	std::cerr << stateInfo.floatList[i] << " ";
-	// }
 	mCurrentScoreText.setFont(context.fonts->get(Fonts::Bungee));
 	setCurrentScore();
 	mCurrentScoreText.setCharacterSize(20);
@@ -120,13 +114,11 @@ void GameState::endGame(GameStatus status) {
 	assertThrow(dynamic_cast<Animal*>(entity) != nullptr, "GameState::endGame() entity is not an animal");
 	Animal* animal = static_cast<Animal*>(entity);
 	if (status.mReason == GameStatus::Drowned) {
-		std::cout << "Drowned\n";
 		sf::Sound& sound = getContext().sounds->play(SoundEffect::Water_Splash, 1.f);
 		sound.setPosition(0.f, 0.f, 0.f);
 		sound.setRelativeToListener(true);
 	}
 	else if (status.mReason == GameStatus::Crashed) {
-		std::cout << "Crashed\n";
 		sf::Sound& sound = getContext().sounds->play(toDeathSound(animal->getType()), 1.f);
 		sound.setPosition(0.f, 0.f, 0.f);
 		sound.setRelativeToListener(true);
@@ -176,13 +168,9 @@ bool GameState::handleEvent(const sf::Event& event)
 		CommandQueue& commands = mWorld.getCommandQueue();
 		mPlayer.handleEvent(event, commands);
 
-		// while (pendingNotification()) {
-		// 	State::Info info = popNotification();
-		// 	for (int i = 0; i < info.floatList.size(); i++) {
-		// 		std::cerr << info.floatList[i] << " ";
-		// 	}
-		// 	std::cerr << "\n";
-		// }
+		while (pendingNotification()) {
+
+		}
 
 		// Escape pressed, trigger the pause screen
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {

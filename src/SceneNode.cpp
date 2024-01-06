@@ -16,7 +16,7 @@ SceneNode::SceneNode()
 
 SceneNode::~SceneNode()
 {
-	//std::cerr << "SceneNode destructor " << this << " " << fromCategoryToString(getCategory()) << "\n";
+	
 }
 
 void SceneNode::filterEmptyChildren()
@@ -140,7 +140,6 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 
 void SceneNode::requestDetach(SceneNode* node)
 {
-	// std::cerr << "request detach " << node << "\n";
 	mDetachQueue.push(node);
 }
 
@@ -152,18 +151,9 @@ void SceneNode::requestAttachAtFront(Ptr child)
 void SceneNode::detachChildren()
 {
 	filterEmptyChildren();
-	// if (!mDetachQueue.empty()) {
-	// 	std::cerr << "--------\n";
-	// 	std::cerr << "deleting " << this << " " << fromCategoryToString(getCategory()) << "\n";
-	// 	for (int i = 0; i < mChildren.size(); i++) {
-	// 		std::cerr << mChildren[i].get() << " ";
-	// 	}
-	// 	std::cerr << "\n";
-	// }
 	while (!mDetachQueue.empty()) {
 		SceneNode* child = mDetachQueue.front();
 		mDetachQueue.pop();
-		// std::cerr << "detaching " << child << "\n";
 		detachChild(*child);
 	}
 }

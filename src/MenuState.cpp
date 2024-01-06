@@ -110,7 +110,6 @@ bool MenuState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			// std::cerr << "Left Clicked " << announcement.id << "\n";
 			switch (announcement.id) {
 				case MenuState::ClickableID::Play: {
 					requestStackPop();
@@ -141,12 +140,12 @@ bool MenuState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			// std::cerr << "Right Clicked " << announcement.id << "\n";
+			
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		// std::cerr << info.stringList[0] << "\n";
+		
 	}
 	if (event.type == sf::Event::MouseButtonPressed) {
 

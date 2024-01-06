@@ -130,7 +130,6 @@ bool GameOverState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			// std::cout << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Home) {
 				if (getContext().music->getStatus(Music::MenuTheme) != sf::Music::Playing) {
 					getContext().music->stopAllMusic();
@@ -138,9 +137,6 @@ bool GameOverState::handleEvent(const sf::Event& event)
 				}
 				requestStateClear();
 				requestStackPush(States::Menu);
-				//State::Info info;
-				//info.stringList = { "Hello from GameOverState to MenuState" };
-				//requestNotifyState(States::Menu, info);
 			}
 			else if (announcement.id == ButtonNames::Retry) {
 				if (getContext().music->getStatus(Music::MenuTheme) != sf::Music::Playing) {
@@ -161,18 +157,14 @@ bool GameOverState::handleEvent(const sf::Event& event)
 					getContext().music->play(Music::MenuTheme);
 				}
 				requestStackPush(States::Scoreboard);
-				//State::Info info;
-				//info.stringList = { "Hello from GameOverState to SettingState" };
-				//requestNotifyState(States::Setting, info);
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			// std::cout << "Right Clicked " << announcement.id << "\n";
+			
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		// std::cout << info.stringList[0] << "\n";
 	}
 	return true;
 }

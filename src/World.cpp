@@ -52,8 +52,6 @@ World::World(sf::RenderWindow& window, Context context, int numPlayer, std::vect
 
 void World::update(sf::Time dt)
 {
-	// std::cerr << "num scenenode: " << mSceneGraph.countChildren() << "\n";
-	//std::cerr << (mSceneGraph.findChildrenByCategory<Entity>(Category::Player)).size();
 	// Scroll the world, reset player velocity
 	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
 	for (int i = 0; i < mNumPlayer; i++) {

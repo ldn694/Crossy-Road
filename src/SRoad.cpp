@@ -96,11 +96,7 @@ SRoad::SRoad(Context context, const TextureHolder& textures, SoundPlayer& sounds
 }
 
 SRoad::~SRoad() {
-    // std::cerr << "---------------------\n";
-    // std::cerr << "River destroyed\n";
-    // for (int i = 0; i < zones.size(); i++) {
-    //     mediateNode->requestDetach(zones[i]->getParent());
-    // }
+
 }
 
 Car* SRoad::addCar(Car::Type carType, sf::Vector2f position)

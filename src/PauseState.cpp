@@ -89,36 +89,26 @@ bool PauseState::handleEvent(const sf::Event& event)
 	while (mClickableList.pendingAnnouncement()) {
 		Clickable::Announcement announcement = mClickableList.popAnnouncement();
 		if (announcement.action == Clickable::LeftPressed) {
-			// std::cout << "Left Clicked " << announcement.id << "\n";
             if (announcement.id == ButtonNames::Home) {
 				getContext().music->stopAllMusic();
 				getContext().music->play(Music::MenuTheme);
 				requestStackPop();
 				requestStackPush(States::Menu);
-				//State::Info info;
-				//info.stringList = { "Hello from PauseState to MenuState" };
-				//requestNotifyState(States::Menu, info);
 			}
 			else if (announcement.id == ButtonNames::Resume) {
 				requestStackPop();
 				requestStackPush(States::Loading);
-				//State::Info info;
-				//requestNotifyState(States::Game, info);
 			}
 			else if (announcement.id == ButtonNames::Setting) {
 				requestStackPush(States::Setting);
-				//State::Info info;
-				//info.stringList = { "Hello from PauseState to SettingState" };
-				//requestNotifyState(States::Setting, info);
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			// std::cout << "Right Clicked " << announcement.id << "\n";
 		}
 	}
 	while (pendingNotification()) {
 		State::Info info = popNotification();
-		// std::cout << info.stringList[0] << "\n";
+		
 	}
 	return false;
 }

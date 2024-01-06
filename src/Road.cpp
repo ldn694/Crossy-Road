@@ -63,7 +63,6 @@ Zone* Road::randomZone(Zone::Safety safety)
     }
     assertThrow(!zones.empty(), "No zone of this safety type");
     int index = rand() % zones.size();
-    // std::cerr << zones.size() << " " << index << "\n";
     return zones[index];
 }
 
@@ -75,7 +74,6 @@ Zone::Safety Road::getSafety() const
 void Road::addZone(Zone* zone)
 {
     mZones.push_back(zone);
-    // std::cerr << "added zone " << mZones.size() << "\n";
 }
 
 void Road::removeZone(Zone* zone)

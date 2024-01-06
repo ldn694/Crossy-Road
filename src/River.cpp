@@ -88,11 +88,7 @@ River::River(Context context, const TextureHolder& textures, SoundPlayer& sounds
 }
 
 River::~River() {
-    // std::cerr << "---------------------\n";
-    // std::cerr << "River destroyed\n";
-    // for (int i = 0; i < zones.size(); i++) {
-    //     mediateNode->requestDetach(zones[i]->getParent());
-    // }
+    
 }
 
 FloatingLog* River::addLog(FloatingLog::Type logType, sf::Vector2f position)

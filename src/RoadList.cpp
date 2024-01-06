@@ -32,7 +32,6 @@ int getNumType(Road::Type type)
 void RoadList::setDifficulty(Difficulty difficulty)
 {
     mDifficulty = difficulty;
-    std::cerr << "setDifficulty: " << int(mDifficulty) << "\n";
     switch (mDifficulty) {
         case Easy:
             mPeriod = sf::seconds(1.0f);
