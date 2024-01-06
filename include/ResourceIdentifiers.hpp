@@ -105,26 +105,31 @@ namespace Textures
 		CatDown,
 		CatLeft,
 		CatRight,
+		CatDead,
 		//Chicken
 		ChickenUp,
 		ChickenDown,
 		ChickenLeft,
 		ChickenRight,
+		ChickenDead,
 		//Fox
 		FoxUp,
 		FoxDown,
 		FoxLeft,
 		FoxRight,
+		FoxDead,
 		//Pig
 		PigUp,
 		PigDown,
 		PigLeft,
 		PigRight,
-		//Zebra
+		PigDead,
+		//Lion
 		LionUp,
 		LionDown,
 		LionLeft,
 		LionRight,
+		LionDead,
 		//GameOver state
 		GameOverBackground,
 		GameOverToLeaderboard,

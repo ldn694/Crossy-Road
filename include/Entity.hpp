@@ -48,7 +48,6 @@ class Entity : public SceneNode
 		CollisionInfo				mCollisionInfo = CollisionInfo(NoCollision, nullptr, nullptr);
 		void 						setOriginNode();
 		void						resetOriginNode();
-		void 						announceGameLost(CollisionInfo info);
 		
 	protected:
 		virtual void				updateCurrent(sf::Time dt);

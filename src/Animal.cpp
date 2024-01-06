@@ -116,6 +116,29 @@ Textures::ID Animal::toTextureID(Type type, Direction direction)
     }
 }
 
+Textures::ID Animal::toDeadTextureID(Type type)
+{
+    switch (type) {
+        case Cat:
+            return Textures::CatDead;
+        case Chicken:
+            return Textures::ChickenDead;
+        case Lion:
+            return Textures::LionDead;
+        case Pig:
+            return Textures::PigDead;
+        case Fox:   
+            return Textures::FoxDead;   
+    }
+}
+
+void Animal::setDeadTexture()
+{
+    mSprite.setTexture(mTextures.get(toDeadTextureID(mType)));
+    setSize(mSprite, sf::Vector2f(45, 45));
+    centerOrigin(mSprite);
+}
+
 void Animal::updateCurrent(sf::Time dt)
 {
     Entity::updateCurrent(dt);
@@ -130,6 +153,10 @@ void Animal::updateCurrent(sf::Time dt)
                 mSounds.play(SoundEffect::Hard_Collision, info.blocker->getWorldPosition());
             }
         }
+    }
+    if (info.type == Entity::DeathCollision) {
+        setDeadTexture();
+        announceGameLost(info);
     }
     if (isMoving && !pendingAnimation()) {
         isMoving = false;
@@ -155,7 +182,17 @@ void Animal::updateCurrent(sf::Time dt)
     passedRoad += mZone->getRoad()->visit();
 }
 
-
+void Animal::announceGameLost(CollisionInfo collisionInfo) {
+	if (dynamic_cast<Animal*>(collisionInfo.mover) != nullptr) {
+		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, collisionInfo.mover);
+	}
+	else if (dynamic_cast<Animal*>(collisionInfo.blocker) != nullptr) {
+		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, collisionInfo.blocker);
+	}
+	else {
+		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, this);
+	}
+}
 
 bool Animal::addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offset)
 {

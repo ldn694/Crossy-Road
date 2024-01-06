@@ -107,8 +107,10 @@ void GameState::draw()
 {
 	mWorld.draw();
 	Context context = getContext();
-	context.window->setView(context.window->getDefaultView());
-	context.window->draw(mCurrentScoreText);
+	if (mPlayerNames.size() == 1) {
+		context.window->setView(context.window->getDefaultView());
+		context.window->draw(mCurrentScoreText);
+	}
 }
 
 void GameState::endGame(GameStatus status) {
@@ -143,6 +145,7 @@ void GameState::endGame(GameStatus status) {
 		info.stringList = mPlayerNames;
 		requestStackPush(States::GameOver, info);
 	}
+	draw();
 }
 
 bool GameState::update(sf::Time dt) {

@@ -115,18 +115,6 @@ bool Entity::isFakeAnimation()
 	return mOriginNode != nullptr;
 }
 
-void Entity::announceGameLost(CollisionInfo collisionInfo) {
-	if (dynamic_cast<Animal*>(collisionInfo.mover) != nullptr) {
-		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, collisionInfo.mover);
-	}
-	else if (dynamic_cast<Animal*>(collisionInfo.blocker) != nullptr) {
-		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, collisionInfo.blocker);
-	}
-	else {
-		throw GameStatus(GameStatus::GameLost, GameStatus::Crashed, this);
-	}
-}
-
 void Entity::updateCurrent(sf::Time dt)
 {
 	if (pendingAnimation()) {
@@ -138,7 +126,7 @@ void Entity::updateCurrent(sf::Time dt)
 		}
 		mCollisionInfo = collisionInfo;
 		if (collisionInfo.type == CollisionType::DeathCollision) {
-			announceGameLost(collisionInfo);
+			// announceGameLost(collisionInfo);
 		}
 		else if (collisionInfo.type == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds() - animationStep);
@@ -164,8 +152,9 @@ void Entity::updateCurrent(sf::Time dt)
 	else {
 		move(mVelocity * dt.asSeconds());
 		CollisionInfo collisionInfo = handleCollision();
+		mCollisionInfo = collisionInfo;
 		if (collisionInfo.type == CollisionType::DeathCollision) {
-			announceGameLost(collisionInfo);
+			// announceGameLost(collisionInfo);
 		}
 		else if (collisionInfo.type == CollisionType::BlockedCollision) {
 			move(-mVelocity * dt.asSeconds());

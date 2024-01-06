@@ -42,6 +42,9 @@ class Animal: public Entity {
         virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
         Textures::ID            toTextureID(Type type, Direction direction);
         bool                    addAnimalAnimation(Zone* zone, sf::Time duration, sf::Vector2f offset = sf::Vector2f(0, 0));
+        void                    announceGameLost(CollisionInfo collisionInfo);
+        Textures::ID             toDeadTextureID(Type type);
+        void                    setDeadTexture();
         Zone*                   mZone;
         Zone*                   mNextZone;
         SceneNode*              tmpNode;
