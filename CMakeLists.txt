@@ -77,6 +77,8 @@ target_link_libraries(CrossyRoad PRIVATE sfml-audio)
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
 
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc")
+
 if(WIN32)
     add_custom_command(
         TARGET CrossyRoad
