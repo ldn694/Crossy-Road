@@ -40,10 +40,13 @@ Application::Application(sf::ContextSettings contextSettings)
 	
 	mSounds.setListenerPosition(sf::Vector2f(0.f, 0.f));
 	mSounds.load(SoundEffect::Water_Splash, "Assets/Sounds/Water_Splash.wav");
+	mSounds.load(SoundEffect::Dead_Cat, "Assets/Sounds/dead_cat.wav");
+	mSounds.load(SoundEffect::Dead_Chicken, "Assets/Sounds/dead_chicken.wav");
+	mSounds.load(SoundEffect::Dead_Fox, "Assets/Sounds/dead_fox.wav");
+	mSounds.load(SoundEffect::Dead_Pig, "Assets/Sounds/dead_pig.wav");
+	mSounds.load(SoundEffect::Dead_Lion, "Assets/Sounds/dead_lion.wav");
 	mSounds.load(SoundEffect::Mouse_Click, "Assets/Sounds/mouse_click.wav");
 	mSounds.load(SoundEffect::Mouse_Hover, "Assets/Sounds/mouse_hover.wav");
-
-	mMusic.play(Music::MenuTheme);
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	//top right

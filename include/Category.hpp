@@ -17,8 +17,8 @@ namespace Category
 		Hostile				= 1 << 6,
 		SafeZone			= 1 << 7,
 		DeadZone			= 1 << 8,
-		AlliedAircraft		= 1 << 9,
-		EnemyAircraft		= 1 << 10,
+		HardObstacle		= 1 << 9,
+		SoftObstacle		= 1 << 10,
 		NumCategory			= 11,
 	};
 }

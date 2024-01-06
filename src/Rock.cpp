@@ -48,7 +48,7 @@ unsigned int Rock::getCategory() const
     switch (mType)
     {
     case Rock1:
-        return Category::Obstacle;
+        return Category::Obstacle | Category::HardObstacle;
     }
 }
 

@@ -14,6 +14,9 @@ TitleState::TitleState(StateStack& stack, States::ID stateID, Context context, S
 	mBackgroundSprite.setTexture(context.textures->get(Textures::M1));
 	mBackgroundSprite.setScale(0.65,0.65);
 
+	getContext().music->stopAllMusic();
+	getContext().music->play(Music::TitleTheme);
+
 	mText.setFont(context.fonts->get(Fonts::T1));
 	mText.setString("Press any key to start");
 	mText.setColor(sf::Color(251,224,91,255));

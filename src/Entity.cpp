@@ -41,6 +41,11 @@ void Entity::accelerate(float vx, float vy)
 	mVelocity.y += vy;
 }
 
+Entity::CollisionInfo Entity::getCollisionInfo() const
+{
+	return mCollisionInfo;
+}
+
 Entity::CollisionInfo Entity::handleCollision()
 {
 	auto mCategory = getCategory();
@@ -131,6 +136,7 @@ void Entity::updateCurrent(sf::Time dt)
 		if (!isMovingBack) {
 			collisionInfo = handleCollision();
 		}
+		mCollisionInfo = collisionInfo;
 		if (collisionInfo.type == CollisionType::DeathCollision) {
 			announceGameLost(collisionInfo);
 		}
