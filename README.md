@@ -4,7 +4,7 @@
 
 ![Main Menu](MainMenu.png)
 
-This is a project for CS202 course at Ho Chi Minh City University of Science (HCMUYS). The project is a clone of the popular game Crossy Road. The game is made using C++ and SFML library. The game is made by a team of 4 members. The team members are:
+This is a project for CS202 course at Ho Chi Minh City University of Science (HCMUS). The project is a clone of the popular game Crossy Road. The game is made using C++ and SFML library. The game is made by a team of 4 members. The team members are:
 
 - 22125003 - 22TT1 - [Tran Cong Lam Anh](https://github.com/lamanh-lavain)
 - 22125065 - 22TT1 - [Nguyen Quoc Nghia](https://github.com/quocnghia32)
