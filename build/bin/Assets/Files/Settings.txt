@@ -1,5 +1,5 @@
-Sound: 1.00 Music: 0.00
+Sound: 1.00 Music: 0.37
 Player 1
-MoveLeft: Left MoveRight: Right MoveUp: Up MoveDown: Down
+MoveLeft: A MoveRight: D MoveUp: W MoveDown: S
 Player 2
-MoveLeft: Unknown MoveRight: Unknown MoveUp: Unknown MoveDown: Unknown
+MoveLeft: Left MoveRight: Right MoveUp: Up MoveDown: Down
