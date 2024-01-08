@@ -28,4 +28,4 @@ cmake --build build --config Release
 
 ## Project Architecture
 
-##
+![Project Architecture](Diagram.drawio.png)
