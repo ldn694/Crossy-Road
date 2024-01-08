@@ -11,6 +11,10 @@ This is a project for CS202 course at Ho Chi Minh City University of Science (HC
 - 22125070 - 22TT1 - [Le Duc Nhuan](https://github.com/ldn694)
 - 22125079 - 22TT1 - [Nguyen Minh Quan](https://github.com/nmquan22)
 
+## Demo Video
+
+You can find the Demo Video [here](https://www.youtube.com/watch?v=Ipdarw_-vAg)
+
 ## How to play
 
 ![Gameplay](Gameplay.png)
