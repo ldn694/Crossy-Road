@@ -75,9 +75,11 @@ add_executable(CrossyRoad
 
 target_link_libraries(CrossyRoad PRIVATE sfml-audio)
 target_link_libraries(CrossyRoad PRIVATE sfml-graphics)
+target_link_libraries(CrossyRoad PRIVATE sfml-main)
+target_link_libraries(CrossyRoad PRIVATE -static gcc stdc++ winpthread -dynamic)
 target_compile_features(CrossyRoad PRIVATE cxx_std_17)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
 if(WIN32)
     add_custom_command(

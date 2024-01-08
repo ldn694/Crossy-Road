@@ -166,5 +166,5 @@ bool GameOverState::handleEvent(const sf::Event& event)
 	while (pendingNotification()) {
 		State::Info info = popNotification();
 	}
-	return true;
+	return false;
 }
