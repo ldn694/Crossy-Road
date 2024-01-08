@@ -12,6 +12,12 @@ LoadingState::LoadingState(StateStack& stack, States::ID stateID, Context contex
 	sf::RenderWindow& window = *getContext().window;
 	sf::Font& font = context.fonts->get(Fonts::Bungee);
 	sf::Vector2f viewSize = window.getView().getSize();
+
+	if (context.music->getStatus(Music::IngameTheme) == sf::Music::Playing) {
+		context.music->setPaused(Music::IngameTheme, true);
+	}
+	context.music->play(Music::CountDown, NO_LOOP);
+
 	
 	mClock.restart();
 	mCount = 0;
@@ -45,6 +51,9 @@ bool LoadingState::update(sf::Time)
 	if (mClock.getElapsedTime().asSeconds() >= 1.f) {
 		mCount++;
 		if (mCount == 3){
+			if (getContext().music->getStatus(Music::IngameTheme) == sf::Music::Paused) {
+				getContext().music->setPaused(Music::IngameTheme, false);
+			}
 			requestStackPop();
 		}
 		mString = std::to_string(3 - mCount);

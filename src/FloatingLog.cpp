@@ -64,13 +64,13 @@ void FloatingLog::drawCurrent(sf::RenderTarget& target, sf::RenderStates states)
 {
     target.draw(mSprite, states);
     //draw hitbox
-    sf::FloatRect rect = getHitbox();
-    sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
-    shape.setFillColor(sf::Color::Transparent);
-    shape.setOutlineColor(sf::Color::Red);
-    shape.setOutlineThickness(1);
-    shape.setPosition(rect.left, rect.top);
-    target.draw(shape);
+    // sf::FloatRect rect = getHitbox();
+    // sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
+    // shape.setFillColor(sf::Color::Transparent);
+    // shape.setOutlineColor(sf::Color::Red);
+    // shape.setOutlineThickness(1);
+    // shape.setPosition(rect.left, rect.top);
+    // target.draw(shape);
 }
 
 sf::FloatRect FloatingLog::getHitbox() const

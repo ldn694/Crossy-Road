@@ -66,15 +66,15 @@ bool SettingState::checkValidSettings(const std::string& filename) {
 	}
 	//Player 1 and 2 must be a valid key
 	int keyPos[] = { 7, 9, 11, 13, 17, 19, 21, 23 };
-	for (int i = 0; i < 8; i++) {
-		if (keyCodeToString(sf::Keyboard::Unknown) == data[keyPos[i]]) {
-			std::cout << "Invalid key data\n";
-			return false;
-		}
-	}
+	// for (int i = 0; i < 8; i++) {
+	// 	if (stringToSFMLKey(data[keyPos[i]]) == sf::Keyboard::Unknown) {
+	// 		std::cout << "Invalid key data\n";
+	// 		return false;
+	// 	}
+	// }
 	for (int i = 0; i < 8; i++) {
 		for (int j = i + 1; j < 8;j++) {
-			if (data[keyPos[i]] == data[keyPos[j]]) {
+			if (data[keyPos[i]] == data[keyPos[j]] && data[keyPos[i]] != "Unknown") {
 				std::cout << "Same key\n";
 				return false;
 			}
@@ -362,16 +362,16 @@ bool SettingState::handleEvent(const sf::Event& event)
 			}
 		}
 		else if (announcement.action == Clickable::RightPressed) {
-			
+
 		}
 		else if (announcement.action == Clickable::Toggled) {
-			
+
 			if (announcement.id >= ClickableID::PlayerOneMoveLeft && announcement.id <= ClickableID::PlayerTwoMoveDown) {
 				c[announcement.id - ClickableID::PlayerOneMoveLeft] = !c[announcement.id - ClickableID::PlayerOneMoveLeft];
 			}
 		}
 		else if (announcement.action == Clickable::Moved) {
-			
+
 		}
 	}
 	while (pendingNotification()) {

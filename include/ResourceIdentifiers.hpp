@@ -210,6 +210,7 @@ namespace Music
 		MenuTheme,
 		IngameTheme,
 		GameOverTheme,
+		CountDown,
 		NumMusic,
 	};
 }

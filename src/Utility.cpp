@@ -304,7 +304,6 @@ sf::Keyboard::Key stringToSFMLKey(const std::string& keyString) {
 	}
 	else
 	{
-
 		return sf::Keyboard::Unknown;
 	}
 }

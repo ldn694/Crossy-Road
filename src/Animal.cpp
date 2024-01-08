@@ -30,13 +30,13 @@ void Animal::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
     target.draw(mSprite, states);
     target.draw(mPlayerNameText, states);
     //draw hitbox
-    sf::FloatRect rect = getHitbox();
-    sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
-    shape.setFillColor(sf::Color::Transparent);
-    shape.setOutlineColor(sf::Color::Red);
-    shape.setOutlineThickness(1);
-    shape.setPosition(rect.left, rect.top);
-    target.draw(shape);
+    // sf::FloatRect rect = getHitbox();
+    // sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
+    // shape.setFillColor(sf::Color::Transparent);
+    // shape.setOutlineColor(sf::Color::Red);
+    // shape.setOutlineThickness(1);
+    // shape.setPosition(rect.left, rect.top);
+    // target.draw(shape);
 }
 
 sf::FloatRect Animal::getHitbox() const

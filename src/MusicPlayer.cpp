@@ -10,6 +10,7 @@ MusicPlayer::MusicPlayer()
     mFilenames[Music::MenuTheme] = "Assets/Music/MenuTheme.mp3";
     mFilenames[Music::IngameTheme] = "Assets/Music/IngameTheme.mp3";
     mFilenames[Music::GameOverTheme] = "Assets/Music/GameOverTheme.mp3";
+    mFilenames[Music::CountDown] = "Assets/Music/CountDown.mp3";
     for (std::size_t i = 0; i < Music::NumMusic; ++i) {
         Music::ID theme = static_cast<Music::ID>(i);
         std::string filename = mFilenames[theme];
